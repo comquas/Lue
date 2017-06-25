@@ -5,3 +5,16 @@
 .inline {
 	display: inline;
 }
+
+.navbar-toggler-icon {
+	margin-left: -10px; margin-top: -5px; font-size: 16px;
+}
+
+.card-icon-button {
+	float:right;
+	padding: 0px !important;
+	margin: 0px;
+	width: 25px;
+	height: 25px;
+	padding-top: 5px !important;
+}

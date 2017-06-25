@@ -9,7 +9,7 @@
 
 @section('content')
 <div class="container">
-    <form action="{{ route('profile_update') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ $route }}" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
         <div class="row">
 
@@ -22,7 +22,9 @@
                     <div class="card-block">
 
                         <div class="admin-profile-image">
+                            @isset($user)
                             <img src="{{ url('avatars')}}/{{ $user->avatar }}" class="rounded" style="width:140px;">
+                            @endisset
                         </div>
                         <div class="form-group">
                             <label class="custom-file">
@@ -58,21 +60,21 @@
                         @slot('title','Name')
                         @slot('name','name')
                         @slot('placeholder','Enter Your Name')
-                        @slot('value',$user->name)
+                        @slot('value', isset($user) ? $user->name : "")
                         @endcomponent
 
                         @component('control.textbox')
                         @slot('title','Email')
                         @slot('name','email')
                         @slot('placeholder','Enter Your Office Email')
-                        @slot('value',$user->email)
+                        @slot('value',isset($user) ? $user->email : "")
                         @endcomponent
 
                         @component('control.textbox')
                         @slot('title','Mobile')
                         @slot('name','mobile_no')
                         @slot('placeholder','Enter Your mobile number')
-                        @slot('value',$user->mobile_no)
+                        @slot('value',isset($user) ? $user->mobile_no : "")
                         @endcomponent
 
                         @component('control.picker')
@@ -99,21 +101,48 @@
                         @slot('title','Join')
                         @slot('id','join-date')
                         @slot('name','join_date')
-                        @slot('value',$user->get_join_date())
+                        @slot('value',isset($user) ? $user->get_join_date() : "")
                         @endcomponent
 
                         @component('control.datepicker')
                         @slot('title','Birthday')
                         @slot('id','birthday')
                         @slot('name','birthday')
-                        @slot('value',$user->get_birthday())
+                        @slot('value',isset($user) ? $user->get_birthday() : "")
                         @endcomponent
 
                     </div>
                 </div>
             </div>
 
+             
+                
+
             <div class="col-md-6">    
+            <div class="card">
+                    <div class="card-header">
+                        Password
+                    </div>
+                    <div class="card-block">
+
+                        @component('control.textbox')
+                        @slot('title','Password')
+                        @slot('name','password')
+                        @slot('type','password')
+                        @slot('placeholder','Password')
+                        @slot('value',"")
+                        @endcomponent
+
+
+                        @component('control.textbox')
+                        @slot('title','Confirm Password')
+                        @slot('name','password_confirmation')
+                        @slot('type','password')
+                        @slot('placeholder','Confirm Password')
+                        @slot('value',"")
+                        @endcomponent
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-header">
                         Time-Off
@@ -124,7 +153,14 @@
                         @slot('title','Leave')
                         @slot('name','no_of_leave')
                         @slot('placeholder','No. Of Leave')
-                        @slot('value',$user->no_of_leave)
+                        @slot('value',isset($user) ? $user->no_of_leave : "")
+                        @endcomponent
+
+                         @component('control.textbox')
+                        @slot('title','Sick Leave')
+                        @slot('name','sick_leave')
+                        @slot('placeholder','5')
+                        @slot('value',isset($user) ? $user->sick_leave : "")
                         @endcomponent
                     </div>
                 </div>
@@ -142,14 +178,14 @@
                     @slot('title','Bank Name')
                     @slot('name','bank_name')
                     @slot('placeholder','Bank Name')
-                    @slot('value',$user->bank_name)
+                    @slot('value',isset($user) ? $user->bank_name : "")
                     @endcomponent
 
                     @component('control.textbox')
                     @slot('title','Bank Account')
                     @slot('name','bank_account')
                     @slot('placeholder','Bank Account')
-                    @slot('value',$user->bank_account)
+                    @slot('value',isset($user) ? $user->bank_account : "")
                     @endcomponent
 
                 </div>
@@ -167,21 +203,21 @@
                 @slot('title','Personal Email')
                 @slot('name','personal_email')
                 @slot('placeholder','Personal Email')
-                @slot('value',$user->personal_email)
+                @slot('value',isset($user) ? $user->personal_email : "")
                 @endcomponent
 
                 @component('control.textbox')
                 @slot('title','Github Username')
                 @slot('name','github')
                 @slot('placeholder','Username')
-                @slot('value',$user->github)
+                @slot('value',isset($user) ? $user->github : "")
                 @endcomponent
 
                 @component('control.textbox')
                 @slot('title','Twitter Username')
                 @slot('name','twitter')
                 @slot('placeholder','Username')
-                @slot('value',$user->twitter)
+                @slot('value',isset($user) ? $user->twitter : "")
                 @endcomponent
 
             </div>
@@ -192,7 +228,7 @@
 
 <div class="row">
     <div class="col-md-12">
-        <button class="btn btn-primary">Update</button>
+        <button class="btn btn-primary">{{ $btn_title }}</button>
     </div>
 
 </div>

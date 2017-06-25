@@ -40,6 +40,6 @@ class User extends Authenticatable
     }
 
     function location() {
-        return $this->belongsTo('App\Position','location_id','id');
+        return $this->belongsTo('App\Location','location_id','id');
     }
 }

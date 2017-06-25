@@ -45,6 +45,12 @@ Route::middleware(['auth'])->group(function () {
 	//user
 	Route::get('admin/user/profile','User\UserController@edit_profile')->name('profile');
 	Route::post('admin/user/profile','User\UserController@update_profile')->name('profile_update');
+	Route::get('admin/user/list','User\UserController@showList')->name('user_list');
+	Route::get('admin/user/add','User\UserController@add')->name('add_user');
+	Route::post('admin/user/add','User\UserController@store')->name('store_user');
+	Route::get('admin/user/edit/{id}','User\UserController@edit')->name('edit_user');
+	Route::post('admin/user/edit/{id}','User\UserController@user_update')->name('user_update');
+	
 
 
 });

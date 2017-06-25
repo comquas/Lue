@@ -25,6 +25,10 @@
     <link rel="stylesheet" href="{{ asset('/css/now-ui-kit.css') }}" />    
     <script type="text/javascript" src="{{ asset('/js/now-ui-kit.js') }}"></script>
 
+    <!-- ionion icon -->
+    <!-- Styles -->
+    <link href="{{ asset('bower_components/Ionicons/css/ionicons.min.css') }}" rel="stylesheet">
+
     @yield('header')
 
 </head>
@@ -40,36 +44,54 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-                <ul class="navbar-nav ml-auto">
-                 @if (Auth::guest())
-                 <li><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-                 <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
-                 @else
+                <ul class="navbar-nav mr-auto">
+                     @if (Auth::guest())
+                     <li><a class="nav-link" href="{{ route('login') }}">Login</a></li>
+                     <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
+                     @else
 
-                 <!-- Positions -->
-                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     Office Locations
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="{{ route('location_list') }}">List</a>
-                        <a class="dropdown-item" href="{{ route('location_add') }}">Add</a>
-                    </div>
-                </li>
-                 <!-- ./Posistions -->
-                 
-                 <!-- Positions -->
-                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                     Positions
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="{{ route('position_list') }}">List</a>
-                        <a class="dropdown-item" href="{{ route('position_add') }}">Add</a>
-                    </div>
-                </li>
-                 <!-- ./Posistions -->
+                    @if(Auth::user()->role == 'admin' || Auth::user()->role == 'hr')
+                        <!-- users -->
 
+                        @component('control.nav-item')
+                            @slot('title','Users')
+                            @slot('add_route',route('add_user'))
+                            @slot('list_route',route('user_list'))
+                                
+                        @endcomponent
+
+                        <!-- ./users -->
+
+                        <!-- Positions -->
+                        @component('control.nav-item')
+                            @slot('title','Office Locations')
+                            @slot('add_route',route('location_add'))
+                            @slot('list_route',route('location_list'))
+                                
+                        @endcomponent
+                        
+                         <!-- ./Posistions -->
+                         
+                         <!-- Positions -->
+                         @component('control.nav-item')
+                            @slot('title','Positions')
+                            @slot('add_route',route('position_add'))
+                            @slot('list_route',route('position_list'))
+                                
+                        @endcomponent
+                         
+                         <!-- ./Posistions -->
+
+                         <li class="nav-item">
+                        <a href="#" class="nav-link">Time-Off</a>
+                        </li>
+
+                     @endif
+                     <li class="nav-item">
+                        <a href="#" class="nav-link">Apply Time-Off</a>
+                     </li>
+                 </ul>
+                 <ul class="navbar-nav ml-auto">
                  <li class="nav-item dropdown" >
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                      {{ Auth::user()->name }} 

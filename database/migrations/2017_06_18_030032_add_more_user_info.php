@@ -32,7 +32,6 @@ class AddMoreUserInfo extends Migration
             //personal
             $table->string('mobile_no');
             $table->string('personal_email');
-            $table->string('office_email');
             $table->date('birthday');
 
             //social network
