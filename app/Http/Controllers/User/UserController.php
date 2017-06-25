@@ -1,0 +1,90 @@
+<?php
+
+namespace App\Http\Controllers\User;
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\Position;
+use Carbon\Carbon;
+use App\Location;
+
+class UserController extends Controller
+{
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+    function edit_profile() {
+    	$user = Auth::user();
+    	$positions = Position::all();
+        $locations = Location::all();
+        
+        
+    	return view('user/edit_profile',["user" => $user,"positions" => $positions,"locations" => $locations]);
+    }
+
+    function null_empty($string) {
+        if ($string == null) {
+            return "";
+        }
+        return $string;
+    }
+
+    
+
+    function update_profile(Request $request) {
+
+        
+
+    	$this->validate($request, [
+            'avatar' => 'nullable|image|mimes:jpeg,bmp,png|max:2000',
+        	'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'mobile_no' => 'required|string',
+            'position' => 'required|integer',
+            'location' => 'required|integer',
+            'join_date' => 'date|date_format:d-m-Y',
+            'birthday' => 'date|date_format:d-m-Y',
+            'bank_name' => 'nullable|string',
+            'bank_account' => 'nullable|string',
+            'personal_email' => 'nullable|string|email|max:255',
+            'github' => 'nullable|string',
+            'twitter' => 'nullable|string'
+    	]);
+
+        $user = Auth::user();
+
+        if ($request->avatar != null) {
+            //move to public folder
+            $photoName = time().'.'.$request->avatar->getClientOriginalExtension();
+            $request->avatar->move(public_path('avatars'), $photoName);
+
+            if ($user->avatar != null) {
+                //delete old
+                unlink(public_path('avatars')."/".$user->avatar);
+            }
+            $user->avatar = $photoName;
+        }
+
+       
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->mobile_no = $request->mobile_no;
+        $user->position_id = $request->position;
+        $user->location_id = $request->location;
+        $user->join_date = Carbon::createFromFormat('d-m-Y', $request->join_date,"Asia/Rangoon");
+        $user->birthday = Carbon::createFromFormat('d-m-Y', $request->birthday,"Asia/Rangoon");
+        $user->no_of_leave = $request->no_of_leave;
+        $user->bank_name = $this->null_empty($request->bank_name);
+        $user->bank_account = $this->null_empty($request->bank_account);
+        $user->personal_email = $this->null_empty($request->personal_email);
+        $user->github = $this->null_empty($request->github);
+        $user->twitter = $this->null_empty($request->twitter);
+
+        $user->save();
+
+        return redirect()->route('home');
+    }
+}
