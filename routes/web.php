@@ -11,46 +11,49 @@
 |
 */
 
-Route::get('/', function () {
-	return view('welcome');
-});
 
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
-Route::middleware(['auth'])->group(function () {
+
+
+Route::middleware(['auth'])->prefix('admin')->group(function () {
 	
 	//position
-	Route::get('admin/position/list','Position\JobPositionController@index')->name('position_list');
-	Route::get('admin/position/add','Position\JobPositionController@add')->name('position_add');
-	Route::post('admin/position/add','Position\JobPositionController@store')->name('position_store');
+	Route::get('position/list','Position\JobPositionController@index')->name('position_list');
+	Route::get('position/add','Position\JobPositionController@add')->name('position_add');
+	Route::post('position/add','Position\JobPositionController@store')->name('position_store');
 
-	Route::get('admin/position/edit/{id}','Position\JobPositionController@edit')->name('position_edit');
-	Route::post('admin/position/edit/{id}','Position\JobPositionController@update')->name('position_update');
+	Route::get('position/edit/{id}','Position\JobPositionController@edit')->name('position_edit');
+	Route::post('position/edit/{id}','Position\JobPositionController@update')->name('position_update');
 
-	Route::post('admin/position/delete/{id}','Position\JobPositionController@delete')->name('position_delete');
+	Route::post('position/delete/{id}','Position\JobPositionController@delete')->name('position_delete');
 
 	//location
-	Route::get('admin/location/list','Location\JobLocationController@index')->name('location_list');
-	Route::get('admin/location/add','Location\JobLocationController@add')->name('location_add');
-	Route::post('admin/location/add','Location\JobLocationController@store')->name('location_store');
+	Route::get('location/list','Location\JobLocationController@index')->name('location_list');
+	Route::get('location/add','Location\JobLocationController@add')->name('location_add');
+	Route::post('location/add','Location\JobLocationController@store')->name('location_store');
 
-	Route::get('admin/location/edit/{id}','Location\JobLocationController@edit')->name('location_edit');
-	Route::post('admin/location/edit/{id}','Location\JobLocationController@update')->name('location_update');
+	Route::get('location/edit/{id}','Location\JobLocationController@edit')->name('location_edit');
+	Route::post('location/edit/{id}','Location\JobLocationController@update')->name('location_update');
 
-	Route::post('admin/location/delete/{id}','Location\JobLocationController@delete')->name('location_delete');
+	Route::post('location/delete/{id}','Location\JobLocationController@delete')->name('location_delete');
 
 
 	//user
-	Route::get('admin/user/profile','User\UserController@edit_profile')->name('profile');
-	Route::post('admin/user/profile','User\UserController@update_profile')->name('profile_update');
-	Route::get('admin/user/list','User\UserController@showList')->name('user_list');
-	Route::get('admin/user/add','User\UserController@add')->name('add_user');
-	Route::post('admin/user/add','User\UserController@store')->name('store_user');
-	Route::get('admin/user/edit/{id}','User\UserController@edit')->name('edit_user');
-	Route::post('admin/user/edit/{id}','User\UserController@user_update')->name('user_update');
+	Route::get('user/profile','User\UserController@edit_profile')->name('profile');
+	Route::post('user/profile','User\UserController@update_profile')->name('profile_update');
+	Route::get('user/list','User\UserController@showList')->name('user_list');
+	Route::get('user/add','User\UserController@add')->name('add_user');
+	Route::post('user/add','User\UserController@store')->name('store_user');
+	Route::get('user/edit/{id}','User\UserController@edit')->name('edit_user');
+	Route::post('user/edit/{id}','User\UserController@user_update')->name('user_update');
 	
+	Route::get('user/search/ajax','User\UserController@ajax_search')->name('user_ajax_search');
 
+
+	Route::get('time-off/apply','Leave\LeaveController@index')->name('apply_timeoff');
+	Route::post('time-off/apply','Leave\LeaveController@store')->name('post_timeout');
 
 });

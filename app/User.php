@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Carbon\Carbon;
+use App\Supervisor;
 class User extends Authenticatable
 {
     use Notifiable;
@@ -42,4 +43,10 @@ class User extends Authenticatable
     function location() {
         return $this->belongsTo('App\Location','location_id','id');
     }
+
+    function supervisor() {
+        return $this->hasOne('App\User','id','supervisor_id');
+    }
+
+   
 }

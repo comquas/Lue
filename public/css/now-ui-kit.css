@@ -496,7 +496,7 @@
  *
  * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  */
-.datepicker {
+/*.datepicker {
   padding: 8px 6px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
@@ -815,7 +815,7 @@
   font-size: 10px;
   width: 12px;
   padding: 0 2px 0 5px;
-  vertical-align: middle; }
+  vertical-align: middle; }*/
 
 .input-append.date .add-on, .input-prepend.date .add-on {
   cursor: pointer; }

@@ -9,6 +9,7 @@ use App\Position;
 use Carbon\Carbon;
 use App\Location;
 use App\User;
+use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
     public function __construct()
@@ -21,8 +22,11 @@ class UserController extends Controller
     	$positions = Position::all();
         $locations = Location::all();
         
+        $param = compact('user','positions','locations');
+        $param['btn_title'] = 'Update';
+        $param['route'] = route('profile_update');
         
-        return view('user/edit_profile',["user" => $user,"positions" => $positions,"locations" => $locations,"btn_title" => "Update", "route" => route('profile_update')]);
+        return view('user/edit_profile', $param);
     }
 
     function edit($id) {
@@ -171,6 +175,13 @@ class UserController extends Controller
         $user->join_date = Carbon::createFromFormat('d-m-Y', $request->join_date,"Asia/Rangoon");
         $user->birthday = Carbon::createFromFormat('d-m-Y', $request->birthday,"Asia/Rangoon");
 
+        if ($request->supervisor == null) {
+            $user->supervisor_id = "";
+        }
+        else {
+            $user->supervisor_id = $request->supervisor;    
+        }
+        
         
 
         if(trim($request->password) != "") {
@@ -186,5 +197,19 @@ class UserController extends Controller
 
         $user->save();
 
+    }
+
+    function ajax_search(Request $request) {
+
+        if (!isset($request->q)) {
+            return;
+        }
+
+        $user = Auth::user();
+        $result= User::select('id','name as text')->where('name','like',$request->q."%")->limit(10)->get();
+
+        echo $result;exit;
+
+        
     }
 }

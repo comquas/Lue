@@ -88,7 +88,7 @@
 
                      @endif
                      <li class="nav-item">
-                        <a href="#" class="nav-link">Apply Time-Off</a>
+                        <a href="{{route('apply_timeoff')}}" class="nav-link">Apply Time-Off</a>
                      </li>
                  </ul>
                  <ul class="navbar-nav ml-auto">

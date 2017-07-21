@@ -2,12 +2,15 @@
 
 
 @section('header')
-<script type="text/javascript" src={{ asset('js/plugins/bootstrap-datepicker.js') }}></script>
+<script type="text/javascript" src={{ asset('library/datepicker/js/bootstrap-datepicker.js') }}></
 <script type="text/javascript" src={{ asset('js/plugins/moment.min.js') }}></script>
-
+<script type="text/javascript" src={{ asset('bower_components/select2/dist/js/select2.min.js') }}></script>
+<link rel="stylesheet" type="text/css" href={{ asset('bower_components/select2/dist/css/select2.min.css') }}>
+<link rel="stylesheet" type="text/css" href={{ asset('library/datepicker/css/datepicker.css') }}>
 @endsection
 
 @section('content')
+
 <div class="container">
     <form action="{{ $route }}" method="post" enctype="multipart/form-data">
         {{ csrf_field() }}
@@ -115,11 +118,11 @@
                 </div>
             </div>
 
-             
-                
+
+
 
             <div class="col-md-6">    
-            <div class="card">
+                <div class="card">
                     <div class="card-header">
                         Password
                     </div>
@@ -156,21 +159,40 @@
                         @slot('value',isset($user) ? $user->no_of_leave : "")
                         @endcomponent
 
-                         @component('control.textbox')
+                        @component('control.textbox')
                         @slot('title','Sick Leave')
                         @slot('name','sick_leave')
                         @slot('placeholder','5')
                         @slot('value',isset($user) ? $user->sick_leave : "")
                         @endcomponent
+
+                        <div class="form-group">
+
+                            <label for="supervisor">Supervisor</label>
+                            
+                            <select id="supervisor-ajax" name="supervisor" style="width:100%">
+                            <option value="{{ isset($user->supervisor) ? $user->supervisor->id : "" }}" selected="selected">{{ isset($user->supervisor) ? $user->supervisor->name : "" }}</option>
+                            </select>
+
+                            @if ($errors->has('supervisor'))
+                                <span class="help-block">
+                                <strong>{{ $errors->first('supervisor') }}</strong>
+                                </span>
+                            @endif
+
+                        </div>
+
+                        
+
                     </div>
                 </div>
 
 
                 <div class="card">
-                   <div class="card-header">
-                       Bank Info
-                   </div>
-                   <div class="card-block">
+                 <div class="card-header">
+                     Bank Info
+                 </div>
+                 <div class="card-block">
 
 
 
@@ -192,10 +214,10 @@
             </div>
 
             <div class="card">
-               <div class="card-header">
-                   Personal Info
-               </div>
-               <div class="card-block">
+             <div class="card-header">
+                 Personal Info
+             </div>
+             <div class="card-block">
 
 
 
@@ -235,4 +257,24 @@
 </form>
 </div>
 </div>
+
+<script>
+    $("#supervisor-ajax").select2({
+       placeholder: "Search Supervisor",
+       minimumInputLength: 3,
+       allowClear: true,
+       ajax: {
+        url: "{{route('user_ajax_search')}}",
+        dataType: 'json',
+        delay: 250,
+        cache: true,
+        processResults: function (data) {
+            return {results: data };
+        },
+
+    }
+
+});
+
+</script>
 @endsection
