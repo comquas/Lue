@@ -69,3 +69,7 @@
 .info-bar-detail {
 	padding-top: 10px;
 }
+
+.navbar-collapse:before {
+	background: #f85019 !important;
+}
