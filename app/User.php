@@ -32,6 +32,18 @@ class User extends Authenticatable
         return Carbon::createFromFormat('Y-m-d',$this->join_date,"Asia/Rangoon")->format('d-m-Y');
     }
 
+    public function get_long_time() {
+        //return Carbon::createFromFormat('Y-m-d',$this->join_date,"Asia/Rangoon")->format('d-m-Y');   
+        
+        return Carbon::parse($this->join_date)->diff(Carbon::now())->format('%y years, %m months and %d days');
+        
+        
+    }
+
+    public function age() {
+      return Carbon::parse($this->birthday)->diff(Carbon::now())->format('%y years');
+    }
+
     public function get_birthday() {
         return Carbon::createFromFormat('Y-m-d',$this->birthday,"Asia/Rangoon")->format('d-m-Y');
     }

@@ -175,12 +175,10 @@ class UserController extends Controller
         $user->join_date = Carbon::createFromFormat('d-m-Y', $request->join_date,"Asia/Rangoon");
         $user->birthday = Carbon::createFromFormat('d-m-Y', $request->birthday,"Asia/Rangoon");
 
-        if ($request->supervisor == null) {
-            $user->supervisor_id = "";
-        }
-        else {
-            $user->supervisor_id = $request->supervisor;    
-        }
+
+        
+        $user->supervisor_id = $request->supervisor;    
+        
         
         
 

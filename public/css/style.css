@@ -23,7 +23,9 @@
 	background: #f85019 !important;
 }
 
-
+.user-info-data {
+	font-size: 12px;
+}
 .user-info-detail, .user-info-data {
 	list-style: none;
 	padding: 0px;
@@ -32,4 +34,38 @@
 .user-info-detail label {
 	width: 80px;
 	font-weight: bold;
+}
+
+.bar {
+	background: #F8845E;
+	width: 200%;
+	height: 80px;
+	position: absolute;
+	bottom: 0px;
+	left: -200px;
+}
+
+
+.user-name {
+	position: absolute;
+	bottom: 0px;
+	padding-bottom: 10px;
+	color: #FFFFFF;
+}
+
+.name-bar {
+	min-height: 73px !important;
+}
+
+.topbar-info {
+	position: relative;
+}
+
+.topbar-info .avatar {
+	padding-bottom: 10px;
+
+}
+
+.info-bar-detail {
+	padding-top: 10px;
 }
