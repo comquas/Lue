@@ -27,7 +27,8 @@ class AddRoleAndSickLeave extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn('role');
+            $table->dropColumn('sick_leave');
         });
     }
 }

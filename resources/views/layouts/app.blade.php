@@ -83,7 +83,7 @@
                          <!-- ./Posistions -->
 
                          <li class="nav-item">
-                        <a href="#" class="nav-link">Time-Off</a>
+                        <a href="{{ route('list_timeoff') }}" class="nav-link">Time-Off</a>
                         </li>
 
                      @endif

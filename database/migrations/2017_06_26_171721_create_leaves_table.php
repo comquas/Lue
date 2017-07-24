@@ -18,7 +18,7 @@ class CreateLeavesTable extends Migration
             $table->timestamps();
             $table->integer('user_id');
             $table->integer('type');
-            $table->float('no_of_leave');
+            $table->float('no_of_day');
         });
     }
 

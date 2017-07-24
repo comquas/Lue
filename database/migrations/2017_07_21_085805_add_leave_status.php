@@ -16,9 +16,9 @@ class AddLeaveStatus extends Migration
         Schema::table('leaves', function (Blueprint $table) {
             $table->date('from');
             $table->date('to');
-            $table->integer('approved_by');
+            $table->integer('approved_by')->nullable();
             $table->integer('status');//approved
-            $table->string('remark');//rejected
+            $table->string('remark')->nullable();//rejected
         });
     }
 
@@ -30,7 +30,11 @@ class AddLeaveStatus extends Migration
     public function down()
     {
         Schema::table('leaves', function (Blueprint $table) {
-            //
+            $table->dropColumn('from');
+            $table->dropColumn('to');
+            $table->dropColumn('approved_by');
+            $table->dropColumn('status');
+            $table->dropColumn('remark');
         });
     }
 }

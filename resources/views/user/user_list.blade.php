@@ -6,23 +6,22 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                
+
                 Users
-                
-                
+
                 <a href="{{ route('add_user') }}" class="btn btn-primary card-icon-button"><span class="ion-plus"></span></a>
-                
+
                 </div>
 
-               
+
                 <div class="card-block">
                      <table class="table table-striped">
   <thead>
     <tr>
-      
+
       <th>Name</th>
       <th>Email</th>
-      <th>Posotion</th>
+      <th>Position</th>
       <th>Location</th>
       <th>Actions</th>
     </tr>

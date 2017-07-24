@@ -48,5 +48,9 @@ class User extends Authenticatable
         return $this->hasOne('App\User','id','supervisor_id');
     }
 
-   
+    function staff() {
+      return User::where('supervisor_id',$this->id)->get();
+    }
+
+
 }

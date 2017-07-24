@@ -19,7 +19,7 @@ Route::get('/', 'HomeController@index')->name('home');
 
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {
-	
+
 	//position
 	Route::get('position/list','Position\JobPositionController@index')->name('position_list');
 	Route::get('position/add','Position\JobPositionController@add')->name('position_add');
@@ -49,11 +49,13 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 	Route::post('user/add','User\UserController@store')->name('store_user');
 	Route::get('user/edit/{id}','User\UserController@edit')->name('edit_user');
 	Route::post('user/edit/{id}','User\UserController@user_update')->name('user_update');
-	
+
 	Route::get('user/search/ajax','User\UserController@ajax_search')->name('user_ajax_search');
 
 
 	Route::get('time-off/apply','Leave\LeaveController@index')->name('apply_timeoff');
 	Route::post('time-off/apply','Leave\LeaveController@store')->name('post_timeout');
+	Route::get('time-off/list','Leave\LeaveController@list')->name('list_timeoff');
+	Route::get('time-off/approve/{id}','Leave\LeaveController@approve')->name('approve_timeoff');
 
 });
