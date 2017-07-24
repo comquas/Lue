@@ -16,19 +16,20 @@
     
     <div class="row">
         <div class="col-md-2">
-            <ul>
+            <ul class="user-info-data">
         <li>3 years in office</li>
         <li>5 day left for leave</li>
         <li>2 day left for sick leave</li>
         </ul>
         </div>
         <div class="col-md-10">
-            {{ $user->email }}
-
-            {{ $user->mobile }}
-            {{ $user->location->name }}
-            {{ $user->join_date }}
-            {{ $user->birthday }}
+            <ul class='user-info-detail'>
+            <li><label>Email</label><span>{{ $user->email }}</span></li>
+            <li><label>Mobile</label><span>{{ $user->mobile }}</span></li>
+            <li><label>Address</label><span>{{ $user->location->name }}</span></li>
+            <li><label>Join Date</label><span>{{ $user->join_date }}</span></li>
+            <li><label>Birthday</label><span>{{ $user->birthday }}</span></li>
+            </ul>
         </div>
     </div>
 </div>

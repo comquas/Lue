@@ -15,7 +15,7 @@
 Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
-
+Route::get('/404','StaticController@notfound')->name('not_found');
 
 
 Route::middleware(['auth'])->prefix('admin')->group(function () {

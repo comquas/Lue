@@ -22,3 +22,14 @@
 .select2-container--default .select2-results__option--highlighted[aria-selected] {
 	background: #f85019 !important;
 }
+
+
+.user-info-detail, .user-info-data {
+	list-style: none;
+	padding: 0px;
+}
+
+.user-info-detail label {
+	width: 80px;
+	font-weight: bold;
+}

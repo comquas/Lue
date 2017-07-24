@@ -52,4 +52,27 @@ class LeaveController extends Controller
 			  return redirect()->route('home');
 
     }
+
+    function approve($id, Request $request) {
+
+    	$user = Auth::user();
+    	$leave = Leave::where('status',0)->where('id',$id)->whereIn('user_id',$user->staff())->first();
+
+    	if($leave == null) {
+    		return redirect()->route('not_found');
+    	}
+    	
+    	$leave->status = 1;
+    	if($leave->type == 1) {
+    		$leave->user->no_of_leave = $leave->user->no_of_leave - $leave->no_of_day;	
+    	}
+    	else if ($leave->type == 2) {
+    		$leave->user->sick_leave = $leave->user->sick_leave - $leave->no_of_day;		
+    	}
+    	$leave->user->save();
+    	$leave->save();
+    	return redirect()->route('list_timeoff');
+
+
+    }
 }
