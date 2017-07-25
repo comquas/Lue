@@ -82,9 +82,20 @@
                          
                          <!-- ./Posistions -->
 
-                         <li class="nav-item">
-                        <a href="{{ route('list_timeoff') }}" class="nav-link">Time-Off</a>
-                        </li>
+                         <!-- time-off -->
+                         <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Time-Off
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+        <a class="dropdown-item" href="{{ route('list_timeoff') }}">Requested</a>
+        <a class="dropdown-item" href="{{ route('list_timeoff') }}">List</a>
+
+    </div>
+</li>
+                         <!-- ./time-off -->
+
+                        
 
                      @endif
                      <li class="nav-item">

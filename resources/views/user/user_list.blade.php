@@ -8,8 +8,15 @@
                 <div class="card-header">
 
                 Users
+                <div class="right">
 
-                <a href="{{ route('add_user') }}" class="btn btn-primary card-icon-button"><span class="ion-plus"></span></a>
+                  <form action="{{ route('user_search')}}">
+                    <input type="text" name="name" placeholder="search" class="search-box" value="{{ isset($q) ? $q : "" }} ">
+                </form>
+                <a href="{{ route('add_user') }}" class="btn btn-primary icon-button"><span class="ion-plus"></span></a>
+
+                </div>
+                
 
                 </div>
 
@@ -36,7 +43,10 @@
                         <td>{{ $user->position->title }}</td>
 
                         <td>{{ $user->location->name }}</td>
-                        <td><a href="{{ route('edit_user',['id' => $user->id ]) }}" class="btn btn-primary">Edit</a></td>
+                        <td>
+                        <a href="{{ route('user_profile',['id' => $user->id ]) }}" class="btn btn-info">Profile</a>
+                        <a href="{{ route('edit_user',['id' => $user->id ]) }}" class="btn btn-primary">Edit</a>
+                        </td>
                         {{-- <td><a class="btn btn-info" href="{{ route('user_edit' , ['id' => $user->id]) }}">Edit</a>
 
                         <form class="inline" action="{{ route('user_delete', ['id' => $location->id]) }}" method="post">

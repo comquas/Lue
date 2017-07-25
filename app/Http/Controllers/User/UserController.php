@@ -115,6 +115,20 @@ class UserController extends Controller
         return redirect()->route('user_list');
 
     }
+
+    function profile($id, Request $request) {
+
+
+        $user = User::where('id',$id)->first();
+
+        if ($user == null) {
+            return redirect()->route('not_found');
+        }
+
+        
+        return view('home',compact('user'));
+
+    }
     function update_profile(Request $request) {
 
 
@@ -194,6 +208,22 @@ class UserController extends Controller
         $user->twitter = $this->null_empty($request->twitter);
 
         $user->save();
+
+    }
+
+    function search(Request $request) {
+
+        if (!isset($request->name)) {
+            return;
+        }
+
+        
+        //$user = User::paginate(10);
+        $users = User::where('name','like',$request->name."%")->limit(10)->paginate(10);
+        $current_user = Auth::user();
+        $q = $request->name;
+
+        return view('/user/user_list',compact("users" ,"current_user","q"));
 
     }
 

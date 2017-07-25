@@ -45,6 +45,8 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 	Route::get('user/profile','User\UserController@edit_profile')->name('profile');
 	Route::post('user/profile','User\UserController@update_profile')->name('profile_update');
 	Route::get('user/list','User\UserController@showList')->name('user_list');
+	Route::get('user/search','User\UserController@search')->name('user_search');
+	Route::get('user/profile/{id}','User\UserController@profile')->name('user_profile');
 	Route::get('user/add','User\UserController@add')->name('add_user');
 	Route::post('user/add','User\UserController@store')->name('store_user');
 	Route::get('user/edit/{id}','User\UserController@edit')->name('edit_user');
