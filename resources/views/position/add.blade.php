@@ -7,7 +7,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Add Position</div>
+                <div class="card-header">Position</div>
 
                 <div class="card-block">
                     
@@ -23,6 +23,17 @@
                             </span>
                         @endif
                     </div>
+
+                    <div class="form-group">
+                        <label for="level">Level</label>
+                        <input type="text" class="form-control" name="level" class="form-control" id="level" placeholder="1" required value=" {{ $position->level }}">
+                        @if ($errors->has('level'))
+                            <span class="help-block">
+                                <strong>{{ $errors->first('level') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+
                     <button class="btn btn-primary">{{ $btn_title }}</button>
                 </form>
             </div>

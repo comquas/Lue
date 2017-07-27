@@ -50,9 +50,9 @@
                      <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                      @else
 
-                    @if(Auth::user()->role == 'admin' || Auth::user()->role == 'hr')
-                        <!-- users -->
+                    @if(Auth::user()->position->level <= env('ADMIN_LEVEL'))
 
+                        <!-- user -->
                         @component('control.nav-item')
                             @slot('title','Users')
                             @slot('add_route',route('add_user'))
@@ -79,7 +79,6 @@
                             @slot('list_route',route('position_list'))
                                 
                         @endcomponent
-                         
                          <!-- ./Posistions -->
 
                          <!-- time-off -->

@@ -34,8 +34,9 @@
                         <td>{{ $leave->get_to_date() }}</td>
                         <td>{{ $leave->no_of_day }}</td>
                         <td><a href="{{ route('approve_timeoff',['id' => $leave->id]) }}" class="btn btn-primary">Approve</a>
-                          <a href="#" class="btn btn-danger">Reject</a></td>
-                          <a href="#" class="btn btn-danger">Edit</a></td>
+                        <a href="#" class="btn btn-info">Edit</a>
+                          <a href="#" class="btn btn-danger">Reject</a>
+                          </td>
 
                         </form>
                         </tr>

@@ -22,6 +22,7 @@ class LeaveController extends Controller
 
 		function list() {
 			$user = Auth::user();
+            
 			$leaves = Leave::where('status',0)->whereIn('user_id',$user->staff())->paginate(10);
 
 			return view('leave/list',compact('leaves'));
@@ -37,7 +38,7 @@ class LeaveController extends Controller
 
 			$user = Auth::user();
 
-			$superviosr_id = $user->superviosr_id ;
+			$supervisor_id = $user->supervisor_id ;
 
 
 
@@ -49,7 +50,8 @@ class LeaveController extends Controller
 			$leave->from = Carbon::createFromFormat('d-m-Y', $request->from_date,"Asia/Rangoon");;
 			$leave->to = Carbon::createFromFormat('d-m-Y', $request->to_date,"Asia/Rangoon");
 
-			if ($superviosr_id == null || $superviosr_id == "") {
+            
+			if ($supervisor_id == null || $supervisor_id == "") {
 				//no need supervisor
 				//apprive it
 				$leave = $this->approve_it($leave,$user);

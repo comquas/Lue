@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSupervisor extends Migration
+class AddLevel extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,9 @@ class AddSupervisor extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-             $table->integer('supervisor_id')->nullable();
+        Schema::table('positions', function (Blueprint $table) {
+            $table->integer('level');
+            $table->dropColumn('role');
         });
     }
 
@@ -25,9 +26,9 @@ class AddSupervisor extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('supervisor_id');
-
+        Schema::table('positions', function (Blueprint $table) {
+            $table->dropColumn('level');
+            $table->string('role');
         });
     }
 }
