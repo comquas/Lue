@@ -50,7 +50,7 @@
                      <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
                      @else
 
-                    @if(Auth::user()->role == 'admin' || Auth::user()->role == 'hr')
+                    @if(Auth::user()->position->level <= env('ADMIN_LEVEL'))
                         <!-- users -->
 
                         @component('control.nav-item')

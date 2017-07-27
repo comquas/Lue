@@ -26,10 +26,12 @@ class JobPositionController extends Controller
 
  		$this->validate($request, [
         	'title' => 'required|unique:positions|min:3',
+            'level' => 'required|integer'
     	]);
 
     	$position = new Position;
     	$position->title = $request->title;
+        $position->level = $request->level;
     	$position->save();
     	return redirect()->route('position_list');
  	}
@@ -38,10 +40,12 @@ class JobPositionController extends Controller
 
         $this->validate($request, [
             'title' => 'required|min:3',
+            'level' => 'required|integer'
         ]);
 
         $position = Position::where("id",$id)->first();
         $position->title = $request->title;
+        $position->level = $request->level;
         $position->save();
         return redirect()->route('position_list');
     }
