@@ -21,6 +21,7 @@ class AddMoreUserInfo extends Migration
             //office info
             $table->integer('position_id');
             $table->date('join_date');
+            $table->string('office_email');
 
             //bank info
             $table->string('bank_account');
@@ -52,7 +53,7 @@ class AddMoreUserInfo extends Migration
         Schema::table('users', function (Blueprint $table) {
 
             $table->dropColumn('avatar');
-            $table->dropColumn('position');
+            $table->dropColumn('position_id');
             $table->dropColumn('join_date');
             
             $table->dropColumn('bank_account');

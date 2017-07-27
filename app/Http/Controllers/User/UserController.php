@@ -10,6 +10,7 @@ use Carbon\Carbon;
 use App\Location;
 use App\User;
 use Illuminate\Support\Facades\DB;
+use File;
 class UserController extends Controller
 {
     public function __construct()
