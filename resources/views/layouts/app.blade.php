@@ -51,8 +51,8 @@
                      @else
 
                     @if(Auth::user()->position->level <= env('ADMIN_LEVEL'))
-                        <!-- users -->
 
+                        <!-- user -->
                         @component('control.nav-item')
                             @slot('title','Users')
                             @slot('add_route',route('add_user'))
@@ -79,7 +79,6 @@
                             @slot('list_route',route('position_list'))
                                 
                         @endcomponent
-                         
                          <!-- ./Posistions -->
 
                          <!-- time-off -->
