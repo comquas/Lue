@@ -29,8 +29,20 @@
 						<div class="form-group">
 							<label for="title">Type</label>
 							<select id="type" name="type" style="width:100%;display: block;">
+							@if(!isset($leave))
 								<option value=1>Annual</option>
 								<option value=2>Sick</option>
+							@endif
+
+							@if(isset($leave))
+								@if($leave->type == 1)
+									<option value=1 selected>Annual</option>
+									<option value=2>Sick</option>
+								@else
+									<option value=2 selected>Sick</option>
+									<option value=1>Annual</option>
+								@endif
+							@endif
 							</select>
 						</div>
 						<div class="row">
@@ -39,7 +51,11 @@
 								@slot('title','From')
 								@slot('name','from_date')
 								@slot('placeholder','')
+								@if(isset($leave))
+								@slot('value',Carbon\Carbon::parse($leave->from)->format('d-m-Y'))
+								@else
 								@slot('value',"")
+								@endif
 								@endcomponent
 							</div>
 							<div class="col-md-6">
@@ -47,7 +63,11 @@
 								@slot('title','To')
 								@slot('name','to_date')
 								@slot('placeholder','')
+								@if(isset($leave))
+								@slot('value',Carbon\Carbon::parse($leave->to)->format('d-m-Y'))
+								@else
 								@slot('value',"")
+								@endif
 								@endcomponent
 							</div>
 						</div>
@@ -56,7 +76,11 @@
 						@slot('title','No. Of Day')
 						@slot('name','no_of_day')
 						@slot('placeholder','1')
+						@if(isset($leave))
+						@slot('value',$leave_days+1)
+						@else
 						@slot('value',"")
+						@endif
 						@endcomponent
 						<button class="btn btn-primary">{{ $btn_title }}</button>
 					</form>
@@ -100,7 +124,12 @@
 		}).on('changeDate', function(ev) {
 			var a = moment(checkin.date);
 			var b = moment(checkout.date);
-
+			var day = $("#no_of_day").val();
+			//console.log(day);
+			if(day>0)
+			{
+				$("#no_of_day").val('');
+			}
 			$("#no_of_day").val(workday_count(a,b));
 
 			checkout.hide();

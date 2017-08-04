@@ -33,6 +33,11 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 	Route::post('time-off/apply','Leave\LeaveController@store')->name('post_timeout');
 	
 	Route::get('time-off/approve/{id}','Leave\LeaveController@approve')->name('approve_timeoff');
+	Route::get('time-off/edit/{id}', 'Leave\LeaveController@edit')->name('edit_timeoff');
+
+	Route::post('time-off/update/{id}', 'Leave\LeaveController@store')->name('update_timeout');
+
+	Route::post('time-off/reject','Leave\LeaveController@reject')->name('reject_timeoff');
 
 	Route::middleware(['checkLevel'])->group(function() {
 
@@ -50,24 +55,21 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 		Route::get('location/list','Location\JobLocationController@index')->name('location_list');
 		Route::get('location/add','Location\JobLocationController@add')->name('location_add');
 		Route::post('location/add','Location\JobLocationController@store')->name('location_store');
-
 		Route::get('location/edit/{id}','Location\JobLocationController@edit')->name('location_edit');
 		Route::post('location/edit/{id}','Location\JobLocationController@update')->name('location_update');
-
 		Route::post('location/delete/{id}','Location\JobLocationController@delete')->name('location_delete');
 
 		//user
 		Route::get('user/list','User\UserController@showList')->name('user_list');
 		Route::get('user/search','User\UserController@search')->name('user_search');
-
 		Route::get('user/add','User\UserController@add')->name('add_user');
 		Route::post('user/add','User\UserController@store')->name('store_user');
 		Route::get('user/edit/{id}','User\UserController@edit')->name('edit_user');
 		Route::post('user/edit/{id}','User\UserController@user_update')->name('user_update');
-
 		Route::get('user/search/ajax','User\UserController@ajax_search')->name('user_ajax_search');
 
 		Route::get('time-off/list','Leave\LeaveController@list')->name('list_timeoff');
+		Route::get('decided/time-off/list','Leave\LeaveController@decidedList')->name('decided_timeoff_list');
 
 	});
 });

@@ -88,7 +88,7 @@
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
         <a class="dropdown-item" href="{{ route('list_timeoff') }}">Requested</a>
-        <a class="dropdown-item" href="{{ route('list_timeoff') }}">List</a>
+        <a class="dropdown-item" href="{{ route('decided_timeoff_list') }}">List</a>
 
     </div>
 </li>

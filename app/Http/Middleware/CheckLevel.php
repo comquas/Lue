@@ -16,6 +16,7 @@ class CheckLevel
      */
     public function handle($request, Closure $next)
     {
+        
         $user = Auth::user();
         if (isset($user)) {
             if ($user->position->level > env('ADMIN_LEVEL')) {

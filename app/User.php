@@ -40,6 +40,35 @@ class User extends Authenticatable
         
     }
 
+    public function get_anniversary() {
+
+      $date = Carbon::parse($this->join_date)->diff(Carbon::now())->format('%m,%y');
+      //dd($date);
+      $dateArray = explode(',',$date);
+      //dd($dateArray);
+      $year = array_pop($dateArray);
+      $count = 0;
+      //dd($dateArray);
+      foreach ($dateArray as $date) 
+      {
+
+        if($date == 0)
+        {
+          $count++;
+        }
+      }
+      //dd($count);
+      if($count == 1)
+      {
+        return $year;
+      }
+      else
+      {
+        return null;
+      }
+     
+    }
+
     public function age() {
       return Carbon::parse($this->birthday)->diff(Carbon::now())->format('%y years');
     }

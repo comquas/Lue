@@ -107,10 +107,11 @@ class UserController extends Controller
             ]);
 
         $user = User::where("id",$id)->first();
+        //dd($user);
         if($user == null) {
             return redirect()->route('user_list');
         }
-
+        //dd("hi");
         $this->update($user->id,$request);
 
         return redirect()->route('user_list');
@@ -127,7 +128,7 @@ class UserController extends Controller
         }
 
         
-        return view('home',compact('user'));
+        return view('home',['is_profile'=>true, 'user'=>$user]);
 
     }
     function update_profile(Request $request) {
@@ -168,7 +169,7 @@ class UserController extends Controller
         else {
             $user = new User;
         }
-
+        //dd($user);
         if ($request->avatar != null) {
             //move to public folder
             $photoName = time().'.'.$request->avatar->getClientOriginalExtension();
@@ -181,7 +182,7 @@ class UserController extends Controller
             $user->avatar = $photoName;
         }
 
-
+        //dd(Carbon::createFromFormat('d-m-Y', $request->join_date,"Asia/Rangoon"));
         $user->name = $request->name;
         $user->email = $request->email;
         $user->mobile_no = $request->mobile_no;

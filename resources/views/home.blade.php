@@ -35,5 +35,69 @@
             </ul>
         </div>
     </div>
+    @if($is_profile==false)
+    <div class="row">
+    <!-- Brithday List -->
+    <div class="col-4">
+        <div class="card">
+            <div class="card-header">
+        <h6>Birthday In {{ date("F", mktime(0, 0, 0, $current_month , 1)) }}</h6>
+            </div>
+            <div class="card-block">
+            <ul>
+                @foreach($birthdays_of_users as $user)
+                <li>{{$user->name}} ->  {{date('F d',strtotime($user->birthday))}}</li>
+                @endforeach
+            </ul>
+    
+    </div>
+    </div>
+    </div>
+    <!-- End Brithday List -->
+
+    <!-- Anniversary List -->
+    <div class="col-4">
+    <div class="card">
+        <div class="card-header">
+        <h6>Anniversary</h6>
+        </div>
+        <div class="card-block">
+        <ul>
+        
+        @foreach($anniversary_users as $user)
+            @if($user->get_anniversary()>0)
+                <li>{{$user->name}} -> {{$user->get_anniversary()}} @if($user->get_anniversary()>1) Years @else Year @endif</li>
+                
+            </tr>
+            @endif
+        @endforeach
+        </ul>
+    </div>
+    </div>
+    </div>
+    <!-- End Anniversary List -->
+
+    <!-- Anniversary List -->
+    <div class="col-4">
+    <div class="card">
+        <div class="card-header">
+        <h6>Today Leave</h6>
+        </div>
+        <div class="card-block">
+            
+        <ul>
+       @foreach($leaves as $leave)
+
+                <li>{{$leave->user->name}}</li> 
+                  
+       @endforeach
+        </ul>
+    </div>
+    </div>
+    </div>
+    <!-- End Anniversary List -->
+
+    </div>
+    @endif
 </div>
 @endsection
