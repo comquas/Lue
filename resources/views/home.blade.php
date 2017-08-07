@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+
     <div class="row topbar-info">
 
         <div class="bar"></div>
@@ -21,8 +22,13 @@
     <div class="row info-bar-detail">
         <div class="col-md-2">
             <ul class="user-info-data">
-        <li><b>Leave : </b>{{ $user->no_of_leave }} days left</li>
-        <li><b>Sick leave : </b>{{ $user->sick_leave }} days left</li>
+            @if ($user->is_admin() || $is_profile == false)
+                <li><b>Leave : </b>{{ $user->no_of_leave }} days left</li>
+                <li><b>Sick leave : </b>{{ $user->sick_leave }} days left</li>
+            @endif
+        @isset($user->supervisor)
+        <li><b>Manager : </b><a href="{{ route('user_profile',["id" => $user->supervisor->id])}}">{{ $user->supervisor->name }}</a></li>
+        @endisset
         </ul>
         </div>
         <div class="col-md-10">
@@ -44,9 +50,9 @@
         <h6>Birthday In {{ date("F", mktime(0, 0, 0, $current_month , 1)) }}</h6>
             </div>
             <div class="card-block">
-            <ul>
-                @foreach($birthdays_of_users as $user)
-                <li>{{$user->name}} ->  {{date('F d',strtotime($user->birthday))}}</li>
+            <ul class="user-info-data">
+                @foreach($birthdays_of_users as $birthday_user)
+                <li><a href="{{ route('user_profile',["id" => $birthday_user->id])}}">{{$birthday_user->name}}</a> , {{date('d F',strtotime($birthday_user->birthday))}}</li>
                 @endforeach
             </ul>
     
@@ -62,13 +68,11 @@
         <h6>Anniversary</h6>
         </div>
         <div class="card-block">
-        <ul>
+        <ul class="user-info-data">
         
-        @foreach($anniversary_users as $user)
+        @foreach($anniversary_users as $anniversary_user)
             @if($user->get_anniversary()>0)
-                <li>{{$user->name}} -> {{$user->get_anniversary()}} @if($user->get_anniversary()>1) Years @else Year @endif</li>
-                
-            </tr>
+                <li><a href="{{ route('user_profile',["id" => $anniversary_user->id])}}">{{$anniversary_user->name}}</a> , {{$anniversary_user->get_anniversary()}} @if($user->get_anniversary()>1) Years @else Year @endif</li>
             @endif
         @endforeach
         </ul>
