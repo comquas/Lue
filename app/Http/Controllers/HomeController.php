@@ -50,7 +50,7 @@ class HomeController extends Controller
             $anniversary[$user->id] = $user->get_anniversary();
             
         }
-        //dd($anniversary);
+        
         $birthdays_of_users = User::select('name','birthday')->wherein('id',$birthmonths)->get();
         
         $anniversary_users = array();
