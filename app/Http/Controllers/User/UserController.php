@@ -37,8 +37,7 @@ class UserController extends Controller
         }
         $positions = Position::all();
         $locations = Location::all();
-        
-        
+                
         return view('user/edit_profile',["user" => $user,"positions" => $positions,"locations" => $locations,"btn_title" => "Update", "route" => route('user_update',['id'=>$user->id])]);
     }
     function add() {
@@ -79,8 +78,7 @@ class UserController extends Controller
     }
 
     function showList() {
-        $user = User::paginate(10);
-
+        $user = User::orderBy('name', 'asc')->paginate(10);    
         return view('/user/user_list',["users" => $user,"current_user"=> Auth::user()]);
     }
 
@@ -107,11 +105,11 @@ class UserController extends Controller
             ]);
 
         $user = User::where("id",$id)->first();
-        //dd($user);
+       
         if($user == null) {
             return redirect()->route('user_list');
         }
-        //dd("hi");
+        
         $this->update($user->id,$request);
 
         return redirect()->route('user_list');

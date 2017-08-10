@@ -119,7 +119,8 @@
 		var checkout = $('#to_date').datepicker({
 			format: "dd-mm-yyyy",
 			onRender: function(date) {
-				return date.valueOf() <= checkin.date.valueOf() ? 'disabled' : '';
+				//console.log(date.valueOf());
+				return date.valueOf() < checkin.date.valueOf() ? 'disabled' : '';
 			}
 		}).on('changeDate', function(ev) {
 			var a = moment(checkin.date);
@@ -148,7 +149,7 @@
   		if(start.day() == 0) --wfirst; // -1 if start with sunday
   		var wlast = end.day() - last.day(); // check last week
   		if(end.day() == 6) --wlast; // -1 if end with saturday
-  		return wfirst + days + wlast; // get the total
+  		return Math.trunc(wfirst + days + wlast); // get the total
 	}
 
 </script>

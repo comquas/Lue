@@ -54,7 +54,7 @@
 
                         <!-- user -->
                         @component('control.nav-item')
-                            @slot('title','Users')
+                            @slot('title','Employee')
                             @slot('add_route',route('add_user'))
                             @slot('list_route',route('user_list'))
                                 

@@ -1,3 +1,7 @@
+#app { 
+  overflow: hidden; 
+} 
+
 .admin-profile-image {
 	margin-bottom: 20px;
 }
@@ -62,7 +66,7 @@
 
 .bar {
 	background: #F8845E;
-	width: 126%;
+	width: 160%; 
 	height: 80px;
 	position: absolute;
 	bottom: 0px;

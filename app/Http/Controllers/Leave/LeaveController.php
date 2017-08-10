@@ -29,7 +29,7 @@ class LeaveController extends Controller
 		function list() {
 			$user = Auth::user();
             
-			$leaves = Leave::where('status',0)->whereIn('user_id',$user->staff())->paginate(10);
+            $leaves = Leave::where('status',0)->whereIn('user_id',$user->staff())->orderBy('created_at','desc')->paginate(10); 
 
 			return view('leave/list',compact('leaves'));
 		}

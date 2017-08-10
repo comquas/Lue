@@ -67,7 +67,6 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 		Route::get('user/edit/{id}','User\UserController@edit')->name('edit_user');
 		Route::post('user/edit/{id}','User\UserController@user_update')->name('user_update');
 		Route::get('user/search/ajax','User\UserController@ajax_search')->name('user_ajax_search');
-
 		Route::get('time-off/list','Leave\LeaveController@list')->name('list_timeoff');
 		Route::get('decided/time-off/list','Leave\LeaveController@decidedList')->name('decided_timeoff_list');
 
