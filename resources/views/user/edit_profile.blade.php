@@ -242,6 +242,13 @@
                 @slot('value',isset($user) ? $user->twitter : "")
                 @endcomponent
 
+                @component('control.textbox')
+                @slot('title','Slack Username')
+                @slot('name','slack')
+                @slot('placeholder','Username')
+                @slot('value',isset($user) ? $user->slack : "")
+                @endcomponent
+
             </div>
         </div>
 

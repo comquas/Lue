@@ -149,7 +149,8 @@ class UserController extends Controller
             'sick_leave' => 'nullable|integer',
             'personal_email' => 'nullable|string|email|max:255',
             'github' => 'nullable|string',
-            'twitter' => 'nullable|string'
+            'twitter' => 'nullable|string',
+            'slack' => 'nullable|string'
             ]);
 
         $user = Auth::user();
@@ -206,7 +207,7 @@ class UserController extends Controller
         $user->personal_email = $this->null_empty($request->personal_email);
         $user->github = $this->null_empty($request->github);
         $user->twitter = $this->null_empty($request->twitter);
-
+        $user->slack = $this->null_empty($request->slack);
         $user->save();
 
     }

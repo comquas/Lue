@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddLevel extends Migration
+class AddSlackFieldInUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class AddLevel extends Migration
      */
     public function up()
     {
-        Schema::table('positions', function (Blueprint $table) {
-            $table->integer('level');
-            //$table->dropColumn('role');
+        Schema::table('users',function(Blueprint $table){
+            $table->string('slack')->nullable();
         });
     }
 
@@ -26,9 +25,8 @@ class AddLevel extends Migration
      */
     public function down()
     {
-        Schema::table('positions', function (Blueprint $table) {
-            $table->dropColumn('level');
-            //$table->string('role');
+        Schema::table('users',function(Blueprint $table){
+            $table->dropColumn('slack')->nullable();
         });
     }
 }
