@@ -45,10 +45,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                 <ul class="navbar-nav mr-auto">
-                     @if (Auth::guest())
-                     <li><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-                     <li><a class="nav-link" href="{{ route('register') }}">Register</a></li>
-                     @else
+                     
 
                     @if(Auth::user()->position->level <= env('ADMIN_LEVEL'))
 

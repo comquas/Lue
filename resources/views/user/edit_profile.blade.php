@@ -96,10 +96,6 @@
                         @slot('type',"title")
                         @endcomponent
 
-                        
-
-
-
                         @component('control.datepicker')
                         @slot('title','Join')
                         @slot('id','join-date')

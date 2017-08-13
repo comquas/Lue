@@ -100,7 +100,8 @@ class LeaveController extends Controller
                     else 
                         $leave_type = "Sick";
 
-                    $text = "Bro, please give me ".$leave->no_of_day." day leave from ".$leave->from." to ".$leave->to." from ".$leave_type." leave";
+                    $text = $user->name." will take leave from ".$leave->from." to ".$leave->to."(".$leave->no_of_day.") for ".$leave_type." leave";
+
                     $supervisor = User::whereid($supervisor_id)->first();
 
                     $this->sendSlack($user,$supervisor,$text);
@@ -136,12 +137,18 @@ class LeaveController extends Controller
 
     public function sendSlack($send_user,$receive_user, $text)
     {
-                 $ch = curl_init();
-                    curl_setopt($ch, CURLOPT_URL,env('WEB_HOOK_URL'));
-                    curl_setopt($ch, CURLOPT_POST, 1);
-                    curl_setopt($ch, CURLOPT_POSTFIELDS,'payload={"channel":"'.$receive_user->slack.'","username": "'.$send_user->name.'","text":"'.$text.'","icon_emoji": ":ghost:"}');
-                    $server_output = curl_exec($ch);
-                    curl_close ($ch);
+
+        $url = env('SLACK_HOOK','');
+        if ($url == "") {
+            return false;
+        }
+        
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS,'payload={"channel":"'.$receive_user->slack.'","username": "'.$send_user->name.'","text":"'.$text.'"}');
+        $server_output = curl_exec($ch);
+        curl_close ($ch);
     }
 
 
@@ -176,11 +183,13 @@ class LeaveController extends Controller
         $this->sendApproveMail($user, $leave);
         //send Slack
         $leave_type = "";
-        if($leave->type==1)
+        if($leave->type==1) {
             $leave_type = "Annual"; 
-        else 
+        }
+        else {
             $leave_type = "Sick";
-        $text = "Bro, you are allowed ".$leave->no_of_day." day leave from ".$leave->from." to ".$leave->to." from ".$leave_type." leave";
+        }
+        $text = "You are allowed the ".$leave_type. "leave from ".$leave->from." to ".$leave->to."(".$leave->no_of_day.")";
         $this->sendSlack($user,$leave->user,$text);
 
     	return redirect()->route('list_timeoff');
@@ -230,8 +239,10 @@ class LeaveController extends Controller
             $leave_type = "Annual"; 
         else 
             $leave_type = "Sick";
-        $text = "Bro, you are rejected ".$leave->no_of_day." day leave from ".$leave->from." to ".$leave->to." from ".$leave_type." leave because ".$leave->remark;
+        $text = $text = "You are not allowed the ".$leave_type. "leave from ".$leave->from." to ".$leave->to."(".$leave->no_of_day.") because ".$leave->remark;
+
         $this->sendSlack($user,$leave->user,$text);
+        
        return redirect()->route('list_timeoff');
     }
 
