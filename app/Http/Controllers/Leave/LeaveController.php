@@ -143,10 +143,17 @@ class LeaveController extends Controller
             return false;
         }
         
+        $json = [
+            "channel" => $receive_user->slack,
+            "username" => $send_user->name,
+            "text" => $text
+        ];
+
+
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,$url);
         curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS,'payload={"channel":"'.$receive_user->slack.'","username": "'.$send_user->name.'","text":"'.$text.'"}');
+        curl_setopt($ch, CURLOPT_POSTFIELDS,'payload='.json_encode($json));
         $server_output = curl_exec($ch);
         curl_close ($ch);
     }
