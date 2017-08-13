@@ -93,6 +93,10 @@ class User extends Authenticatable
         return $this->hasOne('App\User','id','supervisor_id');
     }
 
+    function is_admin() {
+      return ($this->position->level <= env('ADMIN_LEVEL'));
+    }
+
     function staff() {
       return User::where('supervisor_id',$this->id)->get();
     }
