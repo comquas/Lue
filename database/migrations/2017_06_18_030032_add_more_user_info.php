@@ -16,11 +16,11 @@ class AddMoreUserInfo extends Migration
         Schema::table('users', function (Blueprint $table) {
             
             //profile image
-            $table->text('avatar');
+            $table->text('avatar')->nullable();
 
             //office info
             $table->integer('position_id')->default(0);
-            $table->date('join_date');
+            $table->date('join_date')->nullable();
             $table->string('office_email')->default("");
 
             //bank info
@@ -33,7 +33,7 @@ class AddMoreUserInfo extends Migration
             //personal
             $table->string('mobile_no')->default("");
             $table->string('personal_email')->default("");
-            $table->date('birthday');
+            $table->date('birthday')->nullable();
 
             //social network
             $table->string('github')->default("");
