@@ -16,9 +16,9 @@ class AddStatusLeave extends Migration
         Schema::table('leaves',function(Blueprint $table){
             $table->date('from');
             $table->date('to');
-            $table->integer('approved_by');
-            $table->integer('status');
-            $table->text('remark');
+            $table->integer('approved_by')->nullable();
+            $table->integer('status')->default(0);
+            $table->text('remark')->nullable();
         });
     }
 
