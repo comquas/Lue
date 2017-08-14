@@ -22,11 +22,11 @@
       <th>From</th>
       <th>To</th>
       <th>No. Of Day</th>
-       @if(!isset($isDecidedLeave))
-      <th>Actions</th>
+      @if(isset($decision))
+        <th>Actions</th>
       @else
-      <th>Status</th>
-      <th>Remark</th>
+        <th>Status</th>
+        <th>Remark</th>
       @endif
     </tr>
   </thead>
