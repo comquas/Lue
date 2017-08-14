@@ -210,7 +210,7 @@ class LeaveController extends Controller
         {
             $leave_type = "Sick";
         }
-        $text = "You are allowed the " . $leave_type . "leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
+        $text = "You are allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
         $this->sendSlack($user, $leave->user, $text);
 
         return redirect()->route('list_timeoff');
@@ -261,7 +261,7 @@ class LeaveController extends Controller
         $leave_type = "";
         if ($leave->type == 1) $leave_type = "Annual";
         else $leave_type = "Sick";
-        $text = $text = "You are not allowed the " . $leave_type . "leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
+        $text = $text = "You are not allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
 
         $this->sendSlack($user, $leave->user, $text);
 
