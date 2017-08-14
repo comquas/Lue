@@ -4,8 +4,6 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-use Illuminate\Support\Facades\DB;
-
 class AddMoreUserInfo extends Migration
 {
     /**
@@ -22,7 +20,7 @@ class AddMoreUserInfo extends Migration
 
             //office info
             $table->integer('position_id')->default(0);
-            $table->date('join_date')->default(DB::raw('now()'));
+            $table->date('join_date');
             $table->string('office_email')->default("");
 
             //bank info
@@ -35,7 +33,7 @@ class AddMoreUserInfo extends Migration
             //personal
             $table->string('mobile_no')->default("");
             $table->string('personal_email')->default("");
-            $table->date('birthday')->default(DB::raw('now()'));
+            $table->date('birthday');
 
             //social network
             $table->string('github')->default("");
