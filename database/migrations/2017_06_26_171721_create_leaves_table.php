@@ -19,6 +19,11 @@ class CreateLeavesTable extends Migration
             $table->integer('user_id');
             $table->integer('type');
             $table->float('no_of_day');
+            $table->date('from');
+            $table->date('to');
+            $table->integer('approved_by');
+            $table->integer('status');
+            $table->text('remark');
         });
     }
 
