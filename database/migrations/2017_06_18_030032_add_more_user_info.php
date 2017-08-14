@@ -20,7 +20,7 @@ class AddMoreUserInfo extends Migration
 
             //office info
             $table->integer('position_id')->default(0);
-            $table->date('join_date')->nullable();
+            $table->date('join_date');
             $table->string('office_email')->default("");
 
             //bank info
@@ -33,7 +33,7 @@ class AddMoreUserInfo extends Migration
             //personal
             $table->string('mobile_no')->default("");
             $table->string('personal_email')->default("");
-            $table->date('birthday')->nullable();
+            $table->date('birthday');
 
             //social network
             $table->string('github')->default("");
