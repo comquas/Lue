@@ -22,7 +22,8 @@
     <div class="row info-bar-detail">
         <div class="col-md-2">
             <ul class="user-info-data">
-            @if ($user->is_admin() || $is_profile == false)
+
+            @if (Auth::user()->is_admin() || $is_profile == false)
                 <li><b>Leave : </b>{{ $user->no_of_leave }} days left</li>
                 <li><b>Sick leave : </b>{{ $user->sick_leave }} days left</li>
             @endif

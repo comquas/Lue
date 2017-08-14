@@ -69,9 +69,6 @@ class User extends Authenticatable
      
     }
 
-     function is_admin() { 
-      return ($this->position->level <= env('ADMIN_LEVEL')); 
-    } 
 
     public function age() {
       return Carbon::parse($this->birthday)->diff(Carbon::now())->format('%y years');
@@ -94,6 +91,7 @@ class User extends Authenticatable
     }
 
     function is_admin() {
+      
       return ($this->position->level <= env('ADMIN_LEVEL'));
     }
 

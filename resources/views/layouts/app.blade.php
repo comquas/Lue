@@ -46,7 +46,8 @@
 
                 <ul class="navbar-nav mr-auto">
                      
-
+                @if(Auth::guest())
+                @else
                     @if(Auth::user()->position->level <= env('ADMIN_LEVEL'))
 
                         <!-- user -->
