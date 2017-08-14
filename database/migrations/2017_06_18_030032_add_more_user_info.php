@@ -16,7 +16,7 @@ class AddMoreUserInfo extends Migration
         Schema::table('users', function (Blueprint $table) {
             
             //profile image
-            $table->text('avatar')->default("");
+            $table->text('avatar');
 
             //office info
             $table->integer('position_id')->default("");
