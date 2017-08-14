@@ -29,6 +29,13 @@ class AddStatusLeave extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('leaves', function (Blueprint $table) {
+            $table->dropColumn('from');
+            $table->dropColumn('to');
+            $table->dropColumn('approved_by');
+            $table->dropColumn('status');
+            $table->dropColumn('remark');
+            //$table->string('role');
+        });
     }
 }
