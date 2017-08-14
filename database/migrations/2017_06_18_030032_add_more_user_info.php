@@ -16,28 +16,28 @@ class AddMoreUserInfo extends Migration
         Schema::table('users', function (Blueprint $table) {
             
             //profile image
-            $table->text('avatar');
+            $table->text('avatar')->default("");
 
             //office info
-            $table->integer('position_id');
-            $table->date('join_date');
-            $table->string('office_email');
+            $table->integer('position_id')->default("");
+            $table->date('join_date')->default("");
+            $table->string('office_email')->default("");
 
             //bank info
-            $table->string('bank_account');
-            $table->string('bank_name');
+            $table->string('bank_account')->default("");
+            $table->string('bank_name')->default("");
 
             //leave
-            $table->float('no_of_leave');
+            $table->float('no_of_leave')->default(0);
 
             //personal
-            $table->string('mobile_no');
-            $table->string('personal_email');
-            $table->date('birthday');
+            $table->string('mobile_no')->default("");
+            $table->string('personal_email')->default("");
+            $table->date('birthday')->default("");
 
             //social network
-            $table->string('github');
-            $table->string('twitter');
+            $table->string('github')->default("");
+            $table->string('twitter')->default("");
 
 
         });
