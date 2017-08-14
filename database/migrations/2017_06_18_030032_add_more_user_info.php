@@ -19,7 +19,7 @@ class AddMoreUserInfo extends Migration
             $table->text('avatar');
 
             //office info
-            $table->integer('position_id')->default("");
+            $table->integer('position_id')->default(0);
             $table->date('join_date')->default("");
             $table->string('office_email')->default("");
 
