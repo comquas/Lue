@@ -24,9 +24,13 @@
       <th>No. Of Day</th>
        @if(!isset($isDecidedLeave))
       <th>Actions</th>
+      @if(isset($decision))
+        <th>Actions</th>
       @else
       <th>Status</th>
       <th>Remark</th>
+        <th>Status</th>
+        <th>Remark</th>
       @endif
     </tr>
   </thead>
@@ -47,6 +51,7 @@
                         <td>{{ $leave->no_of_day }}</td>
                         <!-- isDecidedLeave is used -->
                         @if(!isset($isDecidedLeave))
+                        @if(isset($decision))
                         <td><a href="{{ route('approve_timeoff',['id' => $leave->id]) }}" class="btn btn-primary">Approve</a>
                         <a href="{{ route('edit_timeoff',['id' => $leave->id]) }}" class="btn btn-info">Edit</a>
                          
@@ -58,6 +63,7 @@
                           @if($leave->status == 1)
                             Approved
                           @else
+                          @elseif ($leave->status == 2)
                             Rejected
                           @endif
                         </td>

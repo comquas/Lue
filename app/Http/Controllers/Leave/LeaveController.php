@@ -27,25 +27,30 @@ class LeaveController extends Controller
     }
 
     function list()
+    function timeOffList()
     {
         $user = Auth::user();
 
+        $decision = true;
         $leaves = Leave::where('status', 0)->whereIn('user_id', $user->staff())
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return view('leave/list', compact('leaves'));
+        return view('leave/list', compact('leaves','decision'));
     }
 
     function decidedList()
     {
         $user = Auth::user();
         $isDecidedLeave = true;
+        
         $leaves = Leave::whereIn('user_id', $user->staff())
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
         return view('leave/list', compact('leaves', 'isDecidedLeave'));
+        return view('leave/list', compact('leaves'));
     }
 
     function store(Request $request, $id = '')
@@ -150,6 +155,7 @@ class LeaveController extends Controller
         }
 
         $json = ["channel" => $receive_user->slack, "username" => $send_user->name, "text" => $text];
+        $json = ["channel" => "@".$receive_user->slack, "username" => $send_user->name, "text" => $text];
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -211,6 +217,7 @@ class LeaveController extends Controller
             $leave_type = "Sick";
         }
         $text = "You are allowed the " . $leave_type . "leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
+        $text = "You are allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
         $this->sendSlack($user, $leave->user, $text);
 
         return redirect()->route('list_timeoff');
@@ -262,6 +269,7 @@ class LeaveController extends Controller
         if ($leave->type == 1) $leave_type = "Annual";
         else $leave_type = "Sick";
         $text = $text = "You are not allowed the " . $leave_type . "leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
+        $text = $text = "You are not allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
 
         $this->sendSlack($user, $leave->user, $text);
 
