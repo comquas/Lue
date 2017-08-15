@@ -27,8 +27,6 @@
       @else
       <th>Status</th>
       <th>Remark</th>
-        <th>Status</th>
-        <th>Remark</th>
       @endif
     </tr>
   </thead>

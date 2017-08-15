@@ -36,20 +36,19 @@ class LeaveController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('leave/list', compact('leaves'));
+        
         return view('leave/list', compact('leaves','decision'));
     }
 
     function decidedList()
     {
         $user = Auth::user();
-        $isDecidedLeave = true;
         
         $leaves = Leave::whereIn('user_id', $user->staff())
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('leave/list', compact('leaves', 'isDecidedLeave'));
+        
         return view('leave/list', compact('leaves'));
     }
 
