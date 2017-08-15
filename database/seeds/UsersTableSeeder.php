@@ -24,7 +24,8 @@ class UsersTableSeeder extends Seeder
             'avatar' => 'sample.jpg',
             'join_date' => $today,
             'birthday' => $today,
-            'location_id' => 1
+            'location_id' => 1,
+            'salary' => 0
 
         ]);
     }
