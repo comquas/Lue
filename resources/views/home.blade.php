@@ -43,7 +43,7 @@
         </div>
     </div>
     @if($is_profile==false)
-    <div class="row">
+    <div class="row info-card">
     <!-- Brithday List -->
     <div class="col-4">
         <div class="card">
