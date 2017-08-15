@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Leave;
 use Carbon;
@@ -29,57 +30,42 @@ class HomeController extends Controller
     public function index()
     {
         $date = Carbon\Carbon::now();
-        $users = User::all();
+
+        
+
         $isequal = false;
         $birthmonths = array();
         $anniversary = array();
 
         //Birthday
+        $current_month = intval($date->month);
 
-        foreach($users as $user)
-        {
-            $birthday = $user->birthday;
-            $birthmonth = $birthday[5].$birthday[6];    
-            $birthmonth = intval($birthmonth);
-            $current_month = intval($date->month);
+
+        
+        $birthdays_of_users = User::select('name','birthday')
+                                ->where(DB::raw('MONTH(birthday)'),'=', DB::raw('MONTH(NOW())'))
+                                ->where(DB::raw('DAY(birthday)'),'>=',DB::raw('MONTH(NOW())'))
+                                ->orderBy('birthday')
+                                ->get();
+        
+
     
-            if($birthmonth === $current_month)
-            {
-                $isequal = true;
-                array_push($birthmonths,$user->id);
-            }
-            $anniversary[$user->id] = $user->get_anniversary();
-
-            
-        }
-        
-        $birthdays_of_users = User::select('name','birthday')->wherein('id',$birthmonths)->get();
-        
-        
-
-        $anniversary_users = array();
-        foreach($anniversary as $user_id=>$year)
-        {
-            if($year != null)
-            if($year != null && $year != 0)
-            {
-                array_push($anniversary_users,User::whereid($user_id)->first());
-            }  
-        }
-
-        
-        //Today Leave
-        $leaves = Leave::where('status',1)->where('from', '<=' ,$date)->where('to', '>=' ,$date)->get();
         //===========
         //Leave Users
         //===========
 
-        //split date and time
-        $date = explode(" ",$date);
-       
-        $leaves = Leave::where('status',1)->wherefrom($date[0])->get(); //$date[0] is date and $date[1] is time
+        $leaves = Leave::where('status',1)
+                    ->where(DB::raw('MONTH(`from`)'),'=', DB::raw('MONTH(NOW())'))
+                    ->where(DB::raw('DAY(`from`)'),'>=',DB::raw('MONTH(NOW())'))
+                    ->orderBy('from')
+                    ->get(); 
 
+
+        $anniversary_users = User::select(DB::raw('name,join_date,year(curdate())-year(join_date) as No_Of_Years'))->where(DB::raw('MONTH(join_date)'),'=', DB::raw('MONTH(NOW())'))
+                                ->where(DB::raw('DAY(join_date)'),'>=',DB::raw('MONTH(NOW())'))
+                                ->orderBy('join_date')
+                                ->get();
        //dd($anniversary_users);
-        return view('home',["user" => Auth::user(), "users"=>$users, "birthdays_of_users" => $birthdays_of_users, "current_month"=>$current_month, "leaves"=>$leaves, "is_profile"=>false, "anniversary_users"=>$anniversary_users]);
+        return view('home',["user" => Auth::user(), "birthdays_of_users" => $birthdays_of_users, "current_month"=>$current_month, "leaves"=>$leaves, "is_profile"=>false, "anniversary_users"=>$anniversary_users]);
     }
 }

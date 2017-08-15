@@ -48,7 +48,7 @@
     <div class="col-4">
         <div class="card">
             <div class="card-header">
-        <h6>Birthday In {{ date("F", mktime(0, 0, 0, $current_month , 1)) }}</h6>
+        <h6> Comming Birthday</h6>
             </div>
             <div class="card-block">
             <ul class="user-info-data">
@@ -76,10 +76,10 @@
         <ul class="user-info-data">
         @if(count($anniversary_users))
         @foreach($anniversary_users as $anniversary_user)
-            @if($user->get_anniversary()>0)
             
-                <li><a href="{{ route('user_profile',["id" => $anniversary_user->id])}}">{{$anniversary_user->name}}</a> , {{$anniversary_user->get_anniversary()}} @if($user->get_anniversary()>1) Years @else Year @endif</li>
-            @endif
+            
+                <li><a href="{{ route('user_profile',["id" => $anniversary_user->id])}}">{{$anniversary_user->name}}</a> , {{$anniversary_user->No_Of_Years}} @if($anniversary_user->No_Of_Years > 1) Years @else Year @endif</li>
+            
            
         @endforeach
         @else
@@ -96,7 +96,7 @@
     <div class="col-4">
     <div class="card">
         <div class="card-header">
-        <h6>Today Leave</h6>
+        <h6>Leaves</h6>
         </div>
         <div class="card-block">
             
@@ -105,7 +105,21 @@
        @if(count($leaves)!=0)
        @foreach($leaves as $leave)
 
-                <li>{{$leave->user->name}}</li> 
+                <li>
+                <a href="{{ route('user_profile',["id" => $leave->user->id])}}">{{$leave->user->name}} </a>
+                <br/>
+                <div class='small'>
+
+                from {{date('d/m',strtotime($leave->from))}} 
+                to {{date('d/m',strtotime($leave->to))}} , {{$leave->no_of_day}} 
+
+                @if($leave->no_of_day > 1) 
+                    days 
+                @else 
+                    day 
+                @endif
+
+                </div></li> 
                   
        @endforeach
        @else
