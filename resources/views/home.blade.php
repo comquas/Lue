@@ -48,7 +48,7 @@
     <div class="col-4">
         <div class="card">
             <div class="card-header">
-        <h6>Birthday</h6>
+        <h6>🎂 Birthday</h6>
             </div>
             <div class="card-block">
             <ul class="user-info-data">
@@ -57,7 +57,7 @@
                 <li><a href="{{ route('user_profile',["id" => $birthday_user->id])}}">{{$birthday_user->name}}</a> , {{date('d F',strtotime($birthday_user->birthday))}}</li>
                 @endforeach
                 @else
-                    <li>No Brithday In This Month</li>
+                    <li>There is no brithday</li>
                 @endif
             </ul>
     
@@ -70,7 +70,7 @@
     <div class="col-4">
     <div class="card">
         <div class="card-header">
-        <h6>Anniversary</h6>
+        <h6>💪 Anniversary</h6>
         </div>
         <div class="card-block">
         <ul class="user-info-data">
@@ -93,7 +93,7 @@
            
         @endforeach
         @else
-            <li>No Anniversary In This Month</li>
+            <li>There is no anniversary</li>
         @endif
         </ul>
     </div>
@@ -106,7 +106,7 @@
     <div class="col-4">
     <div class="card">
         <div class="card-header">
-        <h6>Leaves</h6>
+        <h6>👨‍ Leaves</h6>
         </div>
         <div class="card-block">
             
@@ -133,7 +133,7 @@
                   
        @endforeach
        @else
-            <li>No Leave Today</li> 
+            <li>Wow.. nobody take leave yet 👍</li> 
        @endif
         </ul>
     </div>
