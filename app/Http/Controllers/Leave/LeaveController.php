@@ -90,6 +90,7 @@ class LeaveController extends Controller
             $leave
                 ->user
                 ->save();
+            $leave->user->save();
         }
         else
         {

@@ -52,9 +52,13 @@
             </div>
             <div class="card-block">
             <ul class="user-info-data">
+                @if(count($birthdays_of_users)!=0)
                 @foreach($birthdays_of_users as $birthday_user)
                 <li><a href="{{ route('user_profile',["id" => $birthday_user->id])}}">{{$birthday_user->name}}</a> , {{date('d F',strtotime($birthday_user->birthday))}}</li>
                 @endforeach
+                @else
+                    <li>No Brithday In This Month</li>
+                @endif
             </ul>
     
     </div>
@@ -70,12 +74,17 @@
         </div>
         <div class="card-block">
         <ul class="user-info-data">
-        
+        @if(count($anniversary_users))
         @foreach($anniversary_users as $anniversary_user)
             @if($user->get_anniversary()>0)
+            
                 <li><a href="{{ route('user_profile',["id" => $anniversary_user->id])}}">{{$anniversary_user->name}}</a> , {{$anniversary_user->get_anniversary()}} @if($user->get_anniversary()>1) Years @else Year @endif</li>
             @endif
+           
         @endforeach
+        @else
+            <li>No Anniversary In This Month</li>
+        @endif
         </ul>
     </div>
     </div>
@@ -83,6 +92,7 @@
     <!-- End Anniversary List -->
 
     <!-- Anniversary List -->
+    <!-- Leave List -->
     <div class="col-4">
     <div class="card">
         <div class="card-header">
@@ -91,16 +101,22 @@
         <div class="card-block">
             
         <ul>
+        <ul class="user-info-data">
+       @if(count($leaves)!=0)
        @foreach($leaves as $leave)
 
                 <li>{{$leave->user->name}}</li> 
                   
        @endforeach
+       @else
+            <li>No Leave Today</li> 
+       @endif
         </ul>
     </div>
     </div>
     </div>
     <!-- End Anniversary List -->
+    <!-- End Leave List -->
 
     </div>
     @endif

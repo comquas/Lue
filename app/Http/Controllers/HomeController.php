@@ -35,6 +35,7 @@ class HomeController extends Controller
         $anniversary = array();
 
         //Birthday
+
         foreach($users as $user)
         {
             $birthday = $user->birthday;
@@ -48,24 +49,37 @@ class HomeController extends Controller
                 array_push($birthmonths,$user->id);
             }
             $anniversary[$user->id] = $user->get_anniversary();
+
             
         }
         
         $birthdays_of_users = User::select('name','birthday')->wherein('id',$birthmonths)->get();
         
+        
+
         $anniversary_users = array();
         foreach($anniversary as $user_id=>$year)
         {
             if($year != null)
+            if($year != null && $year != 0)
             {
                 array_push($anniversary_users,User::whereid($user_id)->first());
             }  
         }
+
         
         //Today Leave
         $leaves = Leave::where('status',1)->where('from', '<=' ,$date)->where('to', '>=' ,$date)->get();
+        //===========
+        //Leave Users
+        //===========
 
+        //split date and time
+        $date = explode(" ",$date);
        
+        $leaves = Leave::where('status',1)->wherefrom($date[0])->get(); //$date[0] is date and $date[1] is time
+
+       //dd($anniversary_users);
         return view('home',["user" => Auth::user(), "users"=>$users, "birthdays_of_users" => $birthdays_of_users, "current_month"=>$current_month, "leaves"=>$leaves, "is_profile"=>false, "anniversary_users"=>$anniversary_users]);
     }
 }

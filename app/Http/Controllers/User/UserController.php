@@ -163,6 +163,7 @@ class UserController extends Controller
     }
 
     private function update($id = "", Request $request) {
+        
         if ($id != "") {
             $user = User::where("id",$id)->first();
         }

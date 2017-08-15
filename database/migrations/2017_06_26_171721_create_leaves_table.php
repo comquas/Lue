@@ -24,6 +24,8 @@ class CreateLeavesTable extends Migration
             $table->integer('approved_by');
             $table->integer('status');
             $table->text('remark');
+            $table->text('remark')->nullable();
+            $table->timestamps();
         });
     }
 

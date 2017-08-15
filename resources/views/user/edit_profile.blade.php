@@ -142,6 +142,7 @@
                         @endcomponent
                     </div>
                 </div>
+                @if(Auth::user()->position->level <= env('ADMIN_LEVEL'))
                 <div class="card">
                     <div class="card-header">
                         Time-Off
@@ -183,6 +184,7 @@
                     </div>
                 </div>
 
+                @endif
 
                 <div class="card">
                  <div class="card-header">
