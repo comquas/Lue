@@ -62,7 +62,6 @@
                         <td>
                           @if($leave->status == 1)
                             Approved
-                          @else
                           @elseif ($leave->status == 2)
                             Rejected
                           @endif
