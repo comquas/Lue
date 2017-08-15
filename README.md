@@ -9,7 +9,7 @@ When apply time off , it will send email , slack to supervisor.
 Change the admin user and email in `database/seeds/UsersTableSeeder.php`
 
 ```
-# php artisan db:migrate
+# php artisan migrate
 # php artisan db:seed
 ```
 
