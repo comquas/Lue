@@ -26,7 +26,7 @@ class LeaveController extends Controller
         return view('leave/apply', compact('btn_title', 'route'));
     }
 
-    function list()
+    
     function timeOffList()
     {
         $user = Auth::user();
