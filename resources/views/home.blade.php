@@ -78,7 +78,17 @@
         @foreach($anniversary_users as $anniversary_user)
             
             
-                <li><a href="{{ route('user_profile',["id" => $anniversary_user->id])}}">{{$anniversary_user->name}}</a> , {{$anniversary_user->No_Of_Years}} @if($anniversary_user->No_Of_Years > 1) Years @else Year @endif</li>
+                <li><a href="{{ route('user_profile',["id" => $anniversary_user->id])}}">{{$anniversary_user->name}}</a> , {{$anniversary_user->No_Of_Years}} 
+
+                @if($anniversary_user->No_Of_Years > 1) 
+                    Years 
+                @else 
+                    Year 
+                @endif
+
+                at {{date('d/m',strtotime($anniversary_user->join_date))}} 
+
+                </li>
             
            
         @endforeach

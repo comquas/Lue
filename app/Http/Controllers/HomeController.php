@@ -56,13 +56,13 @@ class HomeController extends Controller
 
         $leaves = Leave::where('status',1)
                     ->where(DB::raw('MONTH(`from`)'),'=', DB::raw('MONTH(NOW())'))
-                    ->where(DB::raw('DAY(`from`)'),'>=',DB::raw('MONTH(NOW())'))
+                    ->where(DB::raw('DAY(`from`)'),'>=',DB::raw('DAY(NOW())'))
                     ->orderBy('from')
                     ->get(); 
 
 
         $anniversary_users = User::select(DB::raw('name,join_date,year(curdate())-year(join_date) as No_Of_Years'))->where(DB::raw('MONTH(join_date)'),'=', DB::raw('MONTH(NOW())'))
-                                ->where(DB::raw('DAY(join_date)'),'>=',DB::raw('MONTH(NOW())'))
+                                ->where(DB::raw('DAY(join_date)'),'>=',DB::raw('DAY(NOW())'))
                                 ->orderBy('join_date')
                                 ->get();
        //dd($anniversary_users);
