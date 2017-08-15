@@ -155,13 +155,14 @@ class UserController extends Controller
 
         $user = Auth::user();
 
+        
         $this->update($user->id,$request);
 
+        
         return redirect()->route('home');
     }
 
     private function update($id = "", Request $request) {
-
         if ($id != "") {
             $user = User::where("id",$id)->first();
         }
@@ -169,13 +170,41 @@ class UserController extends Controller
             $user = new User;
         }
         //dd($user);
+       
         if ($request->avatar != null) {
             //move to public folder
+
+            $avatar = $request->avatar;
+            
+            //change photoname with original extension
             $photoName = time().'.'.$request->avatar->getClientOriginalExtension();
+
+            //move to public folder
             $request->avatar->move(public_path('avatars'), $photoName);
 
+            //store the moved photo path
+            $filename = public_path('avatars')."/$photoName";
+
+            //crop image
+            //=====================================
+                
+                $im = imagecreatefromjpeg($filename);
+                
+                //size according to minimum size of photo
+                $size = min(imagesx($im), imagesy($im));
+                
+                //crop image
+                $im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => $size, 'height' => $size]);
+                
+
+                if ($im2 !== FALSE) {
+                    imagejpeg($im2, public_path('avatars')."/$photoName");
+                }
+                
+            //end crop image
+            //========================================
+
             if ($user->avatar != null) {
-                //delete old
                 File::delete(public_path('avatars')."/".$user->avatar);
             }
             $user->avatar = $photoName;
@@ -196,6 +225,7 @@ class UserController extends Controller
         
         
         
+        $user->supervisor_id = $request->supervisor;     
 
         if(trim($request->password) != "") {
             $user->password = bcrypt($request->password);
