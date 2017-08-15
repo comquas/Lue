@@ -219,10 +219,6 @@ class UserController extends Controller
         $user->location_id = $request->location;
         $user->join_date = Carbon::createFromFormat('d-m-Y', $request->join_date,"Asia/Rangoon");
         $user->birthday = Carbon::createFromFormat('d-m-Y', $request->birthday,"Asia/Rangoon");
-
-
-        
-        $user->supervisor_id = $request->supervisor;    
         
         
         
@@ -235,6 +231,7 @@ class UserController extends Controller
         $user->sick_leave = $request->sick_leave;
         $user->bank_name = $this->null_empty($request->bank_name);
         $user->bank_account = $this->null_empty($request->bank_account);
+        $user->salary = $this->null_empty($request->salary);
         $user->personal_email = $this->null_empty($request->personal_email);
         $user->github = $this->null_empty($request->github);
         $user->twitter = $this->null_empty($request->twitter);

@@ -15,7 +15,6 @@ class CreateLeavesTable extends Migration
     {
         Schema::create('leaves', function (Blueprint $table) {
             $table->increments('id');
-            $table->timestamps();
             $table->integer('user_id');
             $table->integer('type');
             $table->float('no_of_day');
@@ -23,7 +22,6 @@ class CreateLeavesTable extends Migration
             $table->date('to');
             $table->integer('approved_by');
             $table->integer('status');
-            $table->text('remark');
             $table->text('remark')->nullable();
             $table->timestamps();
         });

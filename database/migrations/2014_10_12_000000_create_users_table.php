@@ -27,12 +27,17 @@ class CreateUsersTable extends Migration
             $table->string('office_email')->default("");
 
             //bank info
-            $table->string('bank_account')->default("");
             $table->string('bank_name')->default("");
+            $table->string('bank_account')->default("");
+            
+
+            //salary
+            $table->integer('salary')->nullable();
 
             //leave
             $table->float('no_of_leave')->default(0);
              $table->float('sick_leave')->default(0);
+
 
             //personal
             $table->string('mobile_no')->default("");

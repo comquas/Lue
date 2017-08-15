@@ -110,6 +110,16 @@
                         @slot('value',isset($user) ? $user->get_birthday() : "")
                         @endcomponent
 
+                        @if(Auth::user()->position->level <= env('ADMIN_LEVEL'))
+                        @component('control.textbox')
+                        @slot('title','Salary')
+                        @slot('name','salary')
+                        @slot('placeholder','Enter Your Salary')
+                        @slot('value',isset($user) ? $user->salary : "")
+                        @endcomponent
+                        @endif
+                        
+
                     </div>
                 </div>
             </div>
