@@ -100,7 +100,7 @@
         </div>
         <div class="card-block">
             
-        <ul>
+        
         <ul class="user-info-data">
        @if(count($leaves)!=0)
        @foreach($leaves as $leave)
