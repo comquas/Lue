@@ -48,7 +48,7 @@
     <div class="col-4">
         <div class="card">
             <div class="card-header">
-        <h6> Comming Birthday</h6>
+        <h6>Birthday</h6>
             </div>
             <div class="card-block">
             <ul class="user-info-data">
