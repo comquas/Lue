@@ -141,6 +141,7 @@ class UserController extends Controller
             'position' => 'required|integer',
             'location' => 'required|integer',
             'join_date' => 'date|date_format:d-m-Y',
+            'salary' => 'required|integer',
             'birthday' => 'date|date_format:d-m-Y',
             'bank_name' => 'nullable|string',
             'bank_account' => 'nullable|string',
