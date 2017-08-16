@@ -42,7 +42,7 @@ class HomeController extends Controller
 
 
         
-        $birthdays_of_users = User::select('name','birthday')
+        $birthdays_of_users = User::select('id','name','birthday')
                                 ->where(DB::raw('MONTH(birthday)'),'=', DB::raw('MONTH(NOW())'))
                                 ->where(DB::raw('DAY(birthday)'),'>=',DB::raw('MONTH(NOW())'))
                                 ->orderBy('birthday')
@@ -61,7 +61,7 @@ class HomeController extends Controller
                     ->get(); 
 
 
-        $anniversary_users = User::select(DB::raw('name,join_date,year(curdate())-year(join_date) as No_Of_Years'))->where(DB::raw('MONTH(join_date)'),'=', DB::raw('MONTH(NOW())'))
+        $anniversary_users = User::select(DB::raw('id,name,join_date,year(curdate())-year(join_date) as No_Of_Years'))->where(DB::raw('MONTH(join_date)'),'=', DB::raw('MONTH(NOW())'))
                                 ->where(DB::raw('DAY(join_date)'),'>=',DB::raw('DAY(NOW())'))
                                 ->orderBy('join_date')
                                 ->get();

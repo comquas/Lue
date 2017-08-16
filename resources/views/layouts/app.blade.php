@@ -48,7 +48,7 @@
                      
                 @if(Auth::guest())
                 @else
-                    @if(Auth::user()->position->level <= env('ADMIN_LEVEL'))
+                    @if(Auth::user()->is_admin())
 
                         <!-- user -->
                         @component('control.nav-item')

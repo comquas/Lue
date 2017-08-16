@@ -7,7 +7,7 @@
 
         <div class="bar"></div>
         <div class="col-md-2 avatar">
-            <img src="{{ url('avatars') }}/{{ $user->avatar }}" class="rounded" style="width:140px;">
+            <img src="{{ url('avatars') }}/{{ $user->avatar }}" class="avatar-img rounded">
         </div>
         <div class="col-md-10 name-bar">
 

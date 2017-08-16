@@ -110,7 +110,7 @@
                         @slot('value',isset($user) ? $user->get_birthday() : "")
                         @endcomponent
 
-                        @if(Auth::user()->position->level <= env('ADMIN_LEVEL'))
+                        @if(Auth::user()->is_admin())
                         @component('control.textbox')
                         @slot('title','Salary')
                         @slot('name','salary')
@@ -152,7 +152,7 @@
                         @endcomponent
                     </div>
                 </div>
-                @if(Auth::user()->position->level <= env('ADMIN_LEVEL'))
+                @if(Auth::user()->is_admin())
                 <div class="card">
                     <div class="card-header">
                         Time-Off

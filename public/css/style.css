@@ -93,6 +93,12 @@
 
 }
 
+.avatar-img {
+	width: 140px;
+	background: #FFF;
+	border: 1px solid #EEE;
+}
+
 .info-bar-detail {
 	padding-top: 10px;
 }

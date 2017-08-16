@@ -19,10 +19,11 @@ class CheckLevel
         
         $user = Auth::user();
         if (isset($user)) {
-            if ($user->position->level > env('ADMIN_LEVEL')) {
-                return redirect()->route('home');
+            if ($user->is_admin()) {
+                return $next($request);        
             }
         }
-        return $next($request);
+        return redirect()->route('home');
+        
     }
 }

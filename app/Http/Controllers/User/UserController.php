@@ -177,9 +177,10 @@ class UserController extends Controller
             //move to public folder
 
             $avatar = $request->avatar;
+            $ext = $request->avatar->getClientOriginalExtension();
             
             //change photoname with original extension
-            $photoName = time().'.'.$request->avatar->getClientOriginalExtension();
+            $photoName = time().'.'.$ext;
 
             //move to public folder
             $request->avatar->move(public_path('avatars'), $photoName);
@@ -189,18 +190,30 @@ class UserController extends Controller
 
             //crop image
             //=====================================
-                
-                $im = imagecreatefromjpeg($filename);
-                
-                //size according to minimum size of photo
-                $size = min(imagesx($im), imagesy($im));
-                
-                //crop image
-                $im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => $size, 'height' => $size]);
-                
+                $im = null;
+                if( $ext == "png") {
+                    $im = imagecreatefrompng($filename);
+                }
+                else if ($ext == "jpg" ) {
+                    $im = imagecreatefromjpeg($filename);
+                }
 
-                if ($im2 !== FALSE) {
-                    imagejpeg($im2, public_path('avatars')."/$photoName");
+                if ($im != null) {
+                    //size according to minimum size of photo
+                    $size = min(imagesx($im), imagesy($im));
+                    
+                    //crop image
+                    $im2 = imagecrop($im, ['x' => 0, 'y' => 0, 'width' => $size, 'height' => $size]);
+                    
+
+                    if ($im2 !== FALSE) {
+                        if( $ext == "png") {
+                            imagepng($im2, public_path('avatars')."/$photoName");
+                        }
+                        else {
+                            imagejpeg($im2, public_path('avatars')."/$photoName");
+                        }
+                    }
                 }
                 
             //end crop image
@@ -228,11 +241,20 @@ class UserController extends Controller
         if(trim($request->password) != "") {
             $user->password = bcrypt($request->password);
         }
-        $user->no_of_leave = $request->no_of_leave;
-        $user->sick_leave = $request->sick_leave;
+        
         $user->bank_name = $this->null_empty($request->bank_name);
         $user->bank_account = $this->null_empty($request->bank_account);
-        $user->salary = $this->null_empty($request->salary);
+
+        //only allow for Admin Level
+        if(Auth::user()->is_admin()) {
+            $salary = $this->null_empty($request->salary);
+            $user->salary = $salary;    
+
+            $user->no_of_leave = $request->no_of_leave;
+            $user->sick_leave = $request->sick_leave;
+        }
+        
+
         $user->personal_email = $this->null_empty($request->personal_email);
         $user->github = $this->null_empty($request->github);
         $user->twitter = $this->null_empty($request->twitter);
