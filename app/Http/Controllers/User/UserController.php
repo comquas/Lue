@@ -132,8 +132,10 @@ class UserController extends Controller
     function update_profile(Request $request) {
 
 
+        $user = Auth::user();
 
-    	$this->validate($request, [
+        if($user->is_admin()) {
+            $this->validate($request, [
             'avatar' => 'nullable|image|mimes:jpeg,bmp,png|max:2000',
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
@@ -141,8 +143,8 @@ class UserController extends Controller
             'position' => 'required|integer',
             'location' => 'required|integer',
             'join_date' => 'date|date_format:d-m-Y',
-            'salary' => 'required|integer',
             'birthday' => 'date|date_format:d-m-Y',
+            'salary' => 'required|integer',
             'bank_name' => 'nullable|string',
             'bank_account' => 'nullable|string',
             'password' => 'nullable|string|confirmed',
@@ -153,8 +155,29 @@ class UserController extends Controller
             'twitter' => 'nullable|string',
             'slack' => 'nullable|string'
             ]);
+        }
+        else {
+            $this->validate($request, [
+            'avatar' => 'nullable|image|mimes:jpeg,bmp,png|max:2000',
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255',
+            'mobile_no' => 'required|string',
+            'position' => 'required|integer',
+            'location' => 'required|integer',
+            'join_date' => 'date|date_format:d-m-Y',
+            'birthday' => 'date|date_format:d-m-Y',
+            'bank_name' => 'nullable|string',
+            'bank_account' => 'nullable|string',
+            'password' => 'nullable|string|confirmed',
+            'personal_email' => 'nullable|string|email|max:255',
+            'github' => 'nullable|string',
+            'twitter' => 'nullable|string',
+            'slack' => 'nullable|string'
+            ]);
+        }
+    	
 
-        $user = Auth::user();
+        
 
         
         $this->update($user->id,$request);
@@ -171,7 +194,7 @@ class UserController extends Controller
         else {
             $user = new User;
         }
-        //dd($user);
+        
        
         if ($request->avatar != null) {
             //move to public folder

@@ -117,8 +117,6 @@
 
                 <li>
 
-                
-
                 <a href="{{ route('user_profile',["id" => $leave->user->id])}}">{{$leave->user->name}} </a>
                 @if($leave->type == 2)
                     😷
@@ -127,7 +125,8 @@
                 <div class='small'>
 
                 from {{date('d/m',strtotime($leave->from))}} 
-                to {{date('d/m',strtotime($leave->to))}} , {{$leave->no_of_day}} 
+                to {{date('d/m',strtotime($leave->to))}} 
+                , {{$leave->no_of_day}} 
 
                 @if($leave->no_of_day > 1) 
                     days 
