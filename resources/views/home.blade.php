@@ -106,7 +106,7 @@
     <div class="col-4">
     <div class="card">
         <div class="card-header">
-        <h6>👨‍ Leaves</h6>
+        <h6>👨‍ Time-Off</h6>
         </div>
         <div class="card-block">
             
@@ -116,7 +116,13 @@
        @foreach($leaves as $leave)
 
                 <li>
+
+                
+
                 <a href="{{ route('user_profile',["id" => $leave->user->id])}}">{{$leave->user->name}} </a>
+                @if($leave->type == 2)
+                    😷
+                @endif
                 <br/>
                 <div class='small'>
 
