@@ -21,7 +21,15 @@ Change the admin user and email in `database/seeds/UsersTableSeeder.php`
 
 Copy `.env.example` to `.evn`.
 
-Edit `.env` for slack and mailgun.
+Edit `.env` file.
+
+### ENV
+
+- `DB_DATABASE` , `DB_USERNAME` , `DB_PASSWORD` for database.
+- `ADMIN_LEVEL` for minimum position level for admin.
+- `SLACK_HOOK` for [Slack Incoming Hook](https://my.slack.com/services/new/incoming-webhook) URL.
+- `MAILGUN_DOMAIN` and `MAILGUN_SECRET` for [mailgun](https://www.mailgun.com) email service.
+
 
 ## Using
 
@@ -38,6 +46,7 @@ Edit `.env` for slack and mailgun.
 
 - [x] send email when time-off is apply, approve, reject
 - [x] send to slack of supervisor when time-off is apply, approve, reject
+- [ ] iCal support for time-off
 - [ ] REST API
 - [ ] Android App
 - [ ] iOS App
