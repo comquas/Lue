@@ -11,7 +11,7 @@ When apply time off , it will send email , slack to supervisor.
 ![](https://cldup.com/32OAIpYTvt.png)
 
 
-### Environment Setup
+## Environment Setup
 
 Copy `.env.example` to `.evn`.
 
