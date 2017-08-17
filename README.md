@@ -10,26 +10,27 @@ When apply time off , it will send email , slack to supervisor.
 
 ![](https://cldup.com/32OAIpYTvt.png)
 
-## Setup
 
-Change the admin user and email in `database/seeds/UsersTableSeeder.php`
-
-```
-# php artisan migrate
-# php artisan db:seed
-```
+### Environment Setup
 
 Copy `.env.example` to `.evn`.
 
 Edit `.env` file.
-
-### ENV
 
 - `DB_DATABASE` , `DB_USERNAME` , `DB_PASSWORD` for database.
 - `ADMIN_LEVEL` for minimum position level for admin.
 - `SLACK_HOOK` for [Slack Incoming Hook](https://my.slack.com/services/new/incoming-webhook) URL.
 - `MAILGUN_DOMAIN` and `MAILGUN_SECRET` for [mailgun](https://www.mailgun.com) email service.
 
+## Setup
+
+Change the admin user and email in `database/seeds/UsersTableSeeder.php`
+
+```
+# composer install
+# php artisan migrate
+# php artisan db:seed
+```
 
 ## Using
 
