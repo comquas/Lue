@@ -30,6 +30,10 @@
         @isset($user->supervisor)
         <li><b>Manager : </b><a href="{{ route('user_profile',["id" => $user->supervisor->id])}}">{{ $user->supervisor->name }}</a></li>
         @endisset
+
+        @if (Auth::user()->is_admin() || $is_profile == false)
+                <li><a class="btn btn-primary edit-home" href="{{ route('edit_user',["id"=> $user->id]) }}">Edit</a></li>
+        @endif
         </ul>
         </div>
         <div class="col-md-10">
