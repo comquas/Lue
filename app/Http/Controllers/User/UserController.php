@@ -259,7 +259,6 @@ class UserController extends Controller
         
         
         
-        $user->supervisor_id = $request->supervisor;     
 
         if(trim($request->password) != "") {
             $user->password = bcrypt($request->password);
@@ -275,6 +274,7 @@ class UserController extends Controller
 
             $user->no_of_leave = $request->no_of_leave;
             $user->sick_leave = $request->sick_leave;
+            $user->supervisor_id = $request->supervisor;     
         }
         
 
