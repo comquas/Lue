@@ -30,21 +30,31 @@ class LeaveController extends Controller
     function timeOffList()
     {
         $user = Auth::user();
-
+       
+        $id=[];
+        foreach($user->staff() as $leaveUser)
+        {
+            $id[] = $leaveUser->id;
+        }
+       
         $decision = true;
-        $leaves = Leave::where('status', 0)->whereIn('user_id', $user->staff())
+        $leaves = Leave::where('status', 0)->whereIn('user_id',$id)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        
+        //dd($leaves);
         return view('leave/list', compact('leaves','decision'));
     }
 
     function decidedList()
     {
         $user = Auth::user();
-        
-        $leaves = Leave::whereIn('user_id', $user->staff())
+        $id=[];
+        foreach($user->staff() as $leaveUser)
+        {
+            $id[] = $leaveUser->id;
+        }
+        $leaves = Leave::whereIn('user_id', $id)
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
@@ -61,6 +71,7 @@ class LeaveController extends Controller
 
         if ($id == '' || $id == null)
         {
+
             $leave = new Leave();
             $supervisor_id = $user->supervisor_id;
             $leave->user_id = $user->id;
@@ -79,7 +90,7 @@ class LeaveController extends Controller
         $leave->no_of_day = $request->no_of_day;
         $leave->from = Carbon::createFromFormat('d-m-Y', $request->from_date, "Asia/Rangoon");;
         $leave->to = Carbon::createFromFormat('d-m-Y', $request->to_date, "Asia/Rangoon");
-
+        
         if ($supervisor_id == null || $supervisor_id == "")
         {
             //no need supervisor
@@ -191,7 +202,13 @@ class LeaveController extends Controller
     {
 
         $user = Auth::user();
-        $leave = Leave::where('status', 0)->where('id', $id)->whereIn('user_id', $user->staff())
+        $id=[];
+        foreach($user->staff() as $leaveUser)
+        {
+            $id[] = $leaveUser->id;
+        }
+
+        $leave = Leave::where('status', 0)->where('id', $id)->whereIn('user_id', $id)
             ->first();
 
         if ($leave == null)

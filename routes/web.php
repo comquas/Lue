@@ -73,3 +73,5 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 
 	});
 });
+
+Route::get('calendar.ics','CalendarController@downloadCalendar');
