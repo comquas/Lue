@@ -11,6 +11,7 @@ use App\User;
 use App\Mail\ApproveLeave;
 use App\Mail\RejectLeave;
 use App\Mail\ApplyLeave;
+use File;
 
 class LeaveController extends Controller
 {
@@ -200,28 +201,28 @@ class LeaveController extends Controller
 
     function approve($id, Request $request)
     {
-
+        
         $user = Auth::user();
-        $id=[];
+        
+        $leaveId=[];
         foreach($user->staff() as $leaveUser)
         {
-            $id[] = $leaveUser->id;
+            $leaveId[] = $leaveUser->id;
         }
 
-        $leave = Leave::where('status', 0)->where('id', $id)->whereIn('user_id', $id)
+        $leave = Leave::where('status', 0)->where('id', $id)->whereIn('user_id', $leaveId)
             ->first();
-
+        
         if ($leave == null)
         {
             return redirect()->route('not_found');
         }
 
         $leave = $this->approve_it($leave, $user);
-        $leave
-            ->user
-            ->save();
+        $leave->user->save();
         $leave->save();
-        //send Mail
+        
+        $this->writeCalendar($leave);
         $this->sendApproveMail($user, $leave);
         //send Slack
         $leave_type = "";
@@ -304,6 +305,111 @@ class LeaveController extends Controller
             ->user->email;
 
         $send = Mail::to($email)->send(new RejectLeave($leave, $user));
+    }
+
+    public function writeCalendar($leaves)
+    {
+        $app_key = env('APP_KEY');
+        $filename = 'time_off_calendar';
+        $folder_name = md5($filename.$app_key);
+        $path = public_path() ."/$folder_name";
+       
+        if(!File::exists($path)) 
+        {
+            File::makeDirectory($path);
+        }
+        
+        
+        $file = $path ."/$filename.ics";
+        if(file_exists( $file ))
+        {
+            $lines = file($file); 
+            
+            $last = sizeof($lines)-1;  
+            unset($lines[$last]); 
+
+            // write the new data to the file 
+            $fp = fopen($file, 'w'); 
+
+            fwrite($fp, implode('', $lines)); 
+            fclose($fp);
+
+            $leaveUser = $this->generateLeaveUserInfo($leaves);
+            
+$content = "
+BEGIN:VEVENT
+LOCATION:
+DESCRIPTION: 
+DTSTART;VALUE=DATE:".str_replace("-", "", $leaveUser['from'])."
+DTEND;VALUE=DATE:".str_replace("-", "", $leaveUser['to'])."
+SUMMARY: ".$leaveUser['name']." : ".$leaveUser['leaveType']."
+URL;VALUE=URI:www.comquas.com
+DTSTAMP: ".$leaveUser['timestamp']."
+UID: 0".$leaveUser['id']."
+END:VEVENT
+END:VCALENDAR";
+          
+            $bytesWritten = File::append($file, $content);
+            if ($bytesWritten === false)
+            {
+                die("Couldn't write to the file.");
+            }
+        }
+        else
+        {
+            $leaves = Leave::where('status',1)
+                    ->orderBy('from')
+                    ->get();
+            $leaveUsers = $this->generateAllLeaveUsersInfo($leaves);
+            $contents = response()->view('webcal.leave', ['leaveUsers' => $leaveUsers,
+            ],200);
+           
+            $bytes_written = File::put($file, $contents->getContent());
+            if ($bytes_written === false)
+            {
+                die("Error writing to file");
+            }
+        }
+    }
+
+    public function generateAllLeaveUsersInfo($leaves)
+    {
+        $leaveUsers = [];
+        foreach($leaves as $leave)
+        {
+            $leaveType = '';
+            $user = $leave->user()->first();
+            if($leave->type == 1)
+            {
+                $leaveType = "Annual Leave";
+            }
+            else
+            {
+                $leaveType = "Sick Leave";
+            }
+            $info = array('id'=>$user->id,'name'=>$user->name, 'from'=>$leave->from,'to'=>$leave->to, 'leaveType'=>$leaveType, 'timestamp'=>$leave->created_at);
+            array_push($leaveUsers,$info);
+            
+        }
+        return $leaveUsers;
+    }
+
+    public function generateLeaveUserInfo($leave)
+    {
+        
+            $leaveType = '';
+            $user = $leave->user()->first();
+           
+            if($leave->type == 1)
+            {
+                $leaveType = "Annual Leave";
+            }
+            else
+            {
+                $leaveType = "Sick Leave";
+            }
+            $info = array('id'=>$user->id,'name'=>$user->name, 'from'=>$leave->from,'to'=>$leave->to, 'leaveType'=>$leaveType, 'timestamp'=>$leave->created_at);
+        return $info;
     }
 
 }

@@ -9,7 +9,6 @@ use App\User;
 use App\Leave;
 use Carbon;
 
-
 class HomeController extends Controller
 {
     /**
