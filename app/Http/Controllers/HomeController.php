@@ -67,4 +67,6 @@ class HomeController extends Controller
        //dd($anniversary_users);
         return view('home',["user" => Auth::user(), "birthdays_of_users" => $birthdays_of_users, "current_month"=>$current_month, "leaves"=>$leaves, "is_profile"=>false, "anniversary_users"=>$anniversary_users]);
     }
+
+   
 }
