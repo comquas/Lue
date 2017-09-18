@@ -115,3 +115,15 @@
 	margin-top: 10px;
 	width: 100%;
 }
+
+.calendar-link {
+	top: 8px;
+	display: block;
+	position: absolute;
+	right: 20px;
+	text-decoration: none;
+}
+
+.calendar-link:hover {
+	text-decoration: none;
+}

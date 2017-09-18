@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Leave;
 use Carbon;
-
+use App\LueCalendar;
 class HomeController extends Controller
 {
     /**
@@ -19,6 +19,8 @@ class HomeController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $helper = new LueCalendar();
+        $helper->buildCalendarFolder();
     }
 
     /*
@@ -64,8 +66,16 @@ class HomeController extends Controller
                                 ->where(DB::raw('DAY(join_date)'),'>=',DB::raw('DAY(NOW())'))
                                 ->orderBy('join_date')
                                 ->get();
-       //dd($anniversary_users);
-        return view('home',["user" => Auth::user(), "birthdays_of_users" => $birthdays_of_users, "current_month"=>$current_month, "leaves"=>$leaves, "is_profile"=>false, "anniversary_users"=>$anniversary_users]);
+        $helper = new LueCalendar();
+        $folder_name = $helper->getCalendarFolderHash();
+        $app_url = env("CALENDAR_URL");                           
+       $calendar_link = "webcal://".$app_url."/".$folder_name."/timeoff.ics";
+
+
+       $user = Auth::user();
+       $is_profile = false;
+
+        return view('home',compact("user","birthdays_of_users","current_month","leaves","is_profile","anniversary_users","calendar_link"));
     }
 
    

@@ -7,6 +7,7 @@ use Carbon\Carbon;
 
 class Leave extends Model
 {
+
     function user() {
     	return $this->hasOne('App\User','id','user_id');
     }
@@ -18,4 +19,6 @@ class Leave extends Model
     public function get_to_date() {
         return Carbon::createFromFormat('Y-m-d',$this->to,"Asia/Rangoon")->format('d-m-Y');
     }
+
+    
 }
