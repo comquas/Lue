@@ -12,6 +12,7 @@ use App\Mail\ApproveLeave;
 use App\Mail\RejectLeave;
 use App\Mail\ApplyLeave;
 use App\LueCalendar;
+use DB;
 use File;
 
 class LeaveController extends Controller
@@ -39,11 +40,13 @@ class LeaveController extends Controller
         {
             $id[] = $leaveUser->id;
         }
-       
+        DB::enableQueryLog();
         $decision = true;
-        $leaves = Leave::where('status', 0)->whereIn('user_id',$id)
+        $leaves = Leave::where('status', 0)->whereIn('user_id',[3])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
+
+        
 
         //dd($leaves);
         return view('leave/list', compact('leaves','decision'));
