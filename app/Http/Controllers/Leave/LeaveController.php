@@ -47,7 +47,9 @@ class LeaveController extends Controller
         ->where('users.supervisor_id',$user->id)
         ->where('leaves.status',0)
         ->orderBy('leaves.created_at', 'desc')
+        ->select('leaves.*')
         ->paginate(10);
+
         
         return view('leave/list', compact('leaves','decision'));
     }
@@ -59,6 +61,7 @@ class LeaveController extends Controller
         $leaves = Leave::join('users','leaves.user_id','users.id')
         ->where('users.supervisor_id',$user->id)
         ->orderBy('leaves.created_at', 'desc')
+        ->select('leaves.*')
         ->paginate(10);
 
     
@@ -221,9 +224,15 @@ class LeaveController extends Controller
             $leaveId[] = $leaveUser->id;
         }
 
-        $leave = Leave::where('status', 0)->where('id', $id)->whereIn('user_id', $leaveId)
-            ->first();
+
+        $leave = Leave::join('users','leaves.user_id','users.id')
+        ->where('leaves.id', $id)
+        ->where('users.supervisor_id',$user->id)
+        ->where('leaves.status',0)
+        ->select('leaves.*')
+        ->first();
         
+
         if ($leave == null)
         {
             return redirect()->route('not_found');
