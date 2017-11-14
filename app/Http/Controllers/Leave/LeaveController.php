@@ -55,15 +55,13 @@ class LeaveController extends Controller
     function decidedList()
     {
         $user = Auth::user();
-        $id=[];
-        foreach($user->staff() as $leaveUser)
-        {
-            $id[] = $leaveUser->id;
-        }
-        $leaves = Leave::whereIn('user_id', $id)
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
 
+        $leaves = Leave::join('users','leaves.user_id','users.id')
+        ->where('users.supervisor_id',$user->id)
+        ->orderBy('leaves.created_at', 'desc')
+        ->paginate(10);
+
+    
         
         return view('leave/list', compact('leaves'));
     }
