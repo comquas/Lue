@@ -42,13 +42,13 @@ class LeaveController extends Controller
         }
         DB::enableQueryLog();
         $decision = true;
-        $leaves = Leave::where('status', 0)->whereIn('user_id',[3])
-            ->orderBy('created_at', 'desc')
-            ->paginate(10);
-
+       
+        $leaves = Leave::join('users','leaves.user_id','users.id')
+        ->where('users.supervisor_id',$user->id)
+        ->where('leaves.status',0)
+        ->orderBy('leaves.created_at', 'desc')
+        ->paginate(10);
         
-
-        //dd($leaves);
         return view('leave/list', compact('leaves','decision'));
     }
 

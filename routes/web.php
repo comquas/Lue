@@ -16,10 +16,16 @@ Auth::routes();
 
 Route::get('/', 'HomeController@index')->name('home');
 
+Route::any('/home',function() {
+	return redirect('/');
+});
+
 Route::get('/404','StaticController@notfound')->name('not_found');
+
 Route::any('/register',function () {
     return redirect('/');
 });
+
 Route::post('/register',function () {
     return redirect('home');
 });

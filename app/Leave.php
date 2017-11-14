@@ -12,6 +12,9 @@ class Leave extends Model
     	return $this->hasOne('App\User','id','user_id');
     }
 
+
+
+
     public function get_from_date() {
         return Carbon::createFromFormat('Y-m-d',$this->from,"Asia/Rangoon")->format('d-m-Y');
     }
