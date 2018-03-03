@@ -30,6 +30,8 @@
       <th>Email</th>
       <th>Position</th>
       <th>Location</th>
+      <th>Salary</th>
+      <th>Time</th>
       <th>Actions</th>
     </tr>
   </thead>
@@ -41,7 +43,8 @@
                         <td>{{ $user->name }}</td>
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->position->title }}</td>
-
+                        <td>{{ $user->salary }}</td>
+                        <td>{{$user->get_long_time()}}</td>
                         <td>{{ $user->location->name }}</td>
                         <td>
                         <a href="{{ route('user_profile',['id' => $user->id ]) }}" class="btn btn-info">Profile</a>
