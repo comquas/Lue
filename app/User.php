@@ -40,6 +40,14 @@ class User extends Authenticatable
         
     }
 
+    public function get_long_time_year_month() {
+        //return Carbon::createFromFormat('Y-m-d',$this->join_date,"Asia/Rangoon")->format('d-m-Y');   
+        
+        return Carbon::parse($this->join_date)->diff(Carbon::now())->format('%y years, %m months');
+        
+        
+    }
+
     
 
     public function age() {

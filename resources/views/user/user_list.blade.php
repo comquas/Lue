@@ -29,10 +29,10 @@
       <th>Name</th>
       <th>Email</th>
       <th>Position</th>
-      <th>Location</th>
       <th>Salary</th>
       <th>Time</th>
       <th>Actions</th>
+
     </tr>
   </thead>
   <tbody>
@@ -44,8 +44,7 @@
                         <td>{{ $user->email }}</td>
                         <td>{{ $user->position->title }}</td>
                         <td>{{ $user->salary }}</td>
-                        <td>{{$user->get_long_time()}}</td>
-                        <td>{{ $user->location->name }}</td>
+                        <td>{{$user->get_long_time_year_month()}}</td>
                         <td>
                         <a href="{{ route('user_profile',['id' => $user->id ]) }}" class="btn btn-info">Profile</a>
                         <a href="{{ route('edit_user',['id' => $user->id ]) }}" class="btn btn-primary">Edit</a>
