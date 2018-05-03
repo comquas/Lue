@@ -20,7 +20,7 @@ class LueCalendar
         $path = public_path() ."/calendar/$folder_name";
         if(!File::exists($path))
         {
-            File::makeDirectory($path);
+            File::makeDirectory($path,0775,true);
 
             $file = $path ."/$filename.ics";
             $leaves = Leave::where('status',1)

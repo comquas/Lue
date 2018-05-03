@@ -72,7 +72,7 @@ class LeaveController extends Controller
     function store(Request $request, $id = '')
     {
 
-        $this->validate($request, ['type' => 'required|integer', 'from_date' => 'required|date', 'to_date' => 'required|date', 'no_of_day' => 'required|numeric']);
+        $this->validate($request, ['type' => 'required|integer', 'from_date' => 'required|date', 'to_date' => 'required|date', 'no_of_day' => 'required|numeric','reason' => 'required']);
 
         $user = Auth::user();
 
@@ -95,6 +95,7 @@ class LeaveController extends Controller
 
         $leave->type = $request->type;
         $leave->no_of_day = $request->no_of_day;
+        $leave->reason=$request->reason;
         $leave->from = Carbon::createFromFormat('d-m-Y', $request->from_date, "Asia/Rangoon");;
         $leave->to = Carbon::createFromFormat('d-m-Y', $request->to_date, "Asia/Rangoon");
         
