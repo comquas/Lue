@@ -13,6 +13,29 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+    Route::middleware('auth:api')->get('/user', function (Request $request) {
+        return $request->user();
+    });
+Route::post('/apiLogin', [
+    'uses' => 'loginController@apiLogin',
+
+]);
+Route::get('/supervisor',[
+    'uses'=>'loginController@getSup'
+]);
+Route::group(['middleware' => 'jwt.auth'], function () {
+
+   Route::get('/User',[
+       'uses'=>'Api\UserController@getUser'
+   ]);
+Route::get('/Position',[
+    'uses'=>'Api\PositionController@getPosition'
+]);
+
+Route::get('/Location',[
+    'uses'=>'Api\LocationController@getLocation',
+]);
+Route::get('/Leaves',[
+    'uses'=>'Api\LeaveController@getLeave',
+]);
 });
