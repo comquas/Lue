@@ -38,7 +38,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 	Route::post('user/profile','User\UserController@update_profile')->name('profile_update');
 	
 	Route::get('user/profile/{id}','User\UserController@profile')->name('user_profile');
-	
+	Route::get('reset.leave/{id}','User\UserController@resetLeave')->name('reset.leave');
 
 
 	Route::get('time-off/apply','Leave\LeaveController@index')->name('apply_timeoff');
