@@ -315,4 +315,11 @@ class UserController extends Controller
 
         
     }
+    public function resetLeave($id){
+        $user=User::where('id',$id)->first();
+        $user->no_of_leave="0";
+        $user->sick_leave="0";
+        $user->save();
+        return redirect()->back();
+    }
 }

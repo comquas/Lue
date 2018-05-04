@@ -45,7 +45,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                 <ul class="navbar-nav mr-auto">
-                     
+
                 @if(Auth::guest())
                 @else
                     @if(Auth::user()->is_admin())
@@ -77,6 +77,8 @@
                             @slot('list_route',route('position_list'))
                                 
                         @endcomponent
+                        <!-- calendar -->
+
                          <!-- ./Posistions -->
 
                          <!-- time-off -->
@@ -98,6 +100,7 @@
                      <li class="nav-item">
                         <a href="{{route('apply_timeoff')}}" class="nav-link">Apply Time-Off</a>
                      </li>
+                        <li><a class="btn" href="{{route('calendar')}}">CALENDAR</a> </li>
                  </ul>
                  <ul class="navbar-nav ml-auto">
                  <li class="nav-item dropdown" >
@@ -120,6 +123,7 @@
                     </div>
                 </li>
                 @endif
+
 </ul>
 
 </div>

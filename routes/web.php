@@ -30,15 +30,18 @@ Route::post('/register',function () {
     return redirect('home');
 });
 
+
 Route::middleware(['auth'])->prefix('admin')->group(function () {
 
-	
+
+    //calendar
+    Route::get('calendar','CalendarController@calendar')->name('calendar');
 	//user
 	Route::get('user/profile','User\UserController@edit_profile')->name('profile');
 	Route::post('user/profile','User\UserController@update_profile')->name('profile_update');
 	
 	Route::get('user/profile/{id}','User\UserController@profile')->name('user_profile');
-	
+	Route::get('reset.leave/{id}','User\UserController@resetLeave')->name('reset.leave');
 
 
 	Route::get('time-off/apply','Leave\LeaveController@index')->name('apply_timeoff');
@@ -82,6 +85,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 	
 		Route::get('time-off/list','Leave\LeaveController@timeOffList')->name('list_timeoff');
 		Route::get('decided/time-off/list','Leave\LeaveController@decidedList')->name('decided_timeoff_list');
+
 
 	});
 });

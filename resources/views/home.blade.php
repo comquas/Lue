@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container" style="background-color: #9d9d9d">
 
     <div class="row topbar-info">
 
@@ -28,11 +28,12 @@
                 <li><b>Sick leave : </b>{{ $user->sick_leave }} days left</li>
             @endif
         @isset($user->supervisor)
-        <li><b>Manager : </b><a href="{{ route('user_profile',["id" => $user->supervisor->id])}}">{{ $user->supervisor->name }}</a></li>
+
         @endisset
 
         @if (Auth::user()->is_admin() || $is_profile == false)
-                <li><a class="btn btn-primary edit-home" href="{{ route('edit_user',["id"=> $user->id]) }}">Edit</a></li>
+                <li><a style="font-size: 12px" class="btn btn-primary edit-home" href="{{ route('edit_user',["id"=> $user->id]) }}">Edit</a></li>
+                    <li><a style="font-size: 12px" class="btn btn-primary edit-home" href="{{route('reset.leave',['id'=>$user->id])}}">Reset Leave</a> </li>
         @endif
         </ul>
         </div>
