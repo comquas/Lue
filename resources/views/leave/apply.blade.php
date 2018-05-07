@@ -32,15 +32,22 @@
 							@if(!isset($leave))
 								<option value=1>Annual</option>
 								<option value=2>Sick</option>
+								<option value="3">Urgent</option>
 							@endif
 
 							@if(isset($leave))
 								@if($leave->type == 1)
 									<option value=1 selected>Annual</option>
 									<option value=2>Sick</option>
-								@else
+									<option value="3">Urgent</option>
+								@elseif($leave->type == 2)
 									<option value=2 selected>Sick</option>
 									<option value=1>Annual</option>
+									<option value="3">Urgent</option>
+									@else
+									<option value="3" selected>Urgent</option>
+									<option value="1">Annual</option>
+									<option value="2">Sick</option>
 								@endif
 							@endif
 							</select>
@@ -82,6 +89,13 @@
 						@slot('value',"")
 						@endif
 						@endcomponent
+
+						<div class="form-group @if($errors->has('reason')) has-error @endif">
+							<label for="reason">Reason</label><br>
+							<textarea name="reason" style="height:80px;border-radius: 15px;width: 1070px"></textarea>
+							@if($errors->has('reason')) <b><div class="help-block">{{$errors->first('reason')}}</div></b>  @endif
+						</div>
+
 						<button class="btn btn-primary">{{ $btn_title }}</button>
 					</form>
 
