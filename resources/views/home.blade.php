@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container" style="background-color: #9d9d9d">
+<div class="container">
 
     <div class="row topbar-info">
 
@@ -56,7 +56,8 @@
         <h6>🎂 Birthday</h6>
             </div>
             <div class="card-block">
-            <ul class="user-info-data">
+
+           <ul class="user-info-data">
                 @if(count($birthdays_of_users)!=0)
                 @foreach($birthdays_of_users as $birthday_user)
                 <li><a href="{{ route('user_profile',["id" => $birthday_user->id])}}">{{$birthday_user->name}}</a> , {{date('d F',strtotime($birthday_user->birthday))}}</li>
@@ -65,7 +66,7 @@
                     <li>There is no brithday</li>
                 @endif
             </ul>
-    
+
     </div>
     </div>
     </div>
@@ -118,34 +119,35 @@
             
         
         <ul class="user-info-data">
-       @if(count($leaves)!=0)
-       @foreach($leaves as $leave)
+            @if(count($leaves)!=0)
+                @foreach($leaves as $leave)
 
-                <li>
+                    <li>
 
-                <a href="{{ route('user_profile',["id" => $leave->user->id])}}">{{$leave->user->name}} </a>
-                @if($leave->type == 2)
-                    😷
-                @endif
-                <br/>
-                <div class='small'>
+                        <a href="{{ route('user_profile',["id" => $leave->user->id])}}">{{$leave->user->name}} </a>
+                        @if($leave->type == 2)
+                            😷
+                        @endif
+                        <br/>
+                        <div class='small'>
 
-                from {{date('d/m',strtotime($leave->from))}} 
-                to {{date('d/m',strtotime($leave->to))}} 
-                , {{$leave->no_of_day}} 
+                            from {{date('d/m',strtotime($leave->from))}}
+                            to {{date('d/m',strtotime($leave->to))}}
+                            , {{$leave->no_of_day}}
 
-                @if($leave->no_of_day > 1) 
-                    days 
-                @else 
-                    day 
-                @endif
+                            @if($leave->no_of_day > 1)
+                                days
+                            @else
+                                day
+                            @endif
 
-                </div></li> 
-                  
-       @endforeach
-       @else
-            <li>Wow.. nobody take leave yet 👍</li> 
-       @endif
+                        </div></li>
+
+                @endforeach
+            @else
+                <li>Wow.. nobody take leave yet 👍</li>
+            @endif
+
         </ul>
     </div>
     </div>

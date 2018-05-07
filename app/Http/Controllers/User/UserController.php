@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use function GuzzleHttp\Psr7\_parse_request_uri;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -321,5 +322,9 @@ class UserController extends Controller
         $user->sick_leave="0";
         $user->save();
         return redirect()->back();
+    }
+    public function BAT(){
+        $user=User::all();
+        return view('home')->with(['user'=>$user]);
     }
 }

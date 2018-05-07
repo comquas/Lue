@@ -8,10 +8,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }} @yield('title')</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
 
     <!-- bootstarp -->
     <script type="text/javascript" src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
@@ -30,6 +31,7 @@
     <link href="{{ asset('bower_components/Ionicons/css/ionicons.min.css') }}" rel="stylesheet">
 
     @yield('header')
+
 
 </head>
 <body>
@@ -100,7 +102,10 @@
                      <li class="nav-item">
                         <a href="{{route('apply_timeoff')}}" class="nav-link">Apply Time-Off</a>
                      </li>
-                        <li><a class="btn" href="{{route('calendar')}}">CALENDAR</a> </li>
+                        <li><a style="color: black;background-color: inherit;
+                                        margin-left: 350px;line-height: 20px"
+                                       class="btn"
+                               href="{{route('calendar')}}">CALENDAR</a> </li>
                  </ul>
                  <ul class="navbar-nav ml-auto">
                  <li class="nav-item dropdown" >
@@ -195,4 +200,5 @@
 
 
 </body>
+
 </html>

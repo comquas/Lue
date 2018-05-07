@@ -9,7 +9,8 @@
 </head>
 <body>
 
-<div id="calendar"></div>
+<div id="calendar">
+</div>
 </body>
 <!-- jquery -->
 <script src="/bc/jquery/dist/jquery.min.js"></script>
@@ -68,14 +69,38 @@
                 day  : 'day'
             },
 
+            @foreach($user as $users)
+
             events    : [
-                {
+                /*{
                     title          : 'All Day Event',
                     start          : new Date(y, m, 1),
                     backgroundColor: '#f56954', //red
                     borderColor    : '#f56954' //red
+                },*/
+
+                {
+                  title : '{{$users->name}} Birthday',
+                  start : '{{$users->birthday}}',
+                    backgroundColor: 'blue',
+                    borderColor : 'black'
                 },
                 {
+                  title : "{{$users->name}} Anniversary",
+                  start : "{{$users->join_date}}",
+                    backgroundColor: "#FA8072",
+                    borderColor : "black",
+                },
+                @foreach($leave as $leaves)
+                {
+                    title : "<{{$users->name}}> Time-Off :: {{$leaves->no_of_day}} days :: {{$leaves->reason}}",
+                    start : "{{$leaves->from}}",
+                    end : "{{ Carbon\Carbon::parse($leaves->to)->addDay(1) }}",
+                    backgroundColor : "maroon",
+                    borderColor : "black"
+                }
+                @endforeach
+               /* {
                     title          : 'Long Event',
                     start          : new Date(y, m, d - 5),
                     end            : new Date(y, m, d - 2),
@@ -112,8 +137,9 @@
                     url            : 'http://google.com/',
                     backgroundColor: '#3c8dbc', //Primary (light-blue)
                     borderColor    : '#3c8dbc' //Primary (light-blue)
-                }
+                }*/
             ],
+            @endforeach
             editable  : false,
             droppable : true, // this allows things to be dropped onto the calendar !!!
             drop      : function (date, allDay) { // this function is called when something is dropped
