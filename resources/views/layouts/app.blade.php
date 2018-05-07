@@ -51,7 +51,6 @@
                 @if(Auth::guest())
                 @else
                     @if(Auth::user()->is_admin())
-
                         <!-- user -->
                         @component('control.nav-item')
                             @slot('title','Employee')

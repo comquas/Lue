@@ -13,29 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-    Route::middleware('auth:api')->get('/user', function (Request $request) {
-        return $request->user();
-    });
-Route::post('/apiLogin', [
-    'uses' => 'loginController@apiLogin',
+Route::post('/login',[
+    'uses'=>'Api\loginController@login',
+]);
 
-]);
-Route::get('/supervisor',[
-    'uses'=>'loginController@getSup'
-]);
 Route::group(['middleware' => 'jwt.auth'], function () {
 
-   Route::get('/User',[
-       'uses'=>'Api\UserController@getUser'
-   ]);
-Route::get('/Position',[
-    'uses'=>'Api\PositionController@getPosition'
-]);
+    //for User
+    Route::post('/users',[
+        'uses'=>'Api\UserController@store'
+    ]);
 
-Route::get('/Location',[
-    'uses'=>'Api\LocationController@getLocation',
-]);
-Route::get('/Leaves',[
-    'uses'=>'Api\LeaveController@getLeave',
-]);
 });

@@ -10,6 +10,6 @@ class LeaveController extends Controller
 {
     public function getLeave(){
         $le=Leave::all();
-        return response()->json(['message'=>$le]);
+        return response()->json($le);
     }
 }

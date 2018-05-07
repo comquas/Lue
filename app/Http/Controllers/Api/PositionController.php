@@ -10,6 +10,6 @@ class PositionController extends Controller
 {
     public function getPosition(){
         $po=Position::all();
-        return response()->json(['message'=>$po]);
+        return response()->json($po);
     }
 }
