@@ -67,6 +67,7 @@ class UserController extends Controller
     }
 
     function store(Request $request) {
+
         $this->validate($request, [
             'avatar' => 'required|image|mimes:jpeg,bmp,png|max:2000',
             'name' => 'required|string|max:255',
@@ -85,6 +86,7 @@ class UserController extends Controller
             'github' => 'nullable|string',
             'twitter' => 'nullable|string'
             ]);
+
 
         $this->update("",$request);
         return redirect()->route('user_list');
@@ -217,7 +219,7 @@ class UserController extends Controller
             
             //change photoname with original extension
             $photoName = time().'.'.$ext;
-
+            //dd(public_path('avatars'));
             //move to public folder
             $request->avatar->move(public_path('avatars'), $photoName);
 
