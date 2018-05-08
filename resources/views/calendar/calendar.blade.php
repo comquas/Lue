@@ -86,7 +86,9 @@
                     },
                         @endforeach
 
-                ],
+                   ],
+
+
 
                 editable  : false,
                 droppable : true, // this allows things to be dropped onto the calendar !!!
