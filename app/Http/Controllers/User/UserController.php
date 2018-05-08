@@ -41,6 +41,18 @@ class UserController extends Controller
                 
         return view('user/edit_profile',["user" => $user,"positions" => $positions,"locations" => $locations,"btn_title" => "Update", "route" => route('user_update',['id'=>$user->id])]);
     }
+    function delete(User $user){
+
+
+        $img_path=public_path("avatars/{$user->avatar}");
+        //return $img_path;
+        if(File::exists($img_path)){
+            unlink($img_path);
+        }
+        //file::delete($img_path);
+        $user->delete();
+        return back();
+    }
     function add() {
         $positions = Position::all();
         $locations = Location::all();

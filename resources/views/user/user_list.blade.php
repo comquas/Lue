@@ -48,6 +48,7 @@
                         <td>
                         <a href="{{ route('user_profile',['id' => $user->id ]) }}" class="btn btn-info">Profile</a>
                         <a href="{{ route('edit_user',['id' => $user->id ]) }}" class="btn btn-primary">Edit</a>
+                        <a href="{{ route('del_user',['id'=> $user->id]) }}" class="btn btn-danger">Delete</a>
                         </td>
                         {{-- <td><a class="btn btn-info" href="{{ route('user_edit' , ['id' => $user->id]) }}">Edit</a>
 

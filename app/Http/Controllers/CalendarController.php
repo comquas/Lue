@@ -9,9 +9,9 @@ use App\Leave;
 class CalendarController extends Controller
 {
      public function calendar(){
-         $leave=Leave::all();
+
          $user=User::all();
-         return view('calendar.calendar')->with(['users'=>$user])->with(['leaves'=>$leave]);
+         return view('calendar.calendar')->with(['users'=>$user]);
 
      }
 }

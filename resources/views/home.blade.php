@@ -41,7 +41,7 @@
             <ul class='user-info-detail'>
             <li><label>Email</label><span>{{ $user->email }}</span></li>
             <li><label>Mobile</label><span>{{ $user->mobile_no }}</span></li>
-            <li><label>Address</label><span>{{ $user->location->name }}</span></li>
+                <li><label>Address</label><span>{{ optional( $user->location)->name }}</span></li>
             <li><label>Join Date</label><span>{{ $user->get_join_date() }}</span></li>
             <li><label>Birthday</label><span>{{ $user->get_birthday() }} ({{ $user->age() }})</span></li>
             </ul>

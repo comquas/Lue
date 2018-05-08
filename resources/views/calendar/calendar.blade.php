@@ -85,17 +85,7 @@
                         borderColor : "black",
                     },
                         @endforeach
-                        @foreach($leaves as $leave)
-                    {
-                        title : "{{$leave->user_id}} Time-Off :: {{$leave->no_of_day}} days :: {{$leave->reason}}",
-                        start : "{{$leave->from}}",
-                        end : "{{ Carbon\Carbon::parse($leave->to)->addDay(1) }}",
-                        backgroundColor : "#00ff00",
-                        borderColor : "white",
 
-                    }
-
-                    @endforeach
                 ],
 
                 editable  : false,
