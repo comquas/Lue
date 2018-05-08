@@ -95,7 +95,7 @@
 
 						<div class="form-group @if($errors->has('reason')) has-error @endif">
 							<label for="reason">Reason</label><br>
-							<textarea name="reason" placeholder="please help your reason.." style="height:80px;border-radius: 10px;width: 1070px"></textarea>
+							<textarea placeholder="comment" rows="4" name="reason" cols="131" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
 							@if($errors->has('reason')) <b><div class="help-block">{{$errors->first('reason')}}</div></b>  @endif
 						</div>
 
