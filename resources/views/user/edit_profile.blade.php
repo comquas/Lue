@@ -2,7 +2,7 @@
 
 
 @section('header')
-<script type="text/javascript" src={{ asset('library/datepicker/js/bootstrap-datepicker.js') }}></
+<script type="text/javascript" src={{ asset('library/datepicker/js/bootstrap-datepicker.js') }}></script>
 <script type="text/javascript" src={{ asset('js/plugins/moment.min.js') }}></script>
 <script type="text/javascript" src={{ asset('bower_components/select2/dist/js/select2.min.js') }}></script>
 <link rel="stylesheet" type="text/css" href={{ asset('bower_components/select2/dist/css/select2.min.css') }}>
@@ -172,6 +172,14 @@
                         @slot('placeholder','5')
                         @slot('value',isset($user) ? $user->sick_leave : "")
                         @endcomponent
+
+                        @component('control.textbox')
+                        @slot('title','Urgent Leave')
+                        @slot('name','urgent_leave')
+                        @slot('placeholder','5')
+                        @slot('value',isset($user) ? $user->urgent_leave : "")
+                        @endcomponent
+
 
                         <div class="form-group">
 

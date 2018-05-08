@@ -37,6 +37,7 @@ class CreateUsersTable extends Migration
             //leave
             $table->float('no_of_leave')->default(0);
              $table->float('sick_leave')->default(0);
+             $table->float('urgent_leave')->default(0);
 
 
             //personal

@@ -90,6 +90,7 @@
 						@endif
 						@endcomponent
 
+
 						<div class="form-group @if($errors->has('reason')) has-error @endif">
 							<label for="reason">Reason</label><br>
 							<textarea name="reason" placeholder="please help your reason.." style="height:80px;border-radius: 10px;width: 1070px"></textarea>

@@ -11,6 +11,7 @@ class CalendarController extends Controller
      public function calendar(){
          $leave=Leave::all();
          $user=User::all();
-         return view('calendar.calendar')->with(['user'=>$user])->with(['leave'=>$leave]);
+         return view('calendar.calendar')->with(['users'=>$user])->with(['leaves'=>$leave]);
+
      }
 }
