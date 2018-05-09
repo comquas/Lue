@@ -71,8 +71,8 @@ class User extends Authenticatable
     }
 
     function is_admin() {
-      
-      return ($this->position->level <= env('ADMIN_LEVEL'));
+
+      return ($this->position->level <= config('comquas.position'));
     }
 
     function staff() {

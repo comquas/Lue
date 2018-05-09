@@ -5,10 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use JWTAuth;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Facades\JWTAuth;
+
 
 class loginController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function login(Request $request){
         $credentials = $request->only('email', 'password');
         $token = null;
@@ -19,7 +25,14 @@ class loginController extends Controller
         } catch (JWTAuthExcepstion $e) {
             return response()->json(['failed_to_create_token'], 500);
         }
-        return response()->json(compact('token'));
+
+        $user=JWTAuth::toUser($token);
+        $user['token']=$token;
+        return response()->json($user);
     }
+
+
+
+
 
 }
