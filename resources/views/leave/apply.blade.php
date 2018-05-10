@@ -93,13 +93,10 @@
 						@endcomponent
 
 						<div class="form-group" id="zero_five">
-							<input type="checkbox"> check for 0.5 day
+							<input type="checkbox" id="zero_point"> check for 0.5 day
 						</div>
 
-						<script>
 
-                            $('#zero_five').hide();
-						</script>
 
 						<div class="form-group @if($errors->has('reason')) has-error @endif">
 							<label for="reason">Reason</label><br>
@@ -108,6 +105,7 @@
 						</div>
 
 						<button class="btn btn-primary">{{ $btn_title }}</button>
+
 					</form>
 
 				</div>
@@ -116,11 +114,13 @@
 	</div>
 </div>
 
+
 <script type="text/javascript">
 
 	$(document).ready(function() {
 
-		$("#type").select2();
+	    $('#zero_five').hide();
+	    $("#type").select2();
 
 
 		var nowTemp = new Date();
@@ -152,17 +152,29 @@
 			var b = moment(checkout.date);
 			var day = $("#no_of_day").val();
 			//console.log(day);
-			if(day>0)
-			{
-				$("#no_of_day").val('');
+			if(day>0) {
+                $("#no_of_day").val('');
+            }
+
+
+
+			if($("#no_of_day").val(workday_count(a,b)).val() < 2){
+
+			    $('#zero_five').show();
+
+                $('#zero_point').bind('change', function(e) {
+                    if ($(this).is(':checked')) {
+                       $('#no_of_day').val('0.5')
+                    }
+                    else {
+                        $("#no_of_day").val(workday_count(a,b)).val()
+                    }
+                })
 			}
-			$("#no_of_day").val(workday_count(a,b));
 
 			checkout.hide();
+
 		}).data('datepicker');
-
-
-
 	});
 
 
