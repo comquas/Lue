@@ -143,6 +143,7 @@ class LeaveController extends Controller
         else {
             //write to calendar
             $helper = new LueCalendar();
+            dd($helper);
             $helper->writeCalendar($leave);
         }
 

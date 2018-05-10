@@ -79,10 +79,11 @@
 							</div>
 						</div>
 
+
+
 						@component('control.textbox')
 						@slot('title','No. Of Day')
 						@slot('name','no_of_day')
-						@slot('id','nod')
 						@slot('placeholder','1')
 						@if(isset($leave))
 						@slot('value',$leave_days+1)
@@ -91,7 +92,14 @@
 						@endif
 						@endcomponent
 
+						<div class="form-group" id="zero_five">
+							<input type="checkbox"> check for 0.5 day
+						</div>
 
+						<script>
+
+                            $('#zero_five').hide();
+						</script>
 
 						<div class="form-group @if($errors->has('reason')) has-error @endif">
 							<label for="reason">Reason</label><br>
