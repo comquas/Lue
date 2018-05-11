@@ -2,7 +2,7 @@
 namespace App;
 
 use Carbon\Carbon;
-use File;
+use Illuminate\Support\Facades\File;
 
 class LueCalendar
 {
@@ -29,7 +29,6 @@ class LueCalendar
             $leaveUsers = $this->generateAllLeaveUsersInfo($leaves);
             $contents = response()->view('webcal.leave', ['leaveUsers' => $leaveUsers,
             ],200);
-           
             $bytes_written = File::put($file, $contents->getContent());
             if ($bytes_written === false)
             {
@@ -52,9 +51,12 @@ class LueCalendar
             {
                 $leaveType = "Annual Leave";
             }
-            else
+            else if($leave->type == 2)
             {
                 $leaveType = "Sick Leave";
+            }else
+            {
+                $leaveType = "Urgent Leave";
             }
             $info = array('id'=>$user->id,'name'=>$user->name, 'from'=>$leave->from,'to'=>Carbon::parse($leave->to)->addDay(), 'leaveType'=>$leaveType, 'timestamp'=>$leave->created_at);
             array_push($leaveUsers,$info);
@@ -69,9 +71,7 @@ class LueCalendar
         $filename = 'timeOff';
         $helper = new LueCalendar();
         $folder_name = $helper->getCalendarFolderHash();
-
         $path = public_path() ."/calendar/$folder_name";
-       
         if(!File::exists($path)) 
         {
             File::makeDirectory($path);
@@ -79,18 +79,18 @@ class LueCalendar
         
         
         $file = $path ."/$filename.ics";
+
         if(file_exists( $file ))
         {
             
-            $lines = file($file); 
-            
-            $last = sizeof($lines)-1;  
-            unset($lines[$last]); 
+            $lines = file($file);
+            $last = sizeof($lines)-1;
+            unset($lines[$last]);
 
             // write the new data to the file 
             $fp = fopen($file, 'w'); 
 
-            fwrite($fp, implode('', $lines)); 
+            fwrite($fp, implode('', $lines));
             fclose($fp);
 
             $leaveUser = $this->generateLeaveUserInfo($leaves);
@@ -122,16 +122,19 @@ END:VCALENDAR";
     public function generateLeaveUserInfo($leave)
     {
         
-            $leaveType = '';
+
             $user = $leave->user()->first();
-           
             if($leave->type == 1)
             {
                 $leaveType = "Annual Leave";
             }
-            else
+            else if($leave->type == 2)
             {
                 $leaveType = "Sick Leave";
+            }
+            else
+            {
+                $leaveType = "Urgent Leave";
             }
             $info = array('id'=>$user->id,'name'=>$user->name, 'from'=>$leave->from,'to'=>Carbon::parse($leave->to)->addDay(), 'leaveType'=>$leaveType, 'timestamp'=>$leave->created_at);
         return $info;

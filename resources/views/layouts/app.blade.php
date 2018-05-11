@@ -49,10 +49,11 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                 <ul class="navbar-nav mr-auto">
-                    <li> <a class="navbar-brand" href="{{route('calendar')}}">CALENDAR</a></li>
+
                 @if(Auth::guest())
                 @else
                     @if(Auth::user()->is_admin())
+                            <li> <a class="nav-link" href="{{route('calendar')}}">Calendar</a></li>
                         <!-- user -->
                         @component('control.nav-item')
                             @slot('title','Employee')

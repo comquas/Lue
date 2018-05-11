@@ -143,7 +143,7 @@ class LeaveController extends Controller
         else {
             //write to calendar
             $helper = new LueCalendar();
-            dd($helper);
+            //dd($helper);
             $helper->writeCalendar($leave);
         }
 
@@ -208,6 +208,11 @@ class LeaveController extends Controller
             $leave
                 ->user->sick_leave = $leave
                 ->user->sick_leave - $leave->no_of_day;
+        }else if($leave->type == 3)
+        {
+            $leave
+                ->user->urgent_leave = $leave
+                ->user->urgent_leave - $leave->no_of_day;
         }
         $leave->approved_by = $user->id;
 
@@ -254,12 +259,18 @@ class LeaveController extends Controller
         {
             $leave_type = "Annual";
         }
-        else
+        else if ($leave->type == 2)
         {
             $leave_type = "Sick";
         }
+        else
+        {
+            $leave_type = "Urgent";
+        }
         $text = "You are allowed the " . $leave_type . "leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
         $text = "You are allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
+
+
         $this->sendSlack($user, $leave->user, $text);
 
         return redirect()->route('list_timeoff');

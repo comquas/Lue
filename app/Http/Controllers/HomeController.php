@@ -69,7 +69,7 @@ class HomeController extends Controller
         $helper = new LueCalendar();
         $folder_name = $helper->getCalendarFolderHash();
         $app_url = env("CALENDAR_URL");                           
-       $calendar_link = "webcal://".$app_url."/".$folder_name."/timeoff.ics";
+       $calendar_link = "webcal://".$app_url."/".$folder_name."/timeOff.ics";
 
 
        $user = Auth::user();
