@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-    <link rel="stylesheet" href="/bc/fullcalendar/dist/fullcalendar.min.css">
+    <link rel="stylesheet" href="{{ asset('bc/fullcalendar/dist/fullcalendar.min.css')}}">
 
 @endsection
 
@@ -14,11 +14,12 @@
 
             <div id="calendar">
             </div>
-            <script src="/bc/jquery/dist/jquery.min.js"></script>
+            //src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"
+            <script src="{{ asset('bc/jquery/dist/jquery.min.js') }}"></script>
 
             <!-- fullcalendar -->
-            <script src="/bc/moment/moment.js"></script>
-            <script src="/bc/fullcalendar/dist/fullcalendar.min.js"></script>
+            <script src="{{ asset('bc/moment/moment.js')}}"></script>
+            <script src="{{ asset('bc/fullcalendar/dist/fullcalendar.min.js') }}"></script>
 
             <script>
                 $(              function () {

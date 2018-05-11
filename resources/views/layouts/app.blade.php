@@ -53,7 +53,7 @@
                 @if(Auth::guest())
                 @else
                     @if(Auth::user()->is_admin())
-                            <li> <a class="nav-link" href="{{route('calendar')}}">Calendar</a></li>
+                            <li class="nav-item"> <a class="nav-link" href="{{route('calendar')}}">Calendar</a></li>
                         <!-- user -->
                         @component('control.nav-item')
                             @slot('title','Employee')

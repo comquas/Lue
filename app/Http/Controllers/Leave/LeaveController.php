@@ -342,10 +342,5 @@ class LeaveController extends Controller
         $send = Mail::to($email)->send(new RejectLeave($leave, $user));
     }
 
-
-    
-
-    
-
 }
 
