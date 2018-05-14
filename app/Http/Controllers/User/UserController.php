@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\BirthdayCalendar;
 use function GuzzleHttp\Psr7\_parse_request_uri;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -300,9 +301,12 @@ class UserController extends Controller
         $user->slack = $this->null_empty($request->slack);
         $user->save();
 
-    }
+        ///////write calendar from here
 
-    function search(Request $request) {
+        $helper=new BirthdayCalendar();
+        $helper->writeCalendar($user);
+
+    }    function search(Request $request) {
 
         if (!isset($request->name)) {
             return;

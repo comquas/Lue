@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\File;
 
 class LueCalendar
 {
-	function getCalendarFolderHash($filename="timeoff") {
+	function getCalendarFolderHash($filename="timeOff") {
         $app_key = env('APP_KEY');
         $folder_name = md5($filename.$app_key);
         return $folder_name;

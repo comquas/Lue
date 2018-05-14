@@ -4,6 +4,7 @@ PRODID:-//hacksw/handcal//NONSGML v1.0//EN
 CALSCALE:GREGORIAN
 
 @foreach($leaveUsers as $key => $leaveUser)
+
 BEGIN:VEVENT
 LOCATION:
 DESCRIPTION:
@@ -14,6 +15,7 @@ URL;VALUE=URI:www.comquas.com
 DTSTAMP:{{$leaveUser['timestamp']}}
 UID:0{{$leaveUser['id']}}
 END:VEVENT
+
 @endforeach
 
 END:VCALENDAR
