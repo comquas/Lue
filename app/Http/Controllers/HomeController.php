@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AnniversaryCalendar;
 use App\BirthdayCalendar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,8 @@ class HomeController extends Controller
         $helper->buildCalendarFolder();
         $birth=new BirthdayCalendar();
         $birth->buildCalendarFolder();
+        $anniversary=new AnniversaryCalendar();
+        $anniversary->buildCalendarFolder();
     }
 
     /*

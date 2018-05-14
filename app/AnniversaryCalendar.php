@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 
 
-class BirthdayCalendar extends Model
+class AnniversaryCalendar extends Model
 {
 
-    function getCalendarFolderHash($filename="birthday") {
+    function getCalendarFolderHash($filename="anniversary") {
         $app_key = env('APP_KEY');
         $folder_name = md5($filename.$app_key);
         return $folder_name;
@@ -17,14 +17,14 @@ class BirthdayCalendar extends Model
 
     function buildCalendarFolder() {
 
-        $filename="birthday";
+        $filename="anniversary";
         $folder_name = $this->getCalendarFolderHash($filename);
         $path = public_path() ."/calendar/$folder_name";
 
         $file = $path ."/$filename.ics";
         $user=User::all();
         $users = $this->generateAllLeaveUsersInfo($user);
-        $contents = response()->view('webcal.birthday', ['users' => $users,
+        $contents = response()->view('webcal.anniversary', ['users' => $users,
         ],200);
         $bytes_written = File::put($file, $contents->getContent());
         if ($bytes_written === false)
@@ -41,7 +41,7 @@ class BirthdayCalendar extends Model
         foreach($user as $usr)
         {
 
-            $info = array('id'=>$usr->id,'name'=>$usr->name, 'birthday'=>$usr->birthday);
+            $info = array('id'=>$usr->id,'name'=>$usr->name, 'join_date'=>$usr->join_date);
             array_push($users,$info);
 
         }
@@ -51,8 +51,8 @@ class BirthdayCalendar extends Model
 
     public function writeCalendar($user)
     {
-        $filename = 'birthday';
-        $helper = new BirthdayCalendar();
+        $filename = 'anniversary';
+        $helper = new AnniversaryCalendar();
         $folder_name = $helper->getCalendarFolderHash();
         $path = public_path() ."/calendar/$folder_name";
         if(!File::exists($path))
@@ -75,16 +75,16 @@ class BirthdayCalendar extends Model
             fwrite($fp, implode('', $lines));
             fclose($fp);
 
-            $birthdayUser = $this->generateBirthdayUserInfo($user);
+            $anniversary = $this->generateBirthdayUserInfo($user);
 
             $content = "
 BEGIN:VEVENT
 LOCATION:
 DESCRIPTION: 
-SUMMARY: ".$birthdayUser['name']."
+SUMMARY: ".$anniversary['name']."
 URL;VALUE=URI:www.comquas.com
-DTSTAMP: ".$birthdayUser['birthday']."
-UID: 0".$birthdayUser['id']."
+DTSTAMP: ".$anniversary['join_date']."
+UID: 0".$anniversary['id']."
 END:VEVENT
 END:VCALENDAR";
 
@@ -101,7 +101,7 @@ END:VCALENDAR";
 
 
         $usr = $user->first();
-        $info = array('id'=>$usr->id,'name'=>$usr->name, 'birthday'=>$usr->birthday);
+        $info = array('id'=>$usr->id,'name'=>$usr->name, 'join_date'=>$usr->join_date);
         return $info;
     }
 
