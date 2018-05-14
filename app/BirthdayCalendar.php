@@ -20,7 +20,7 @@ class BirthdayCalendar extends Model
         $filename="birthday";
         $folder_name = $this->getCalendarFolderHash($filename);
         $path = public_path() ."/calendar/$folder_name";
-
+        dd($path);
         $file = $path ."/$filename.ics";
         $user=User::all();
         $users = $this->generateAllLeaveUsersInfo($user);

@@ -25,6 +25,7 @@ class HomeController extends Controller
         $helper->buildCalendarFolder();
         $birth=new BirthdayCalendar();
         $birth->buildCalendarFolder();
+        dd($birth);
         $anniversary=new AnniversaryCalendar();
         $anniversary->buildCalendarFolder();
     }

@@ -20,7 +20,6 @@ class AnniversaryCalendar extends Model
         $filename="anniversary";
         $folder_name = $this->getCalendarFolderHash($filename);
         $path = public_path() ."/calendar/$folder_name";
-
         $file = $path ."/$filename.ics";
         $user=User::all();
         $users = $this->generateAllLeaveUsersInfo($user);
