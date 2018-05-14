@@ -23,6 +23,7 @@
       <th>To</th>
       <th>No. Of Day</th>
       @if(isset($decision))
+          <th>Request Date</th>
         <th>Actions</th>
       @else
       <th>Status</th>
@@ -45,6 +46,7 @@
                         <td>{{ $leave->get_from_date() }}</td>
                         <td>{{ $leave->get_to_date() }}</td>
                         <td>{{ $leave->no_of_day }}</td>
+                         <td>{{$leave->created_at}}</td>
                         <!-- isDecidedLeave is used -->
                         @if(isset($decision))
                         <td><a href="{{ route('approve_timeoff',['id' => $leave->id]) }}" class="btn btn-primary">Approve</a>
