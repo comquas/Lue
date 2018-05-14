@@ -12,7 +12,8 @@ class AnniversaryCalendar extends Model
     function getCalendarFolderHash($filename="anniversary") {
         $app_key = env('APP_KEY');
         $folder_name = md5($filename.$app_key);
-        return $folder_name;
+        dd($folder_name);
+        //return $folder_name;
     }
 
     function buildCalendarFolder() {
