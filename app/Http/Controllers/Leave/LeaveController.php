@@ -182,8 +182,8 @@ class LeaveController extends Controller
             return false;
         }
 
-        $json = ["channel" => $receive_user->slack, "username" => $send_user->name, "text" => $text];
-        $json = ["channel" => "@".$receive_user->slack, "username" => $send_user->name, "text" => $text];
+        $json = ["channel" => $receive_user->slack, "username" => $send_user->name, "attachments" => $attachments];
+        $json = ["channel" => "@".$receive_user->slack, "username" => $send_user->name, "attachments" => $attachments];
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -267,9 +267,17 @@ class LeaveController extends Controller
         {
             $leave_type = "Urgent";
         }
-        $text = "You are allowed the " . $leave_type . "leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
-        $text = "You are allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
-
+        //$text = "You are allowed the " . $leave_type . "leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
+        //$text = "You are allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
+        $attachments=["attachments" => [
+            ["title" => $leave->user->name . " apply leave for " . $leave->no_of_day
+        . "days", 
+             "fields" => [
+            ["title" => "From" , "value" => $leave->from, "short" => true],
+            ["title" => "To", "value" => $leave->to, "short" => true],
+            ["title" => "No of Days","value"=> $leave->no_of_day, "short" => true],
+            ["title" => "Comment" , "value" => $leave->reason, "short"=>true]]]]]
+        
 
         $this->sendSlack($user, $leave->user, $text);
 

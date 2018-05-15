@@ -4,7 +4,6 @@
 <div class="container">
 
     <div class="row topbar-info">
-
         <div class="bar"></div>
         <div class="col-md-2 avatar">
             <img src="{{ url('avatars') }}/{{ $user->avatar }}" class="avatar-img rounded">
