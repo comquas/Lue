@@ -182,6 +182,25 @@ class LeaveController extends Controller
             return false;
         }
 
+        $json = ["channel" => $receive_user->slack, "username" => $send_user->name, "text" => $text];
+        $json = ["channel" => "@".$receive_user->slack, "username" => $send_user->name, "text" => $text];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, 'payload=' . json_encode($json));
+        $server_output = curl_exec($ch);
+        curl_close($ch);
+    }
+     public function approveSendSlack($send_user, $receive_user, $attachments)
+    {
+
+        $url = env('SLACK_HOOK', '');
+        if ($url == "")
+        {
+            return false;
+        }
+
         $json = ["channel" => $receive_user->slack, "username" => $send_user->name, "attachments" => $attachments];
         $json = ["channel" => "@".$receive_user->slack, "username" => $send_user->name, "attachments" => $attachments];
 
@@ -279,7 +298,7 @@ class LeaveController extends Controller
             ["title" => "Comment" , "value" => $leave->reason, "short"=>true]]]]]
         
 
-        $this->sendSlack($user, $leave->user, $text);
+        $this->approveSendSlack($user, $leave->user, $attachments);
 
         return redirect()->route('list_timeoff');
     }
