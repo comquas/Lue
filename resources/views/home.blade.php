@@ -115,7 +115,7 @@
         <div class="card-header">
         <h6>👨‍ Time-Off</h6>
         <a class="calendar-link" href="{{$calendar_link}}">🗓</a>
-        </div>
+       </div>
         <div class="card-block">
 
 

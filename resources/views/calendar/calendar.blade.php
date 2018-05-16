@@ -14,7 +14,7 @@
 
             <div id="calendar">
             </div>
-            //src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"
+
             <script src="{{ asset('bc/jquery/dist/jquery.min.js') }}"></script>
 
             <!-- fullcalendar -->

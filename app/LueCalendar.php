@@ -15,7 +15,7 @@ class LueCalendar
 
     function buildCalendarFolder() {
 
-    	$filename="timeoff";
+    	$filename="timeOff";
 
     	$folder_name = $this->getCalendarFolderHash($filename);
         $path = public_path() ."/calendar/$folder_name";

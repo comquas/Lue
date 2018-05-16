@@ -202,7 +202,7 @@ class LeaveController extends Controller
         }
 
         $json = ["channel" => $receive_user->slack, "username" => $send_user->name, "attachments" => $attachments];
-        $json = ["channel" => "@".$receive_user->slack, "username" => $send_user->name, "attachments" => $attachments];
+        $json = ["channel" => "@".$recevie_user->slack, "username" => $send_user->name, "attachments" => $attachments];
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -295,7 +295,7 @@ class LeaveController extends Controller
             ["title" => "From" , "value" => $leave->from, "short" => true],
             ["title" => "To", "value" => $leave->to, "short" => true],
             ["title" => "No of Days","value"=> $leave->no_of_day, "short" => true],
-            ["title" => "Comment" , "value" => $leave->reason, "short"=>true]]]]]
+            ["title" => "Comment" , "value" => $leave->reason, "short"=>true]]]]];
         
 
         $this->approveSendSlack($user, $leave->user, $attachments);

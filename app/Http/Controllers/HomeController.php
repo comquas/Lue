@@ -74,9 +74,11 @@ class HomeController extends Controller
                                 ->get();
         $helper = new LueCalendar();
         $folder_name = $helper->getCalendarFolderHash();
-        $app_url = env("CALENDAR_URL");                           
-       $calendar_link = "webcal://".$app_url."/".$folder_name."/timeOff.ics";
-
+    
+        $app_url = env("CALENDAR_URL");    
+        //dd($app_url);
+        $calendar_link = "webcal://".$app_url."/".$folder_name."/timeOff.ics";
+        //dd($calendar_link);
 
        $user = Auth::user();
        $is_profile = false;
@@ -84,5 +86,5 @@ class HomeController extends Controller
         return view('home',compact("user","birthdays_of_users","current_month","leaves","is_profile","anniversary_users","calendar_link"));
     }
 
-   
+
 }
