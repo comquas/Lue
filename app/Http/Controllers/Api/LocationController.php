@@ -7,6 +7,7 @@ use App\User;
 use Dotenv\Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class LocationController extends Controller
@@ -42,7 +43,7 @@ class LocationController extends Controller
                     return response()->json(['success'=>true,'message'=>"delete Successfully"],200);
                 }
                 else{
-                    return response()->json(['success'=>false,'message'=>'Not found'],402);
+                    return response()->json(['success'=>false,'message'=>'Not found'],422);
 
                 }
 
@@ -59,15 +60,15 @@ class LocationController extends Controller
 
         }
         if($auth_user->position->level===1){
-            $name=$request['name'];
+
             $location=Location::find($id);
             if($location){
-                $location->name=$name;
-                $location->save();
+                $location->name=$request->name ? $request->name : $location->name;
+                $location->update();
                 return response()->json(['success'=>true,'message'=>'Update Successfully'],200);
             }
             else{
-                return response()->json(['success'=>false,'message'=>'Not found'],402);
+                return response()->json(['success'=>false,'message'=>'Not found'],422);
             }
         }
         else{
@@ -83,9 +84,8 @@ class LocationController extends Controller
             return response()->json(['User Not Found'], 422);
 
         }
-
-        if($auth_user->position->level==1){
-            $location=Location::paginate(2);
+        if($auth_user->position->level===1){
+            $location=Location::paginate(10);
             return response()->json(['success'=>true,'data'=>$location],200);
 
         }
@@ -102,13 +102,13 @@ class LocationController extends Controller
           return response()->json(['User Not Found'], 422);
 
       }
-      if ($auth_user->position->level === 1) {
+      if ($auth_user->position->level) {
           $location = Location::where('id', $id)->first();
           if($location){
               return response()->json(['success'=>true,'data'=>$location],200);
 
           }else{
-              return response()->json(['Not Found'],422);
+              return response()->json(['message'=>'Not Found'],422);
           }
 
       }

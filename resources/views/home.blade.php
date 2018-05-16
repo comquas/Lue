@@ -124,7 +124,7 @@
 
                     <li>
 
-                        <a href="{{ route('user_profile',["id" => $leave->user->id])}}">{{$leave->user->name}} </a>
+
                         @if($leave->type == 2)
                             😷
                         @endif

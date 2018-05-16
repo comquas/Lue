@@ -90,7 +90,7 @@ class LeaveController extends Controller
             $supervisor_id = $leave
                 ->user->supervisor_id;
             $leave->user_id = $leave
-                ->user->id;
+                ->user->id;;
         }
 
         $leave->type = $request->type;
