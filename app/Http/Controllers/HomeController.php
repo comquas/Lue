@@ -82,14 +82,9 @@ class HomeController extends Controller
        
        $user = Auth::user();
        $is_profile = false;
-
-       $birth=new BirthdayCalendar();
-       $bf_n=$birth->getCalendarFolderHash();
-       $calendar_birthday="/calendar"."/".$bf_n."/birthday.ics";
-
-        $anni=new AnniversaryCalendar();
-        $af_n=$anni->getCalendarFolderHash();
-        $calendar_anniversity="/calendar"."/".$af_n."/anniversary.ics";
+       
+       $calendar_birthday="/calendar"."/".$folder_name."/birthday.ics";
+        $calendar_anniversity="/calendar"."/".$folder_name."/anniversary.ics";
 
         return view('home',compact("user","birthdays_of_users","current_month","leaves","is_profile","anniversary_users","calendar_link","calendar_birthday","calendar_anniversity"));
     }

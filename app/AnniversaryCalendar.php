@@ -4,22 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
-
+use App\LueCalendar;
 
 class AnniversaryCalendar extends Model
 {
 
-    function getCalendarFolderHash($filename="anniversary") {
-        $app_key = env('APP_KEY');
-        $folder_name = md5($filename.$app_key);
-
-        return $folder_name;
-    }
-
     function buildCalendarFolder() {
 
         $filename="anniversary";
-        $folder_name = $this->getCalendarFolderHash($filename);
+        $helper=new LueCalendar();
+        $folder_name = $helper->getCalendarFolderHash("timeOff");
         $path = public_path() ."/calendar/$folder_name";
         $file = $path ."/$filename.ics";
         $user=User::all();
@@ -52,7 +46,7 @@ class AnniversaryCalendar extends Model
     public function writeCalendar($user)
     {
         $filename = 'anniversary';
-        $helper = new AnniversaryCalendar();
+        $helper = new LueCalendar();
         $folder_name = $helper->getCalendarFolderHash();
         $path = public_path() ."/calendar/$folder_name";
         if(!File::exists($path))

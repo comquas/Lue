@@ -80,7 +80,7 @@
                                 title : "{{$leave->user->name}} Time-Off :: {{$leave->no_of_day}} days",
                                 start : "{{$leave->from}}",
                                 end : "{{\Carbon\Carbon::parse($leave->to)->addDay(1)}}",
-                                backgroundColor : "orange",
+                                backgroundColor : "Red",
                                 borderColor : "black"
                             },
                                 @endforeach
@@ -88,13 +88,13 @@
                             {
                                 title : '{{$user->name}} Birthday Time Up',
                                 start : '{{$user->birthday}}',
-                                backgroundColor: '#FF5733',
+                                backgroundColor: '#DAF7A6',
                                 borderColor : 'black'
                             },
                             {
                                 title : "{{$user->name}} Anniversary Time Up",
                                 start : "{{$user->join_date}}",
-                                backgroundColor: "Picker",
+                                backgroundColor: "#00FFFF",
                                 borderColor : "black",
                             },
                             @endforeach

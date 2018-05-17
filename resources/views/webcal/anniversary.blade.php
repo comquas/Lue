@@ -11,6 +11,7 @@ CALSCALE:GREGORIAN
     SUMMARY:{{$user['name']}}
     URL;VALUE=URI:www.comquas.com
     DTSTAMP:{{$user['join_date']}}
+    RRULE:FREQ=YEARLY
     UID:0{{$user['id']}}
     END:VEVENT
 

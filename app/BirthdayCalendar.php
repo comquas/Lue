@@ -5,20 +5,17 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 
+use App\LueCalendar;
 
 class BirthdayCalendar extends Model
 {
 
-    function getCalendarFolderHash($filename="birthday") {
-        $app_key = env('APP_KEY');
-        $folder_name = md5($filename.$app_key);
-        return $folder_name;
-    }
 
     function buildCalendarFolder() {
 
         $filename="birthday";
-        $folder_name = $this->getCalendarFolderHash($filename);
+        $helper=new LueCalendar();
+        $folder_name = $helper->getCalendarFolderHash("timeOff");
         $path = public_path() ."/calendar/$folder_name";
         $file = $path ."/$filename.ics";
         $user=User::all();
@@ -51,7 +48,7 @@ class BirthdayCalendar extends Model
     public function writeCalendar($user)
     {
         $filename = 'birthday';
-        $helper = new BirthdayCalendar();
+        $helper = new LueCalendar();
         $folder_name = $helper->getCalendarFolderHash();
         $path = public_path() ."/calendar/$folder_name";
         if(!File::exists($path))
