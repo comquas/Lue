@@ -77,13 +77,21 @@ class HomeController extends Controller
     
         $app_url = env("CALENDAR_URL");    
         //dd($app_url);
-        $calendar_link = "webcal://".$app_url."/".$folder_name."/timeOff.ics";
-        //dd($calendar_link);
-
+        $calendar_link = "/calendar".$app_url."/".$folder_name."/timeOff.ics";
+       
+       
        $user = Auth::user();
        $is_profile = false;
 
-        return view('home',compact("user","birthdays_of_users","current_month","leaves","is_profile","anniversary_users","calendar_link"));
+       $birth=new BirthdayCalendar();
+       $bf_n=$birth->getCalendarFolderHash();
+       $calendar_birthday="/calendar"."/".$bf_n."/birthday.ics";
+
+        $anni=new AnniversaryCalendar();
+        $af_n=$anni->getCalendarFolderHash();
+        $calendar_anniversity="/calendar"."/".$af_n."/anniversary.ics";
+
+        return view('home',compact("user","birthdays_of_users","current_month","leaves","is_profile","anniversary_users","calendar_link","calendar_birthday","calendar_anniversity"));
     }
 
 

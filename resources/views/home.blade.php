@@ -53,7 +53,7 @@
         <div class="card">
             <div class="card-header">
         <h6>🎂 Birthday</h6>
-                <a class="calendar-link" href="{{$calendar_link}}">🗓</a>
+                <a class="calendar-link" href="{{$calendar_birthday}}">🗓</a>
             </div>
             <div class="card-block">
 
@@ -77,7 +77,7 @@
     <div class="card">
         <div class="card-header">
         <h6>💪 Anniversary</h6>
-            <a class="calendar-link" href="{{$calendar_link}}">🗓</a>
+            <a class="calendar-link" href="{{$calendar_anniversity}}">🗓</a>
         </div>
         <div class="card-block">
         <ul class="user-info-data">
