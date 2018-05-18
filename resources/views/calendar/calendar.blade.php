@@ -10,8 +10,9 @@
 @section('content')
 
     <div class="container">
-        <div class="row">
 
+        <div class="row">
+         
             <div id="calendar">
             </div>
 
@@ -75,25 +76,28 @@
                         events    : [
 
                                 @foreach($leaves as $leave)
-
+                               
                             {
                                 title : "{{$leave->user->name}} Time-Off :: {{$leave->no_of_day}} days",
                                 start : "{{$leave->from}}",
                                 end : "{{\Carbon\Carbon::parse($leave->to)->addDay(1)}}",
-                                backgroundColor : "Red",
+                                backgroundColor : "#FF5733",
                                 borderColor : "black"
                             },
                                 @endforeach
-                                @foreach($users as $user)
+                                @foreach($users_birth as $user)
+    
                             {
                                 title : '{{$user->name}} Birthday Time Up',
                                 start : '{{$user->birthday}}',
                                 backgroundColor: '#DAF7A6',
                                 borderColor : 'black'
                             },
+                            @endforeach
+                            @foreach($users_anni as $anni)
                             {
-                                title : "{{$user->name}} Anniversary Time Up",
-                                start : "{{$user->join_date}}",
+                                title : "{{$anni->name}} Anniversary Time Up",
+                                start : "{{$anni->join_date}}",
                                 backgroundColor: "#00FFFF",
                                 borderColor : "black",
                             },
