@@ -5,15 +5,17 @@ CALSCALE:GREGORIAN
 
 @foreach($users as $key => $user)
 
-    BEGIN:VEVENT
-    LOCATION:
-    DESCRIPTION:
-    SUMMARY:{{$user['name']}}
-    URL;VALUE=URI:www.comquas.com
-    DTSTAMP:{{$user['birthday']}}
-    RRULE:FREQ=YEARLY
-    UID:0{{$user['id']}}
-    END:VEVENT
+
+BEGIN:VEVENT
+METHOD:PUBLISH
+CREATED:{{date_format(new DateTime($user['created_at']),'Ymd')}}T{{date_format(new DateTime($user['created_at']),'His')}}Z
+TRANSP:OPAQUE
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+SUMMARY:{{$user['name']}} Birthday
+DTSTART;TZID=Asia/Rangoon:{{date_format(new DateTime($user['birthday']),'Ymd')}}T000000
+RRULE:FREQ=YEARLY
+SEQUENCE:0
+END:VEVENT
 
 @endforeach
 

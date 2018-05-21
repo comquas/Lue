@@ -6,14 +6,15 @@ CALSCALE:GREGORIAN
 @foreach($leaveUsers as $key => $leaveUser)
 
 BEGIN:VEVENT
-LOCATION:
-DESCRIPTION:
-DTSTART;VALUE=DATE:{{str_replace("-", "", $leaveUser['from'])}}
-DTEND;VALUE=DATE:{{str_replace("-", "", $leaveUser['to'])}}
+METHOD:PUBLISH
+CREATED:{{date_format(new DateTime($leaveUser['timestamp']),'Ymd')}}T{{date_format(new DateTime($leaveUser['timestamp']),'His')}}Z
+TRANSP:OPAQUE
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
 SUMMARY:{{$leaveUser['name']}} : {{$leaveUser['leaveType']}}
-URL;VALUE=URI:www.comquas.com
-DTSTAMP:{{$leaveUser['timestamp']}}
-UID:0{{$leaveUser['id']}}
+DTSTART;VALUE=DATE:{{date_format(new DateTime($leaveUser['from']),'Ymd')}}T{{date_format(new DateTime($leaveUser['from']),'His')}}Z
+DTEND;VALUE=DATE:{{date_format(new DateTime($leaveUser['to']),'Ymd')}}T{{date_format(new DateTime($leaveUser['to']),'His')}}Z
+DTSTART;TZID=Asia/Rangoon:{{date_format(Carbon\Carbon::now(),'Ymd')}}T{{date_format(Carbon\Carbon::now(),'His')}}
+SEQUENCE:0
 END:VEVENT
 
 @endforeach

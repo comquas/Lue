@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
+use Carbon;
 
 use App\LueCalendar;
 
@@ -37,7 +38,7 @@ class BirthdayCalendar extends Model
         foreach($user as $usr)
         {
 
-            $info = array('id'=>$usr->id,'name'=>$usr->name, 'birthday'=>$usr->birthday);
+            $info = array('id'=>$usr->id,'name'=>$usr->name, 'birthday'=>$usr->birthday,'created_at'=>$usr->created_at);
             array_push($users,$info);
 
         }
@@ -47,6 +48,7 @@ class BirthdayCalendar extends Model
 
     public function writeCalendar($user)
     {
+
         $filename = 'birthday';
         $helper = new LueCalendar();
         $folder_name = $helper->getCalendarFolderHash();
@@ -60,31 +62,34 @@ class BirthdayCalendar extends Model
         $file = $path ."/$filename.ics";
         if(file_exists( $file ))
         {
-
             $lines = file($file);
             $last = sizeof($lines)-1;
             unset($lines[$last]);
 
             // write the new data to the file
-            $fp = fopen($file, 'w');
+            $fp = fopen($file, 'w');           
 
             fwrite($fp, implode('', $lines));
             fclose($fp);
-
             $birthdayUser = $this->generateBirthdayUserInfo($user);
 
             $content = "
 BEGIN:VEVENT
-LOCATION:
-DESCRIPTION: 
-SUMMARY: ".$birthdayUser['name']."
-URL;VALUE=URI:www.comquas.com
-DTSTAMP: ".$birthdayUser['birthday']."
-UID: 0".$birthdayUser['id']."
+METHOD:PUBLISH
+CREATED: ".date_format($birthdayUser['created_at'],'Ymd').'T'.date_format($birthdayUser['created_at'],'His').'Z'."
+TRANSP:OPAQUE
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+SUMMARY: ".$birthdayUser['name']." Birthday
+DTSTART;TZID=Asia/Rangoon: ".date_format($birthdayUser['birthday'],'Ymd').'T000000'."
+RRULE:FREQ=YEARLY
+SEQUENCE:0
 END:VEVENT
 END:VCALENDAR";
 
-            $bytesWritten = File::append($file, $content);
+    // dd($content);
+
+            $bytesWritten = File::put($file, $content);
+            
             if ($bytesWritten === false)
             {
                 die("Couldn't write to the file.");
@@ -95,9 +100,7 @@ END:VCALENDAR";
     public function generateBirthdayUserInfo($user)
     {
 
-
-        $usr = $user->first();
-        $info = array('id'=>$usr->id,'name'=>$usr->name, 'birthday'=>$usr->birthday);
+        $info = array('id'=>$user->id,'name'=>$user->name, 'birthday'=>$user->birthday, 'created_at'=>$user->created_at);
         return $info;
     }
 

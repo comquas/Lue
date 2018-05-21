@@ -1,7 +1,7 @@
 <?php
 namespace App;
 
-use Carbon\Carbon;
+use Carbon;
 use Illuminate\Support\Facades\File;
 
 class LueCalendar
@@ -94,19 +94,20 @@ class LueCalendar
             fclose($fp);
 
             $leaveUser = $this->generateLeaveUserInfo($leaves);
-            
             $content = "
 BEGIN:VEVENT
-LOCATION:
-DESCRIPTION: 
-DTSTART;VALUE=DATE:".str_replace("-", "", $leaveUser['from'])."
-DTEND;VALUE=DATE:".str_replace("-", "", $leaveUser['to'])."
-SUMMARY: ".$leaveUser['name']." : ".$leaveUser['leaveType']."
-URL;VALUE=URI:www.comquas.com
-DTSTAMP: ".$leaveUser['timestamp']."
-UID: 0".$leaveUser['id']."
+METHOD:PUBLISH
+CREATED:".date_format($leaveUser['timestamp'],'Ymd').'T'.date_format($leaveUser['timestamp'],'His').'Z'."
+TRANSP:OPAQUE
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+SUMMARY:".$leaveUser['name']." : ".$leaveUser['leaveType']."
+DTSTART;VALUE=DATE:".date_format($leaveUser['from'],'Ymd').'T'.date_format($leaveUser['from'],'His').'Z'."
+DTEND;VALUE=DATE:".date_format($leaveUser['to'],'Ymd').'T'.date_format($leaveUser['to'],'His').'Z'."
+DTSTART;TZID=Asia/Rangoon:".date_format(Carbon\Carbon::now(),'Ymd').'T'.date_format(Carbon\Carbon::now(),'His')."
+SEQUENCE:0
 END:VEVENT
 END:VCALENDAR";
+
           
             $bytesWritten = File::append($file, $content);
             if ($bytesWritten === false)
@@ -136,7 +137,7 @@ END:VCALENDAR";
             {
                 $leaveType = "Urgent Leave";
             }
-            $info = array('id'=>$user->id,'name'=>$user->name, 'from'=>$leave->from,'to'=>Carbon::parse($leave->to)->addDay(), 'leaveType'=>$leaveType, 'timestamp'=>$leave->created_at);
+            $info = array('id'=>$user->id,'name'=>$user->name, 'from'=>$leave->from,'to'=>$leave->to, 'leaveType'=>$leaveType, 'timestamp'=>$leave->created_at);
         return $info;
     }
 }

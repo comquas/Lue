@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\File;
 use App\LueCalendar;
+use Carbon;
 
 class AnniversaryCalendar extends Model
 {
@@ -35,7 +36,7 @@ class AnniversaryCalendar extends Model
         foreach($user as $usr)
         {
 
-            $info = array('id'=>$usr->id,'name'=>$usr->name, 'join_date'=>$usr->join_date);
+            $info = array('id'=>$usr->id,'name'=>$usr->name, 'join_date'=>$usr->join_date,'created_at'=>$usr->created_at);
             array_push($users,$info);
 
         }
@@ -73,14 +74,17 @@ class AnniversaryCalendar extends Model
 
             $content = "
 BEGIN:VEVENT
-LOCATION:
-DESCRIPTION: 
-SUMMARY: ".$anniversary['name']."
-URL;VALUE=URI:www.comquas.com
-DTSTAMP: ".$anniversary['join_date']."
-UID: 0".$anniversary['id']."
+METHOD:PUBLISH
+CREATED: ".date_format($anniversary['created_at'],'Ymd').'T'.date_format($anniversary['created_at'],'His').'Z'."
+TRANSP:OPAQUE
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+SUMMARY:".$anniversary['name']." Anniversary
+DTSTART;TZID=Asia/Rangoon:".date_format($anniversary['join_date'],'Ymd').'T000000'."
+RRULE:FREQ=YEARLY
+SEQUENCE:0
 END:VEVENT
 END:VCALENDAR";
+
 
             $bytesWritten = File::append($file, $content);
             if ($bytesWritten === false)
@@ -93,9 +97,7 @@ END:VCALENDAR";
     public function generateBirthdayUserInfo($user)
     {
 
-
-        $usr = $user->first();
-        $info = array('id'=>$usr->id,'name'=>$usr->name, 'join_date'=>$usr->join_date);
+        $info = array('id'=>$user->id,'name'=>$user->name, 'join_date'=>$user->join_date,'created_at'=>$user->created_at);
         return $info;
     }
 
