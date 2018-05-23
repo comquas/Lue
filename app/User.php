@@ -28,6 +28,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public static function paginate($int)
+    {
+    }
+
     public function get_join_date() {
         return Carbon::createFromFormat('Y-m-d',$this->join_date,"Asia/Rangoon")->format('d-m-Y');
     }

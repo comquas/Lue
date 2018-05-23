@@ -5,16 +5,20 @@ namespace App\Http\Controllers\Api;
 use App\Leave;
 use App\LueCalendar;
 use App\User;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use App\Http\Resources\LeaveResource;
 use JWTAuth;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 
 class LeaveController extends Controller
 {
+  
     public function show()
     {
         if (!$auth_user = JWTAuth::parseToken()->authenticate()) {
@@ -37,42 +41,72 @@ class LeaveController extends Controller
         }
     }
 
-    public function update(Request $request, $id)
+    public function update(Request $request, $id="")
     {
         if (!$auth_user = JWTAuth::parseToken()->authenticate()) {
 
             return response()->json(['User Not Found'], 422);
 
         }
-        if ($auth_user->position->level === 1) {
-            $leave = Leave::find($id);
-            if ($leave) {
-                $leave->type = $request->type ? $request->type : $leave->type;
-                $leave->no_of_day = $request->no_of_day ? $request->no_of_day : $leave->no_of_day;
-                $leave->reason = $request->reason ? $request->reason : $leave->reason;
-                $leave->from = $request->from_date ? $request->from_date : $leave->from;
-                $leave->to = $request->to_date ? $request->to_date : $leave->to;
-                $leave->update();
-                return response()->json(['success' => true, 'data' => $leave], 200);
-            } else {
-                return response()->json(['success' => false, 'message' => 'Not Found'], 422);
-            }
+        //return $id;
+        if($auth_user->position->level==1){
+          $validator = Validator::make($request->all(), [
+          'type' => 'required',
+          'from_date'=>'required',
+          "to_date"=>"required",
+          "no_of_day"=>'required',
+          "reason"=>'required',
+        
+      ]);
 
-        } else {
-            return response()->json(['message' => 'Permission defined'], 401);
+      if ($validator->fails()) {
+          return response(['message'=> $validator->errors()->first()], 422);
+      }
+      $leave=Leave::find($id);
+      if($leave){
+        $leave->type = $request->type;
+        $leave->no_of_day = $request->no_of_day;
+        $leave->reason=$request->reason;
+        $leave->from = Carbon::createFromFormat('Y-m-d', $request->from_date, "Asia/Rangoon");;
+        $leave->to = Carbon::createFromFormat('Y-m-d', $request->to_date, "Asia/Rangoon");
+        $leave->update();
+        return response()->json(['success'=>true,'data'=>$leave]);
+
+
+      }
+      else{
+        return response()->json(['message'=>'Not Found'],422);
+
+      }
+      
         }
+        else{
+          return response()->json(['message'=>"Permission defined"],401);
 
+        }
     }
 
-    public function create(Request $request, $id=""){
+    public function store(Request $request, $id=""){
 
         if (!$auth_user = JWTAuth::parseToken()->authenticate()) {
 
             return response()->json(['User Not Found'], 422);
 
         }
+        if($auth_user->position->level===1){
+          $validator = Validator::make($request->all(), [
+          'type' => 'required',
+          'from_date'=>'required',
+          "to_date"=>"required",
+          "no_of_day"=>'required',
+          "reason"=>'required',
+        
+      ]);
 
-        $user = Auth::user();
+      if ($validator->fails()) {
+          return response(['message'=> $validator->errors()->first()], 422);
+      }
+       $user = Auth::user();
 
         if ($id == '' || $id == null)
         {
@@ -80,7 +114,6 @@ class LeaveController extends Controller
             $leave = new Leave();
             $supervisor_id = $user->supervisor_id;
             $leave->user_id = $user->id;
-            //dd($user->id);
         }
         else
         {
@@ -89,16 +122,14 @@ class LeaveController extends Controller
             $supervisor_id = $leave
                 ->user->supervisor_id;
             $leave->user_id = $leave
-                ->user->id;;
+                ->user->id;
         }
-
-        $leave->type = $request->type;
+         $leave->type = $request->type;
         $leave->no_of_day = $request->no_of_day;
         $leave->reason=$request->reason;
-        $leave->from = Carbon::createFromFormat('d-m-Y', $request->from_date, "Asia/Rangoon");;
-        $leave->to = Carbon::createFromFormat('d-m-Y', $request->to_date, "Asia/Rangoon");
-
-        if ($supervisor_id == null || $supervisor_id == "")
+        $leave->from = Carbon::createFromFormat('Y-m-d', $request->from_date, "Asia/Rangoon");;
+        $leave->to = Carbon::createFromFormat('Y-m-d', $request->to_date, "Asia/Rangoon");
+         if ($supervisor_id == null || $supervisor_id == "")
         {
             //no need supervisor
             //apprive it
@@ -117,14 +148,13 @@ class LeaveController extends Controller
 
         $leave->save();
 
-        //send mail
-        if ($supervisor_id != null || $supervisor_id != "")
+  if ($supervisor_id != null || $supervisor_id != "")
         {
             if ($id == '' || $id == null)
             {
+                
 
-
-                $this->sendApplyMail($user, $leave);
+               // $this->sendApplyMail($user, $leave);
                 //send Slack
                 $leave_type = "";
                 if ($leave->type == 1) $leave_type = "Annual";
@@ -134,7 +164,7 @@ class LeaveController extends Controller
 
                 $supervisor = User::whereid($supervisor_id)->first();
 
-
+                
                 $this->sendSlack($user, $supervisor, $text);
 
             }
@@ -146,18 +176,37 @@ class LeaveController extends Controller
         }
 
         //send Mail
-
+        
 
         if ($id == '' || $id == null)
         {
-            return redirect()->route('home');
+          return response()->json(['success'=>true,'data'=>$lea],200);
         }
-        else
-        {
-            return redirect()
-                ->route('list_timeoff');
+        
+     
+
         }
 
+      
+    }
+    public function sendSlack($send_user, $receive_user, $text)
+    {
+
+        $url = env('SLACK_HOOK', '');
+        if ($url == "")
+        {
+            return false;
+        }
+
+        $json = ["channel" => $receive_user->slack, "username" => $send_user->name, "text" => $text];
+        $json = ["channel" => "@".$receive_user->slack, "username" => $send_user->name, "text" => $text];
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, 'payload=' . json_encode($json));
+        $server_output = curl_exec($ch);
+        curl_close($ch);
     }
 
 
@@ -185,22 +234,10 @@ class LeaveController extends Controller
 
     }
 
+   
+   public function reject(Request $request){
 
 
-    public function time_off_list(){
-       if (!$auth_user = JWTAuth::parseToken()->authenticate()) {
-
-           return response()->json(['User Not Found'], 422);
-
-       }
-       if($auth_user->position->level===1){
-
-
-       }
-
-   }
-   public function reject(Request $request)
-   {
        if (!$auth_user = JWTAuth::parseToken()->authenticate()) {
 
            return response()->json(['User Not Found'], 422);
@@ -209,12 +246,13 @@ class LeaveController extends Controller
        if ($auth_user->position->level === 1) {
 
            $leave_id = $request->get('leave_id');
+          //dd($request->leave_id);
            $remark = $request->get('remark');
 
 
            $leave = Leave::where('status', 0)->where('id', $leave_id)->whereIn('user_id', $auth_user->staff())
                ->first();
-           if($leave==""){
+           if($leave ==""){
                return response()->json(['message'=>'Not Found'],422);
            }else{
                $leave->status = 2;
@@ -227,7 +265,7 @@ class LeaveController extends Controller
            //var_dump($auth_user->staff());
 
            //send Mail
-          // $this->sendRejectMail($user, $leave);
+          $this->sendRejectMail($user, $leave);
            //send Slack
            $leave_type = "";
            if ($leave->type == 1) $leave_type = "Annual";
@@ -236,7 +274,7 @@ class LeaveController extends Controller
            $text = $text = "You are not allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
            $text = "You are not allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
 
-           //$this->sendSlack($user, $leave->user, $text);
+           $this->sendSlack($user, $leave->user, $text);
 
            //return redirect()->route('list_timeoff');
        }
@@ -262,8 +300,6 @@ class LeaveController extends Controller
            return response()->json(['User Not Found'], 422);
 
        }
-
-       //dd("hello");
        if ($auth_user->position->level === 1) {
 
            //$user = Auth::user();
@@ -305,9 +341,10 @@ class LeaveController extends Controller
            }
            $text = "You are allowed the " . $leave_type . "leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
            $text = "You are allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
-          // $this->sendSlack($user, $leave->user, $text);
+           $this->sendSlack($user, $leave->user, $text);
 
            //return redirect()->route('list_timeoff');
+           //return response()->json(['success'=>true,'data'=>$leave])
        }
 
 
@@ -327,4 +364,57 @@ class LeaveController extends Controller
 
         Mail::to($email)->send(new ApproveLeave($leave, $user));
     }
+
+
+    
+  
+  public function adminTimeOffList(Request $request){
+   if (!$auth_user = JWTAuth::parseToken()->authenticate()) {
+
+            return response()->json(['User Not Found'], 422);
+
+        }
+        if($auth_user->position->level===1){
+         $user = Auth::user();
+       
+        $id=[];
+        foreach($user->staff() as $leaveUser)
+        {
+            $id[] = $leaveUser->id;
+        }
+        //DB::enableQueryLog();
+        $decision = true;
+        $leaves = Leave::join('users','leaves.user_id','users.id')
+        ->where('users.supervisor_id',$user->id)
+        ->where('leaves.status',0)
+        ->orderBy('leaves.created_at', 'desc')
+        ->select('leaves.*')
+        ->paginate(10);
+         return LeaveResource::collection($leaves);
+
+        }else{
+           return response()->json(['message'=>'Permission defined'],401);
+        }
+    }
+   public function adminDecidedTimeOffList(Request $request){
+    if (!$auth_user = JWTAuth::parseToken()->authenticate()) {
+
+            return response()->json(['User Not Found'], 422);
+
+        }
+        if($auth_user->position->level===1){
+          $user=Auth::user();
+           $leaves = Leave::join('users','leaves.user_id','users.id')
+        ->where('users.supervisor_id',$user->id)
+        ->orderBy('leaves.created_at', 'desc')
+        ->select('leaves.*')
+        ->paginate(10);
+      return LeaveResource::collection($leaves);
+
+        }
+        else{
+          return response()->json(['message'=>'Permission defined'],401);
+        }
    }
+   
+}

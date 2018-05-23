@@ -28,7 +28,7 @@ class loginController extends Controller
             return response()->json(['failed_to_create_token'], 500);
         }
 
-        $user = JWTAuth::toUser($token);
+        //$user = JWTAuth::toUser($token);
         $user['token'] = $token;
         return response()->json($user);
     }
@@ -37,17 +37,17 @@ class loginController extends Controller
     public function logout(Request $request)
     {
 
-        $this->validate($request, ['token' => 'required']);
         try {
             JWTAuth::invalidate($request->input('token'));
             return response()->json(['success' => true, 'message' => "You have successfully logged out."]);
         } catch (JWTException $e) {
+            dd('Fail');
             // something went wrong whilst attempting to encode the token
             return response()->json(['success' => false, 'error' => 'Failed to logout, please try again.'], 500);
         }
     }
 
-    public function recover(Request $request)
+    public function reset(Request $request)
     {
         $user = User::where('email', $request->email)->first();
         if (!$user) {

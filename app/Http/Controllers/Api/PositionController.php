@@ -6,11 +6,14 @@ use App\Position;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Validator;
 use App\User;
 
 class PositionController extends Controller
 {
-  public function create(Request $request){
+  public function store(Request $request){
+
+     
       if (!$auth_user = JWTAuth::parseToken()->authenticate()) {
 
           return response()->json(['User Not Found'], 422);
@@ -18,13 +21,21 @@ class PositionController extends Controller
       }
 
       if($auth_user->position->level===1){
-          $title=$request['title'];
-          $level=$request['level'];
+
+         $validator = Validator::make($request->all(), [
+          'title' => 'required|unique:positions|min:3',
+          'level' => 'required|integer',
+      ]);
+
+      if ($validator->fails()) {
+          return response(['message'=> $validator->errors()->first()], 422);
+      }
+    
           $position=new Position();
-          $position->title=$title;
-          $position->level=$level;
+          $position->title=$request['title'];
+          $position->level=$request['level'];
           $position->save();
-          return response()->json(['success'=>true,'message'=>'Created Successfully'],200);
+          return response()->json(['success'=>true,'message'=>'Created Successfully','data'=>$position],200);
 
 
       }else{
@@ -53,12 +64,23 @@ public function delete(Request $request,$id){
     }
 }
   public function update(Request $request,$id){
+    
       if (!$auth_user = JWTAuth::parseToken()->authenticate()) {
 
           return response()->json(['User Not Found'], 422);
 
       }
       if($auth_user->position->level===1){
+
+        $validator = Validator::make($request->all(), [
+           'title' => 'required|min:3',
+            'level' => 'required|integer'
+      ]);
+
+      if ($validator->fails()) {
+          return response(['message'=> $validator->errors()->first()], 422);
+      }
+    
           $position=Position::find($id);
           if($position){
               $position->title=$request->title ? $request->title : $position->title;
@@ -75,7 +97,7 @@ public function delete(Request $request,$id){
       }
 
   }
-  public function show(){
+  public function index(){
       if (!$auth_user = JWTAuth::parseToken()->authenticate()) {
 
           return response()->json(['User Not Found'], 422);
@@ -91,7 +113,7 @@ public function delete(Request $request,$id){
 
 
   }
-  public function showById($id){
+  public function show($id){
       if (!$auth_user = JWTAuth::parseToken()->authenticate()) {
 
           return response()->json(['User Not Found'], 422);

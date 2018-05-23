@@ -13,12 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-
+          // for login
 
         Route::post('/login',[
-    'uses'=>'Api\loginController@login',
+        'uses'=>'Api\loginController@login'
         ]);
-        //for Image
+
+        
 
 
 Route::group(['middleware' => 'jwt.auth'], function () {
@@ -27,67 +28,130 @@ Route::group(['middleware' => 'jwt.auth'], function () {
         Route::get('/logout',[
           'uses'=>'Api\loginController@logout',
         ]);
-        Route::post('/recover',[
-            'uses'=>'Api\loginController@recover',
+        Route::post('/reset',[
+            'uses'=>'Api\loginController@reset',
         ]);
 
-        //for Location
+//for Location
 
-        Route::get('/location',[
-            'uses'=>'Api\LocationController@show'
+        //list location
+
+        Route::get('/locations',[
+            'uses'=>'Api\LocationController@index'
         ]);
+
+        //store location
 
         Route::post('/location', [
-            'uses' => 'Api\LocationController@create'
+            'uses' => 'Api\LocationController@store'
         ]);
+
+        //delete location
 
         Route::delete('/location/{id}', [
             'uses' => 'Api\LocationController@delete'
         ]);
-        Route::put('/location/{id}/', [
+
+        //update location
+
+        Route::post('/location/{id}/', [
             'uses' => 'Api\LocationController@update',
         ]);
-        Route::get('/location/{id}',[
-            'uses'=>'Api\LocationController@showById'
+        Route::post('/location/edit/{id}',[
+            'uses'=>'Api\LocationController@edit'
         ]);
 
+        //show single location
 
-        //for Position
-        Route::get('/position',[
-        'uses'=>'Api\PositionController@show'
+        Route::get('/location/{id}',[
+            'uses'=>'Api\LocationController@show'
+        ]);
+//end Location
+
+//for Position 
+
+        //list Position
+
+        Route::get('/positions',[
+        'uses'=>'Api\PositionController@index'
          ]);
 
+        //store Position
+
          Route::post('/position',[
-        'uses'=>'Api\PositionController@create'
+        'uses'=>'Api\PositionController@store'
         ]);
+
+         //delete Position
 
        Route::delete('/position/{id}',[
          'uses'=>'Api\PositionController@delete'
        ]);
+       
+       //update Position
 
-         Route::put('/position/{id}',[
+         Route::post('/position/{id}',[
              'uses'=>'Api\PositionController@update'
          ]);
+
+         //list single position
+
     Route::get('/position/{id}',[
-        'uses'=>'Api\PositionController@showById'
+        'uses'=>'Api\PositionController@show'
     ]);
 
-    //for User
+ //end  Position  
+
+    
+//for User
+
+    //store User
+
     Route::post('/user',[
-        'uses'=>'Api\UserController@create',
+        'uses'=>'Api\UserController@store',
     ]);
-    Route::get('/user/profile/{id}',[
-        'uses'=>'Api\UserController@showUserProfileById'
+
+    Route::get('admin/user/profile/{id}',[
+    'uses'=>'Api\UserController@profile'
     ]);
-    Route::get('/user',[
-        'uses'=>'Api\UserController@show'
-    ]);
-    Route::put('/user/{id}',[
+ 
+    //Admin update User ById
+
+    Route::post('/admin/user/{id}',[
         'uses'=>'Api\UserController@update'
     ]);
+
+    //delete User
+
     Route::delete('/user/{id}',[
       'uses'=>'Api\UserController@delete'
     ]);
+
+    //for Search
+       Route::get('/search', 'Api\UserController@search');
+
+       //admin user list
+
+       Route::get('/admin/user/list',[
+      'uses'=>'Api\UserController@showList',
+    ]);
+
+       //Reset Leave
+       Route::get('/admin/reset-leave/{id}',[
+       'uses'=>'Api\UserController@resetLeave'
+    ]);
+       //user Profile update
+       Route::post('/update',[
+        'uses'=>'Api\UserController@userUpdate',
+       ]);
+
+
+
+       //update Profile
+       Route::post('/user/profile/update',[
+        'uses'=>'Api\LocationController@updateProfile',
+       ]);
+
 
 
 
@@ -95,30 +159,28 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('/time-off',[
         'uses'=>'Api\LeaveController@show'
     ]);
-    Route::put('/time-off/{id}',[
+    Route::post('/admin/time-off/update/{id}',[
         'uses'=>'Api\LeaveController@update'
     ]);
-    Route::get('/admin/time_off_list',[
-      'uses'=>'Api\LeaveController@time_off_list',
-    ]);
-    Route::post('time-off/reject',[
+    
+    Route::post('admin/time-off/reject',[
         'uses'=>'Api\LeaveController@reject'
     ]);
-    Route::get('/time-off/approve/{id}/',[
+    Route::get('/admin/time-off/approve/{id}/',[
         'uses'=>'Api\LeaveController@approve',
     ]);
+    
 
-
-
-    //apply time-off
-    Route::post('/apply-time-off',[
-       'uses'=>'Api\LeaveController@create'
+   Route::get('/admin/time-off/list',[
+    'uses'=>'Api\LeaveController@adminTimeOffList',
+    ]);
+    Route::get('/admin/decided/time-off/list',[
+        'uses'=>'Api\LeaveController@adminDecidedTimeOffList'
     ]);
 
-    //fore Search
-
-    Route::get('/search/{name}',[
-        'uses'=>'Api\SearchController@search'
+    //Admin Time Off Apply
+    Route::post('/admin/time-off/apply',[
+       'uses'=>'Api\LeaveController@store'
     ]);
 
 });
