@@ -81,8 +81,8 @@
                                 end : "{{\Carbon\Carbon::parse($leave->to)->addDay(1)}}",
                                 backgroundColor : "#848482",
                                 borderColor  : "#fff",
-                                allDay : true
-                                
+                                allDay : true,
+                                textColor : "#fff"
                             },
                                 @endforeach
                                 @foreach($users_birth as $user)
@@ -92,14 +92,16 @@
                                 start : '{{$user->birthday}}',
                                 backgroundColor: '#F8845E',
                                 borderColor  : "#fff",
+                                
                             },
                             @endforeach
                             @foreach($users_anni as $anni)
                             {
                                 title : "{{$anni->name}} Anniversary",
                                 start : "{{$anni->join_date}}",
-                                backgroundColor: "#f85019",
-                                borderColor  : "#fff"
+                                backgroundColor: "#ff0000",
+                                borderColor  : "#fff",
+                                
                             },
                             @endforeach
 
