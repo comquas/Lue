@@ -2,7 +2,6 @@
 
 @section('header')
     <link rel="stylesheet" href="{{ asset('bc/fullcalendar/dist/fullcalendar.min.css')}}">
-
 @endsection
 
 @section('title') Full Calendar @endsection
@@ -11,8 +10,7 @@
 
     <div class="container">
 
-        <div class="row">
-         
+        <div class="row" style="width: 80%;margin: auto;">
             <div id="calendar">
             </div>
 
@@ -64,7 +62,7 @@
                         header    : {
                             left  : 'prev,next today',
                             center: 'title',
-                            right : 'month,agendaWeek,agendaDay'
+                            right : ''//'month,agendaWeek,agendaDay'
                         },
                         buttonText: {
                             today: 'today',
@@ -81,25 +79,27 @@
                                 title : "{{$leave->user->name}} Time-Off :: {{$leave->no_of_day}} days",
                                 start : "{{$leave->from}}",
                                 end : "{{\Carbon\Carbon::parse($leave->to)->addDay(1)}}",
-                                backgroundColor : "#FF5733",
-                                borderColor : "black"
+                                backgroundColor : "#848482",
+                                borderColor  : "#fff",
+                                allDay : true
+                                
                             },
                                 @endforeach
                                 @foreach($users_birth as $user)
     
                             {
-                                title : '{{$user->name}} Birthday Time Up',
+                                title : '{{$user->name}} Birthday',
                                 start : '{{$user->birthday}}',
-                                backgroundColor: '#DAF7A6',
-                                borderColor : 'black'
+                                backgroundColor: '#F8845E',
+                                borderColor  : "#fff",
                             },
                             @endforeach
                             @foreach($users_anni as $anni)
                             {
-                                title : "{{$anni->name}} Anniversary Time Up",
+                                title : "{{$anni->name}} Anniversary",
                                 start : "{{$anni->join_date}}",
-                                backgroundColor: "#00FFFF",
-                                borderColor : "black",
+                                backgroundColor: "#f85019",
+                                borderColor  : "#fff"
                             },
                             @endforeach
 
@@ -110,7 +110,7 @@
 
 
 
-
+                        //displayEventTime : false;
                         editable  : false,
                         droppable : true, // this allows things to be dropped onto the calendar !!!
                         drop      : function (date, allDay) { // this function is called when something is dropped
@@ -185,6 +185,7 @@
 
                 });
 
+                                   
             </script>
 
         </div>

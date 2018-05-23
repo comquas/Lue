@@ -222,7 +222,7 @@ class UserController extends Controller
             //change photoname with original extension
             $photoName = time().'.'.$ext;
             //dd(public_path('avatars'));
-            //move to public folder
+            //move to  folder
             $request->avatar->move(public_path('avatars'), $photoName);
 
             //store the moved photo path
@@ -291,7 +291,7 @@ class UserController extends Controller
 
             $user->no_of_leave = $request->no_of_leave;
             $user->sick_leave = $request->sick_leave;
-            $user->urgent_leave=$request->urgent_leave;
+            //$user->urgent_leave=$request->urgent_leave;
             $user->supervisor_id = $request->supervisor;     
         }
         

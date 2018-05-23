@@ -100,7 +100,8 @@
 
 						<div class="form-group @if($errors->has('reason')) has-error @endif">
 							<label for="reason">Reason</label><br>
-							<textarea placeholder="comment" rows="4" name="reason" cols="131" class="ui-autocomplete-input" autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea>
+							<textarea name="reason" class="form_control" 
+							style="width: 100%"></textarea>
 							@if($errors->has('reason')) <b><div class="help-block">{{$errors->first('reason')}}</div></b>  @endif
 						</div>
 
@@ -167,9 +168,11 @@
                        $('#no_of_day').val('0.5')
                     }
                     else {
-                        $("#no_of_day").val(workday_count(a,b)).val()
+                        $("#no_of_day").val(workday_count(a,b)).val();
                     }
                 })
+			}else{
+				$('#zero_five').hide();
 			}
 
 			checkout.hide();

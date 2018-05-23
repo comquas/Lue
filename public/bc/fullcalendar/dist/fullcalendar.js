@@ -712,7 +712,6 @@ function computeRangeAs(unit, start, end) {
 	}
 }
 
-
 // Intelligently divides a range (specified by a start/end params) by a duration
 function divideRangeByDuration(start, end, dur) {
 	var months;
