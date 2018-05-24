@@ -44,6 +44,8 @@
             </button>
             <a class="navbar-brand" href="{{ route('home') }}">{{ config('app.name', 'Laravel') }}</a>
 
+
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                 <ul class="navbar-nav mr-auto">
@@ -51,6 +53,7 @@
                 @if(Auth::guest())
                 @else
                     @if(Auth::user()->is_admin())
+                            <li class="nav-item"> <a class="nav-link" href="{{route('calendar')}}">Calendar</a></li>
                         <!-- user -->
                         @component('control.nav-item')
                             @slot('title','Employee')
@@ -101,10 +104,7 @@
                      <li class="nav-item">
                         <a href="{{route('apply_timeoff')}}" class="nav-link">Apply Time-Off</a>
                      </li>
-                        <li><a style="color: black;background-color: inherit;
-                                        margin-left: 350px;line-height: 20px"
-                                       class="btn"
-                               href="{{route('calendar')}}">CALENDAR</a> </li>
+
                  </ul>
                  <ul class="navbar-nav ml-auto">
                  <li class="nav-item dropdown" >
@@ -199,5 +199,3 @@
 
 
 </body>
-
-</html>

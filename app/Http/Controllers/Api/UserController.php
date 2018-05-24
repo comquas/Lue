@@ -215,7 +215,7 @@ class UserController extends Controller
                 }
 
                 $user->update();
-                 $user->avatar=asset('avatars/'.$user->avatar);
+                
                 return response()->json(['data'=>$user],200);
 
 

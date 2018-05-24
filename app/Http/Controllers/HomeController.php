@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\AnniversaryCalendar;
+use App\BirthdayCalendar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +23,10 @@ class HomeController extends Controller
         $this->middleware('auth');
         $helper = new LueCalendar();
         $helper->buildCalendarFolder();
+        $birth=new BirthdayCalendar();
+        $birth->buildCalendarFolder();
+        $anniversary=new AnniversaryCalendar();
+        $anniversary->buildCalendarFolder();
     }
 
     /*
@@ -68,15 +74,20 @@ class HomeController extends Controller
                                 ->get();
         $helper = new LueCalendar();
         $folder_name = $helper->getCalendarFolderHash();
-        $app_url = env("CALENDAR_URL");                           
-       $calendar_link = "webcal://".$app_url."/".$folder_name."/timeoff.ics";
-
-
+    
+        //$app_url = env("CALENDAR_URL");    
+        //dd($app_url);
+        $calendar_link = "/calendar"."/".$folder_name."/timeOff.ics";
+       
+       
        $user = Auth::user();
        $is_profile = false;
+       
+       $calendar_birthday="/calendar"."/".$folder_name."/birthday.ics";
+        $calendar_anniversity="/calendar"."/".$folder_name."/anniversary.ics";
 
-        return view('home',compact("user","birthdays_of_users","current_month","leaves","is_profile","anniversary_users","calendar_link"));
+        return view('home',compact("user","birthdays_of_users","current_month","leaves","is_profile","anniversary_users","calendar_link","calendar_birthday","calendar_anniversity"));
     }
 
-   
+
 }

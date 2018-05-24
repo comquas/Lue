@@ -1182,7 +1182,7 @@ be a descendant of the grid when it is being dragged.
 }
 
 .fc-time-grid-event.fc-selected .fc-bg {
-	display: none; /* hide semi-white background, to appear darker */
+	display: none !important; /* hide semi-white background, to appear darker */
 }
 
 .fc-time-grid-event .fc-content {
@@ -1214,10 +1214,11 @@ be a descendant of the grid when it is being dragged.
 }
 
 .fc-time-grid-event.fc-short .fc-time span {
-	display: none; /* don't display the full time text... */
+	display: none !important; /* don't display the full time text... */
 }
 
 .fc-time-grid-event.fc-short .fc-time:before {
+	
 	content: attr(data-start); /* ...instead, display only the start time */
 }
 
@@ -1401,6 +1402,7 @@ be a descendant of the grid when it is being dragged.
 	height: 100%;
 	display: table;
 }
+
 
 .fc-list-empty {
 	display: table-cell;

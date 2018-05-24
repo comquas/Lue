@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\BirthdayCalendar;
 use function GuzzleHttp\Psr7\_parse_request_uri;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -41,6 +42,18 @@ class UserController extends Controller
                 
         return view('user/edit_profile',["user" => $user,"positions" => $positions,"locations" => $locations,"btn_title" => "Update", "route" => route('user_update',['id'=>$user->id])]);
     }
+    function delete(User $user){
+
+
+        $img_path=public_path("avatars/{$user->avatar}");
+        //return $img_path;
+        if(File::exists($img_path)){
+            unlink($img_path);
+        }
+        //file::delete($img_path);
+        $user->delete();
+        return back();
+    }
     function add() {
         $positions = Position::all();
         $locations = Location::all();
@@ -55,6 +68,7 @@ class UserController extends Controller
     }
 
     function store(Request $request) {
+
         $this->validate($request, [
             'avatar' => 'required|image|mimes:jpeg,bmp,png|max:2000',
             'name' => 'required|string|max:255',
@@ -73,6 +87,7 @@ class UserController extends Controller
             'github' => 'nullable|string',
             'twitter' => 'nullable|string'
             ]);
+
 
         $this->update("",$request);
         return redirect()->route('user_list');
@@ -188,6 +203,7 @@ class UserController extends Controller
     }
 
     private function update($id = "", Request $request) {
+
         
         if ($id != "") {
             $user = User::where("id",$id)->first();
@@ -205,8 +221,8 @@ class UserController extends Controller
             
             //change photoname with original extension
             $photoName = time().'.'.$ext;
-
-            //move to public folder
+            //dd(public_path('avatars'));
+            //move to  folder
             $request->avatar->move(public_path('avatars'), $photoName);
 
             //store the moved photo path
@@ -275,6 +291,7 @@ class UserController extends Controller
 
             $user->no_of_leave = $request->no_of_leave;
             $user->sick_leave = $request->sick_leave;
+            //$user->urgent_leave=$request->urgent_leave;
             $user->supervisor_id = $request->supervisor;     
         }
         
@@ -284,10 +301,12 @@ class UserController extends Controller
         $user->twitter = $this->null_empty($request->twitter);
         $user->slack = $this->null_empty($request->slack);
         $user->save();
+        ///////write calendar from here
 
-    }
+        $helper=new BirthdayCalendar();
+        $helper->writeCalendar($user);
 
-    function search(Request $request) {
+    }    function search(Request $request) {
 
         if (!isset($request->name)) {
             return;

@@ -1,12 +1,12 @@
 <?php
 namespace App;
 
-use Carbon\Carbon;
-use File;
+use Carbon;
+use Illuminate\Support\Facades\File;
 
 class LueCalendar
 {
-	function getCalendarFolderHash($filename="timeoff") {
+	function getCalendarFolderHash($filename="timeOff") {
         $app_key = env('APP_KEY');
         $folder_name = md5($filename.$app_key);
         return $folder_name;
@@ -14,7 +14,7 @@ class LueCalendar
 
     function buildCalendarFolder() {
 
-    	$filename="timeoff";
+    	$filename="timeOff";
 
     	$folder_name = $this->getCalendarFolderHash($filename);
         $path = public_path() ."/calendar/$folder_name";
@@ -29,7 +29,6 @@ class LueCalendar
             $leaveUsers = $this->generateAllLeaveUsersInfo($leaves);
             $contents = response()->view('webcal.leave', ['leaveUsers' => $leaveUsers,
             ],200);
-           
             $bytes_written = File::put($file, $contents->getContent());
             if ($bytes_written === false)
             {
@@ -52,9 +51,12 @@ class LueCalendar
             {
                 $leaveType = "Annual Leave";
             }
-            else
+            else if($leave->type == 2)
             {
                 $leaveType = "Sick Leave";
+            }else
+            {
+                $leaveType = "Urgent Leave";
             }
             $info = array('id'=>$user->id,'name'=>$user->name, 'from'=>$leave->from,'to'=>Carbon::parse($leave->to)->addDay(), 'leaveType'=>$leaveType, 'timestamp'=>$leave->created_at);
             array_push($leaveUsers,$info);
@@ -69,9 +71,7 @@ class LueCalendar
         $filename = 'timeOff';
         $helper = new LueCalendar();
         $folder_name = $helper->getCalendarFolderHash();
-
         $path = public_path() ."/calendar/$folder_name";
-       
         if(!File::exists($path)) 
         {
             File::makeDirectory($path);
@@ -79,34 +79,35 @@ class LueCalendar
         
         
         $file = $path ."/$filename.ics";
+
         if(file_exists( $file ))
         {
             
-            $lines = file($file); 
-            
-            $last = sizeof($lines)-1;  
-            unset($lines[$last]); 
+            $lines = file($file);
+            $last = sizeof($lines)-1;
+            unset($lines[$last]);
 
             // write the new data to the file 
             $fp = fopen($file, 'w'); 
 
-            fwrite($fp, implode('', $lines)); 
+            fwrite($fp, implode('', $lines));
             fclose($fp);
 
             $leaveUser = $this->generateLeaveUserInfo($leaves);
-            
             $content = "
 BEGIN:VEVENT
-LOCATION:
-DESCRIPTION: 
-DTSTART;VALUE=DATE:".str_replace("-", "", $leaveUser['from'])."
-DTEND;VALUE=DATE:".str_replace("-", "", $leaveUser['to'])."
-SUMMARY: ".$leaveUser['name']." : ".$leaveUser['leaveType']."
-URL;VALUE=URI:www.comquas.com
-DTSTAMP: ".$leaveUser['timestamp']."
-UID: 0".$leaveUser['id']."
+METHOD:PUBLISH
+CREATED:".date_format($leaveUser['timestamp'],'Ymd').'T'.date_format($leaveUser['timestamp'],'His').'Z'."
+TRANSP:OPAQUE
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+SUMMARY:".$leaveUser['name']." : ".$leaveUser['leaveType']."
+DTSTART;VALUE=DATE:".date_format($leaveUser['from'],'Ymd').'T'.date_format($leaveUser['from'],'His').'Z'."
+DTEND;VALUE=DATE:".date_format($leaveUser['to'],'Ymd').'T'.date_format($leaveUser['to'],'His').'Z'."
+DTSTART;TZID=Asia/Rangoon:".date_format(Carbon\Carbon::now(),'Ymd').'T'.date_format(Carbon\Carbon::now(),'His')."
+SEQUENCE:0
 END:VEVENT
 END:VCALENDAR";
+
           
             $bytesWritten = File::append($file, $content);
             if ($bytesWritten === false)
@@ -122,18 +123,21 @@ END:VCALENDAR";
     public function generateLeaveUserInfo($leave)
     {
         
-            $leaveType = '';
+
             $user = $leave->user()->first();
-           
             if($leave->type == 1)
             {
                 $leaveType = "Annual Leave";
             }
-            else
+            else if($leave->type == 2)
             {
                 $leaveType = "Sick Leave";
             }
-            $info = array('id'=>$user->id,'name'=>$user->name, 'from'=>$leave->from,'to'=>Carbon::parse($leave->to)->addDay(), 'leaveType'=>$leaveType, 'timestamp'=>$leave->created_at);
+            else
+            {
+                $leaveType = "Urgent Leave";
+            }
+            $info = array('id'=>$user->id,'name'=>$user->name, 'from'=>$leave->from,'to'=>$leave->to, 'leaveType'=>$leaveType, 'timestamp'=>$leave->created_at);
         return $info;
     }
 }

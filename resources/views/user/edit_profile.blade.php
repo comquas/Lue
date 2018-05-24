@@ -2,7 +2,7 @@
 
 
 @section('header')
-<script type="text/javascript" src={{ asset('library/datepicker/js/bootstrap-datepicker.js') }}></
+<script type="text/javascript" src={{ asset('library/datepicker/js/bootstrap-datepicker.js') }}></script>
 <script type="text/javascript" src={{ asset('js/plugins/moment.min.js') }}></script>
 <script type="text/javascript" src={{ asset('bower_components/select2/dist/js/select2.min.js') }}></script>
 <link rel="stylesheet" type="text/css" href={{ asset('bower_components/select2/dist/css/select2.min.css') }}>
@@ -25,18 +25,22 @@
                     <div class="card-block">
 
                         <div class="admin-profile-image">
-                            @isset($user)
-                            <img src="{{ url('avatars')}}/{{ $user->avatar }}" class="rounded" style="width:140px;">
-                            @endisset
-                        </div>
-                        <div class="form-group">
-                            <label class="custom-file">
+                            @isset($user)   
 
+                            <img src="{{ url('avatars')}}/{{ $user->avatar }}" class="rounded" style="width:140px">
+                            @endisset
+
+                            <img src="{{asset('avatars/defaultimage.png')}}" class="rounded uploadImage" style="width: 140px;height: 140px">
+
+                        </div>
+
+                        <div class="form-group">
+                                <label class="custom-file">
                                 <input type="file" name="avatar" id="avatar" class="custom-file-input">
                                 <span class="custom-file-control"></span>
-                            </label>
-                            
+                                </label>
                         </div>
+                        
                         @if ($errors->has('avatar'))
                         <span class="help-block">
                             <strong>{{ $errors->first('avatar') }}</strong>
@@ -173,6 +177,14 @@
                         @slot('value',isset($user) ? $user->sick_leave : "")
                         @endcomponent
 
+                       {{--  @component('control.textbox')
+                        @slot('title','Urgent Leave')
+                        @slot('name','urgent_leave')
+                        @slot('placeholder','5')
+                        @slot('value',isset($user) ? $user->urgent_leave : "")
+                        @endcomponent --}}
+
+
                         <div class="form-group">
 
                             <label for="supervisor">Supervisor</label>
@@ -290,6 +302,32 @@
     }
 
 });
+
+
+
+    $(function (){
+
+            @isset($user)
+               $('.uploadImage').hide();
+            @endisset
+
+            function readURL(input) {
+               if (input.files && input.files[0]) {
+                   var reader = new FileReader();
+
+                   reader.onload = function (e) {
+                       $('.uploadImage').attr('src', e.target.result);
+                   }
+
+                   reader.readAsDataURL(input.files[0]);
+               }
+           }
+
+           $(".custom-file-input").change(function(){
+               readURL(this);
+           });
+
+    });   
 
 </script>
 @endsection

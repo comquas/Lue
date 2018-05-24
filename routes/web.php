@@ -4,7 +4,7 @@
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
+| 
 | Here is where you can register web routes for your application. These
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
@@ -40,6 +40,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 	//user
 	Route::get('user/profile','User\UserController@edit_profile')->name('profile');
 	Route::post('user/profile','User\UserController@update_profile')->name('profile_update');
+
 	
 	Route::get('user/profile/{id}','User\UserController@profile')->name('user_profile');
 	Route::get('reset.leave/{id}','User\UserController@resetLeave')->name('reset.leave');
@@ -81,6 +82,7 @@ Route::middleware(['auth'])->prefix('admin')->group(function () {
 		Route::get('user/add','User\UserController@add')->name('add_user');
 		Route::post('user/add','User\UserController@store')->name('store_user');
 		Route::get('user/edit/{id}','User\UserController@edit')->name('edit_user');
+		Route::get('user/delete/{user}','User\UserController@delete')->name('del_user');
 		Route::post('user/edit/{id}','User\UserController@user_update')->name('user_update');
 		Route::get('user/search/ajax','User\UserController@ajax_search')->name('user_ajax_search');
 	

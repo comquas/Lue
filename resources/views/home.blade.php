@@ -4,7 +4,6 @@
 <div class="container">
 
     <div class="row topbar-info">
-
         <div class="bar"></div>
         <div class="col-md-2 avatar">
             <img src="{{ url('avatars') }}/{{ $user->avatar }}" class="avatar-img rounded">
@@ -18,7 +17,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="row info-bar-detail">
         <div class="col-md-2">
             <ul class="user-info-data">
@@ -41,7 +40,11 @@
             <ul class='user-info-detail'>
             <li><label>Email</label><span>{{ $user->email }}</span></li>
             <li><label>Mobile</label><span>{{ $user->mobile_no }}</span></li>
+<<<<<<< HEAD
             <li><label>Address</label><span>{{ optional($user->location)->name }}</span></li>
+=======
+                <li><label>Address</label><span>{{ optional( $user->location)->name }}</span></li>
+>>>>>>> 0a3ba6917c7e91f5815fc10ca359c900e8011987
             <li><label>Join Date</label><span>{{ $user->get_join_date() }}</span></li>
             <li><label>Birthday</label><span>{{ $user->get_birthday() }} ({{ $user->age() }})</span></li>
             </ul>
@@ -54,6 +57,7 @@
         <div class="card">
             <div class="card-header">
         <h6>🎂 Birthday</h6>
+                <a class="calendar-link" href="{{ asset($calendar_birthday)}}">🗓</a>
             </div>
             <div class="card-block">
 
@@ -77,26 +81,27 @@
     <div class="card">
         <div class="card-header">
         <h6>💪 Anniversary</h6>
+            <a class="calendar-link" href="{{asset($calendar_anniversity)}}">🗓</a>
         </div>
         <div class="card-block">
         <ul class="user-info-data">
         @if(count($anniversary_users))
         @foreach($anniversary_users as $anniversary_user)
-            
-            
-                <li><a href="{{ route('user_profile',["id" => $anniversary_user->id])}}">{{$anniversary_user->name}}</a> , {{$anniversary_user->No_Of_Years}} 
 
-                @if($anniversary_user->No_Of_Years > 1) 
-                    Years 
-                @else 
-                    Year 
+
+                <li><a href="{{ route('user_profile',["id" => $anniversary_user->id])}}">{{$anniversary_user->name}}</a> , {{$anniversary_user->No_Of_Years}}
+
+                @if($anniversary_user->No_Of_Years > 1)
+                    Years
+                @else
+                    Year
                 @endif
 
-                at {{date('d/m',strtotime($anniversary_user->join_date))}} 
+                at {{date('d/m',strtotime($anniversary_user->join_date))}}
 
                 </li>
-            
-           
+
+
         @endforeach
         @else
             <li>There is no anniversary</li>
@@ -113,11 +118,10 @@
     <div class="card">
         <div class="card-header">
         <h6>👨‍ Time-Off</h6>
-        <a class="calendar-link" href="{{$calendar_link}}">🗓</a>
-        </div>
+        <a class="calendar-link" href="{{asset($calendar_link)}}">🗓</a>
+       </div>
         <div class="card-block">
-            
-        
+
         <ul class="user-info-data">
             @if(count($leaves)!=0)
                 @foreach($leaves as $leave)
