@@ -180,7 +180,7 @@ class LeaveController extends Controller
 
         if ($id == '' || $id == null)
         {
-          return response()->json(['success'=>true,'data'=>$lea],200);
+          return response()->json(['success'=>true,'data'=>$leave],200);
         }
         
      

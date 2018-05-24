@@ -71,7 +71,6 @@ class UserController extends Controller
             $user->slack=$request['slack'];
             $user->location_id=$request['location'];
             $user->supervisor_id=$request['supervisor'];
-             $user->avatar=asset('avatars/'.$user->avatar);
             $user->save();
            file_put_contents(public_path('avatars/').$photo_name, $photo);
             return response()->json(['success'=>'true','data'=>$user],200);
@@ -282,7 +281,7 @@ class UserController extends Controller
 
        }
        if($auth_user->position->level ===1){
-          $users = User::orderBy('name')->get();
+          $users = User::orderBy('name','asc')->paginate(10);
           return UserResource::collection($users);
        }
        return response()->json(['message'=>'Permission defined'],401);

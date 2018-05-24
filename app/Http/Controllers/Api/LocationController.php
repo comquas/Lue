@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
-use Carbon\Carbon;
+
 
 class LocationController extends Controller
 {
@@ -126,11 +126,7 @@ class LocationController extends Controller
 
       }
       if ($auth_user->position->level===1) {
-        $dt=new Carbon();
        
-
-       dd($dt->year);
-       //
           $location = Location::where('id', $id)->first();
           if($location){
               return response()->json(['success'=>true,'data'=>$location],200);
