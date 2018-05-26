@@ -32,7 +32,7 @@
       <th>Salary</th>
       <th>Time</th>
       <th>Actions</th>
-
+      <th>Generate</th>
     </tr>
   </thead>
   <tbody>
@@ -50,6 +50,7 @@
                         <a href="{{ route('edit_user',['id' => $user->id ]) }}" class="btn btn-primary">Edit</a>
                         <a href="{{ route('del_user',['id'=> $user->id]) }}" class="btn btn-danger">Delete</a>
                         </td>
+                        <td><a href="{{ route('generate_payslip',['id'=> $user->id]) }}" class="btn" style="background-color: purple">PaySlip</a></td>
                         {{-- <td><a class="btn btn-info" href="{{ route('user_edit' , ['id' => $user->id]) }}">Edit</a>
 
                         <form class="inline" action="{{ route('user_delete', ['id' => $location->id]) }}" method="post">

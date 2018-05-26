@@ -82,7 +82,8 @@
                                 backgroundColor : "#848482",
                                 borderColor  : "#fff",
                                 allDay : true,
-                                textColor : "#fff"
+                                textColor : "#fff",
+                                
                             },
                                 @endforeach
                                 @foreach($users_birth as $user)
