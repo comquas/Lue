@@ -1,5 +1,11 @@
 @extends('layouts.app')
-
+<style type="text/css">
+  .btn:active{
+    background-color: red;
+    box-shadow: 0 5px maroon;
+    transform: translateY(4px);
+  }
+</style>
 @section('content')
 <div class="container">
     <div class="row">
@@ -50,7 +56,7 @@
                         <a href="{{ route('edit_user',['id' => $user->id ]) }}" class="btn btn-primary">Edit</a>
                         <a href="{{ route('del_user',['id'=> $user->id]) }}" class="btn btn-danger">Delete</a>
                         </td>
-                        <td><a href="{{ route('generate_payslip',['id'=> $user->id]) }}" class="btn" style="background-color: purple">PaySlip</a></td>
+                        <td><a href="{{ route('generate_payslip',['id'=> $user->id]) }}" class="btn" style="background-color: purple;">PaySlip</a></td>
                         {{-- <td><a class="btn btn-info" href="{{ route('user_edit' , ['id' => $user->id]) }}">Edit</a>
 
                         <form class="inline" action="{{ route('user_delete', ['id' => $location->id]) }}" method="post">
