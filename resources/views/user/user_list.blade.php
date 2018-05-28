@@ -5,9 +5,25 @@
     box-shadow: 0 5px maroon;
     transform: translateY(4px);
   }
+  .alert-flash {
+      position: fixed;
+      right: 15px;
+      bottom: 10px;
+      z-index: 10;
+      background-color: #80ff00;
+      border-radius: -12px 12px 12px 12px;
+    }
 </style>
 @section('content')
 <div class="container">
+
+            @if(Session::has('flash'))
+            <div class="alert alert-flash">
+                <h4><i class="icon fa fa-check"></i> Success!</h4>
+                {{Session::get('flash')}}
+            </div>
+            @endif
+
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -77,4 +93,12 @@
         </div>
     </div>
 </div>
+
+<script>
+  $(function(){
+
+     $('.alert-flash').fadeOut(2000);
+
+  })
+</script>
 @endsection

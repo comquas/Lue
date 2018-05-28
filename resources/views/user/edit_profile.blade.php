@@ -30,7 +30,7 @@
                             <img src="{{ url('avatars')}}/{{ $user->avatar }}" class="rounded" style="width:140px">
                             @endisset
 
-                            <img src="{{asset('avatars/defaultimage.png')}}" class="rounded uploadImage" style="width: 140px;height: 140px">
+                            <img src="{{ asset('images/defaultimage.png') }}" class="rounded uploadImage" style="width: 140px;height: 140px">
 
                         </div>
 

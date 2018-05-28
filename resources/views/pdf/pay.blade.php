@@ -46,7 +46,7 @@
 <body>
 
 Date : <time>{{ $now }}</time>
-<img src="{{public_path('/avatars/comquas.png')}}" width="100px" height="100px" align="right">
+<img src="{{public_path('/images/comquas.jpg')}}" width="100px" height="100px" align="right">
 <h1>{{ $title }}</h1>
 <hr>
 <h2>Pay Slip</h3><br>
@@ -69,20 +69,20 @@ Date : <time>{{ $now }}</time>
   <td>{{ $user->salary }} Ks</td>
 </tr>
 
-<tr>
+{{-- <tr>
   <td>Leave  </td><td>:</td>
   <td> {{ $annual }} day taken</td>
-</tr>
+</tr> --}}
 
 <tr>
   <td>Remain-Leave  </td><td>:</td>
   <td>{{ $user->no_of_leave - $annual }} day left</td>
 </tr>
 
-<tr>
+{{-- <tr>
   <td> Sick-Leave  </td><td>:</td>
   <td>{{ $sick }} day taken</td>
-</tr>
+</tr> --}}
 
 <tr>
   <td>Remain Sick-Leave  </td><td>:</td>

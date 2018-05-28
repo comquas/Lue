@@ -31,8 +31,11 @@
         @endisset
 
         @if (Auth::user()->is_admin() || $is_profile == false)
-                <li><a style="font-size: 12px" class="btn btn-primary edit-home" href="{{ route('edit_user',["id"=> $user->id]) }}">Edit</a></li>
-                    <li><a style="font-size: 12px" class="btn btn-primary edit-home" href="{{route('reset.leave',['id'=>$user->id])}}">Reset Leave</a> </li>
+                <li><a style="font-size: 12px" class="btn btn-primary edit-home" href="{{ route('profile',["id"=> $user->id]) }}">Edit</a></li>
+                
+        @endif
+        @if(Auth::user()->is_admin())
+        <li><a style="font-size: 12px" class="btn btn-primary edit-home" href="{{route('reset.leave',['id'=>$user->id])}}">Reset Leave</a> </li>
         @endif
         </ul>
         </div>
