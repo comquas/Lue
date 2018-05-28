@@ -275,7 +275,7 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" style="margin-bottom: 50px">
     <div class="col-md-12">
         <button class="btn btn-primary">{{ $btn_title }}</button>
     </div>
