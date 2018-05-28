@@ -34,6 +34,8 @@ Route::post('/register',function () {
 Route::middleware(['auth'])->prefix('admin')->group(function () {
 
 
+	//generate pay slip
+	Route::get('generate-payslip/{id}','PaySlipPdfController@make')->name('generate_payslip');
     //calendar
     Route::get('calendar','CalendarController@calendar')->name('calendar');
     

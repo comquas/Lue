@@ -35,7 +35,7 @@ class CreateUsersTable extends Migration
             $table->integer('salary')->nullable();
 
             //leave
-            $table->float('no_of_leave')->default(0);
+             $table->float('no_of_leave')->default(0);
              $table->float('sick_leave')->default(0);
              $table->float('urgent_leave')->default(0);
 
