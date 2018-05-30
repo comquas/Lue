@@ -97,13 +97,16 @@
                             },
                             @endforeach
                             @foreach($users_anni as $anni)
-                            {
-                                title : "{{$anni->name}} Anniversary",
-                                start : "{{$anni->join_date}}",
-                                backgroundColor: "#ff0000",
-                                borderColor  : "#fff",
-                                
-                            },
+                                 @if($anni->has_anniversary())
+                                    {
+                                       
+                                        title : "{{$anni->name}} Anniversary",
+                                        start : "{{$anni->has_anniversary()}}",
+                                        backgroundColor: "#ff0000",
+                                        borderColor  : "#fff",
+                                        
+                                    },
+                                @endif
                             @endforeach
 
 

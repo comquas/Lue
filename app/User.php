@@ -40,6 +40,21 @@ class User extends Authenticatable
         
     }
 
+    public function has_anniversary() {
+      $raw_date = Carbon::parse($this->join_date)->diff(Carbon::now())->format('%y,%m,%d');
+      $date_array = explode(',', $raw_date);
+
+
+      if($date_array[0] > 0 && $date_array[1] == 0 && $date_array[2] == 0)
+      {
+        return Carbon::now()->toDateString();
+      }
+
+      return false;
+
+
+    }
+
     public function get_long_time_year_month() {
         //return Carbon::createFromFormat('Y-m-d',$this->join_date,"Asia/Rangoon")->format('d-m-Y');   
         
