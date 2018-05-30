@@ -101,7 +101,7 @@
 						<div class="form-group @if($errors->has('reason')) has-error @endif">
 							<label for="reason">Reason</label><br>
 							<textarea name="reason" class="form_control" 
-							style="width: 100%"></textarea>
+							style="width: 100%">@isset($leave){{$leave->reason}}@endisset</textarea>
 							@if($errors->has('reason')) <b><div class="help-block">{{$errors->first('reason')}}</div></b>  @endif
 						</div>
 
