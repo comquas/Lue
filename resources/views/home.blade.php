@@ -35,7 +35,7 @@
                 
         @endif
         @if(Auth::user()->is_admin())
-        <li><a style="font-size: 12px" class="btn btn-primary edit-home" href="{{route('reset.leave',['id'=>$user->id])}}">Reset Leave</a> </li>
+        <li><a style="font-size: 12px" class="btn btn-primary edit-home" href="{{route('reset.leave')}}">Reset Leave</a> </li>
         @endif
         </ul>
         </div>
