@@ -103,7 +103,7 @@ X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
 SUMMARY:".$leaveUser['name']." : ".$leaveUser['leaveType']."
 DTSTART;VALUE=DATE:".date_format(date_create($leaveUser['from']),'Ymd').'T'.date_format(date_create($leaveUser['from']),'His').'Z'."
 DTEND;VALUE=DATE:".date_format(date_create($leaveUser['to']),'Ymd').'T'.date_format(date_create($leaveUser['to']),'His').'Z'."
-DTSTART;TZID=Asia/Rangoon:".date_format(date_create(Carbon\Carbon::now()),'Ymd').'T'.date_format(date_create(Carbon\Carbon::now()),'His')."
+DTSTART;TZID=Asia/Rangoon:".date_format(date_create($leaveUser['from']),'Ymd').'T'.date_format(date_create($leaveUser['from']),'His')."
 SEQUENCE:0
 END:VEVENT
 END:VCALENDAR";
