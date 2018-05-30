@@ -23,10 +23,6 @@ class HomeController extends Controller
         $this->middleware('auth');
         $helper = new LueCalendar();
         $helper->buildCalendarFolder();
-        $birth=new BirthdayCalendar();
-        $birth->buildCalendarFolder();
-        $anniversary=new AnniversaryCalendar();
-        $anniversary->buildCalendarFolder();
     }
 
     /*

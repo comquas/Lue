@@ -1,11 +1,22 @@
 <?php
 namespace App;
 
-use Carbon;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\File;
+use App\AnniversaryCalendar;
+use App\BirthdayCalendar;
 
 class LueCalendar
 {
+    protected $anniversary_calendar;
+    protected $birthday_calendar;
+
+    public function __construct()
+    {
+        $this->anniversary_calendar = new AnniversaryCalendar;
+        $this->birthday_calendar = new BirthdayCalendar;
+    }
+
 	function getCalendarFolderHash($filename="timeOff") {
         $app_key = env('APP_KEY');
         $folder_name = md5($filename.$app_key);
@@ -15,18 +26,27 @@ class LueCalendar
     function buildCalendarFolder() {
 
     	$filename="timeOff";
+        $filename1 = 'anniversary';
+        $filename2 = 'birthday';
 
     	$folder_name = $this->getCalendarFolderHash($filename);
         $path = public_path() ."/calendar/$folder_name";
+
         if(!File::exists($path))
         {
             File::makeDirectory($path,0775,true);
 
-            $file = $path ."/$filename.ics";
+            $file  = "$path/$filename.ics";
+            $file1 = "$path/$filename1.ics";
+            $file2 = "$path/$filename2.ics";
+
+            //Leave User
             $leaves = Leave::where('status',1)
                     ->orderBy('from')
                     ->get();
+
             $leaveUsers = $this->generateAllLeaveUsersInfo($leaves);
+            
             $contents = response()->view('webcal.leave', ['leaveUsers' => $leaveUsers,
             ],200);
             $bytes_written = File::put($file, $contents->getContent());
@@ -35,6 +55,27 @@ class LueCalendar
                 die("Error writing to file");
             }
 
+            $user=User::all();
+
+            //Birthday User
+            $birthday_user = $this->generateAllBirthdayUsersInfo($user);
+            $contents = response()->view('webcal.birthday', ['users' => $birthday_user,
+            ],200);
+            $bytes_written = File::put($file2, $contents->getContent());
+            if ($bytes_written === false)
+            {
+                die("Error writing to file");
+            }
+
+            //Anniversary User
+            $anniversary_user = $this->generateAllAnniversaryUsersInfo($user);
+            $contents = response()->view('webcal.anniversary', ['users' => $anniversary_user,
+            ],200);
+            $bytes_written = File::put($file1, $contents->getContent());
+            if ($bytes_written === false)
+            {
+                die("Error writing to file");
+            }
         }
 
 
@@ -58,17 +99,48 @@ class LueCalendar
             {
                 $leaveType = "Urgent Leave";
             }
-            $info = array('id'=>$user->id,'name'=>$user->name, 'from'=>$leave->from,'to'=>Carbon::parse($leave->to)->addDay(), 'leaveType'=>$leaveType, 'timestamp'=>$leave->created_at);
+            $info = array('id'=>$user->id,'name'=>$user->name, 'from'=>$leave->from,'to'=>$leave->to, 'leaveType'=>$leaveType, 'timestamp'=>$leave->created_at);
             array_push($leaveUsers,$info);
             
         }
         return $leaveUsers;
     }
 
+    public function generateAllAnniversaryUsersInfo($user)
+    {
+        $users= [];
+        foreach($user as $usr)
+        {
+
+            $info = array('id'=>$usr->id,'name'=>$usr->name, 'join_date'=>$usr->join_date,'created_at'=>$usr->created_at);
+            array_push($users,$info);
+
+        }
+
+        return $users;
+    }
+
+    public function generateAllBirthdayUsersInfo($user)
+    {
+        $users= [];
+        foreach($user as $usr)
+        {
+
+            $info = array('id'=>$usr->id,'name'=>$usr->name, 'birthday'=>$usr->birthday,'created_at'=>$usr->created_at);
+            array_push($users,$info);
+
+        }
+
+        return $users;
+    }
+
     public function writeCalendar($leaves)
     {
         
         $filename = 'timeOff';
+        $filename1 = 'anniversary';
+        $filename2 = 'birthday';
+
         $helper = new LueCalendar();
         $folder_name = $helper->getCalendarFolderHash();
         $path = public_path() ."/calendar/$folder_name";
