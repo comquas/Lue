@@ -154,7 +154,7 @@ class UserController extends Controller
             $this->validate($request, [
             'avatar' => 'nullable|image|mimes:jpeg,bmp,png|max:2000',
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
+            'email' => 'required|email|max:255',
             'mobile_no' => 'required|string',
             'position' => 'required|integer',
             'location' => 'required|integer',
@@ -176,7 +176,7 @@ class UserController extends Controller
             $this->validate($request, [
             'avatar' => 'nullable|image|mimes:jpeg,bmp,png|max:2000',
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
+            'email' => 'required|email|max:255',
             'mobile_no' => 'required|string',
             'position' => 'required|integer',
             'location' => 'required|integer',
@@ -191,6 +191,7 @@ class UserController extends Controller
             'slack' => 'nullable|string'
             ]);
         }
+
     	
 
         

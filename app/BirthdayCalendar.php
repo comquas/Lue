@@ -76,11 +76,11 @@ class BirthdayCalendar extends Model
             $content = "
 BEGIN:VEVENT
 METHOD:PUBLISH
-CREATED: ".date_format($birthdayUser['created_at'],'Ymd').'T'.date_format($birthdayUser['created_at'],'His').'Z'."
+CREATED: ".date_format(date_create($birthdayUser['created_at']),'Ymd').'T'.date_format(date_create($birthdayUser['created_at']),'His').'Z'."
 TRANSP:OPAQUE
 X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
 SUMMARY: ".$birthdayUser['name']." Birthday
-DTSTART;TZID=Asia/Rangoon: ".date_format($birthdayUser['birthday'],'Ymd').'T000000'."
+DTSTART;TZID=Asia/Rangoon: ".date_format(date_create($birthdayUser['birthday']),'Ymd').'T000000'."
 RRULE:FREQ=YEARLY
 SEQUENCE:0
 END:VEVENT

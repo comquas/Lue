@@ -320,6 +320,7 @@ class LeaveController extends Controller
 
         $email = $leave
             ->user->email;
+        
 
         Mail::to($email)->send(new ApproveLeave($leave, $user));
     }
