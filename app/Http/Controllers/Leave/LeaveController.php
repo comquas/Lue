@@ -173,7 +173,7 @@ class LeaveController extends Controller
             ->send(new ApplyLeave($leave, $user, $supervisor));
     }
 
-    public function sendSlack($send_user, $receive_user, $text)
+    public function sendSlack($send_user, $receive_user, $attachments)
     {
         if(!$receive_user)
         {
@@ -186,8 +186,8 @@ class LeaveController extends Controller
             return false;
         }
 
-        $json = ["channel" => $receive_user->slack, "username" => $send_user->name, "text" => $text];
-        $json = ["channel" => "@".$receive_user->slack, "username" => $send_user->name, "text" => $text];
+        // $json = ["channel" => $receive_user->slack, "username" => $send_user->name, "text" => $text];
+        $json = ["channel" => "@".$receive_user->slack, "username" => $send_user->name, "attachments" => $attachments];
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -358,11 +358,18 @@ class LeaveController extends Controller
         $leave_type = "";
         if ($leave->type == 1) $leave_type = "Annual";
         else $leave_type = "Sick";
-        $text = $text = "You are not allowed the " . $leave_type . "leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
-        $text = $text = "You are not allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
-        $text = "You are not allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
 
-        $this->sendSlack($user, $leave->user, $text);
+        $attachments=[
+            ["title" => "Reject Leave", 
+             "fields" => [
+            ["title" => "From" , "value" => $leave->from, "short" => true],
+            ["title" => "To", "value" => $leave->to, "short" => true],
+            ["title" => "No of Days","value"=> $leave->no_of_day, "short" => true],
+            ["title" => "Comment" , "value" => $leave->remark, "short"=>true]]]];
+
+        // $text = "You are not allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
+
+        $this->sendSlack($user, $leave->user, $attachments);
 
         return redirect()->route('list_timeoff');
     }

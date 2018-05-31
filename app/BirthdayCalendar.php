@@ -12,25 +12,25 @@ class BirthdayCalendar extends Model
 {
 
 
-    function buildCalendarFolder() {
+    // function buildCalendarFolder() {
 
-        $filename="birthday";
-        $helper=new LueCalendar();
-        $folder_name = $helper->getCalendarFolderHash("timeOff");
-        $path = public_path() ."/calendar/$folder_name";
-        $file = $path ."/$filename.ics";
-        $user=User::all();
-        $users = $this->generateAllLeaveUsersInfo($user);
-        $contents = response()->view('webcal.birthday', ['users' => $users,
-        ],200);
-        $bytes_written = File::put($file, $contents->getContent());
-        if ($bytes_written === false)
-        {
-            die("Error writing to file");
-        }
+    //     $filename="birthday";
+    //     $helper=new LueCalendar();
+    //     $folder_name = $helper->getCalendarFolderHash("timeOff");
+    //     $path = public_path() ."/calendar/$folder_name";
+    //     $file = $path ."/$filename.ics";
+    //     $user=User::all();
+    //     $users = $this->generateAllLeaveUsersInfo($user);
+    //     $contents = response()->view('webcal.birthday', ['users' => $users,
+    //     ],200);
+    //     $bytes_written = File::put($file, $contents->getContent());
+    //     if ($bytes_written === false)
+    //     {
+    //         die("Error writing to file");
+    //     }
 
 
-    }
+    // }
 
     public function generateAllLeaveUsersInfo($user)
     {

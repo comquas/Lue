@@ -57,6 +57,16 @@ class LueCalendar
 
             $user=User::all();
 
+            //Anniversary User
+            $anniversary_user = $this->generateAllAnniversaryUsersInfo($user);
+            $contents = response()->view('webcal.anniversary', ['users' => $anniversary_user,
+            ],200);
+            $bytes_written = File::put($file1, $contents->getContent());
+            if ($bytes_written === false)
+            {
+                die("Error writing to file");
+            }
+
             //Birthday User
             $birthday_user = $this->generateAllBirthdayUsersInfo($user);
             $contents = response()->view('webcal.birthday', ['users' => $birthday_user,
@@ -67,15 +77,6 @@ class LueCalendar
                 die("Error writing to file");
             }
 
-            //Anniversary User
-            $anniversary_user = $this->generateAllAnniversaryUsersInfo($user);
-            $contents = response()->view('webcal.anniversary', ['users' => $anniversary_user,
-            ],200);
-            $bytes_written = File::put($file1, $contents->getContent());
-            if ($bytes_written === false)
-            {
-                die("Error writing to file");
-            }
         }
 
 
@@ -138,8 +139,6 @@ class LueCalendar
     {
         
         $filename = 'timeOff';
-        $filename1 = 'anniversary';
-        $filename2 = 'birthday';
 
         $helper = new LueCalendar();
         $folder_name = $helper->getCalendarFolderHash();

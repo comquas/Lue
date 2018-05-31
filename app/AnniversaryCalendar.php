@@ -10,25 +10,25 @@ use Carbon;
 class AnniversaryCalendar extends Model
 {
 
-    function buildCalendarFolder() {
+    // function buildCalendarFolder() {
 
-        $filename="anniversary";
-        $helper=new LueCalendar();
-        $folder_name = $helper->getCalendarFolderHash("timeOff");
-        $path = public_path() ."/calendar/$folder_name";
-        $file = $path ."/$filename.ics";
-        $user=User::all();
-        $users = $this->generateAllLeaveUsersInfo($user);
-        $contents = response()->view('webcal.anniversary', ['users' => $users,
-        ],200);
-        $bytes_written = File::put($file, $contents->getContent());
-        if ($bytes_written === false)
-        {
-            die("Error writing to file");
-        }
+    //     $filename="anniversary";
+    //     $helper=new LueCalendar();
+    //     $folder_name = $helper->getCalendarFolderHash("timeOff");
+    //     $path = public_path() ."/calendar/$folder_name";
+    //     $file = $path ."/$filename.ics";
+    //     $user=User::all();
+    //     $users = $this->generateAllLeaveUsersInfo($user);
+    //     $contents = response()->view('webcal.anniversary', ['users' => $users,
+    //     ],200);
+    //     $bytes_written = File::put($file, $contents->getContent());
+    //     if ($bytes_written === false)
+    //     {
+    //         die("Error writing to file");
+    //     }
 
 
-    }
+    // }
 
     public function generateAllLeaveUsersInfo($user)
     {
