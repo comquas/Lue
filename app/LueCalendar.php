@@ -8,14 +8,14 @@ use App\BirthdayCalendar;
 
 class LueCalendar
 {
-    protected $anniversary_calendar;
-    protected $birthday_calendar;
+    // protected $anniversary_calendar;
+    // protected $birthday_calendar;
 
-    public function __construct()
-    {
-        $this->anniversary_calendar = new AnniversaryCalendar;
-        $this->birthday_calendar = new BirthdayCalendar;
-    }
+    // public function __construct()
+    // {
+    //     $this->anniversary_calendar = new AnniversaryCalendar;
+    //     $this->birthday_calendar = new BirthdayCalendar;
+    // }
 
 	function getCalendarFolderHash($filename="timeOff") {
         $app_key = env('APP_KEY');

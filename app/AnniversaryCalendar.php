@@ -30,19 +30,19 @@ class AnniversaryCalendar extends Model
 
     // }
 
-    public function generateAllLeaveUsersInfo($user)
-    {
-        $users= [];
-        foreach($user as $usr)
-        {
+    // public function generateAllLeaveUsersInfo($user)
+    // {
+    //     $users= [];
+    //     foreach($user as $usr)
+    //     {
 
-            $info = array('id'=>$usr->id,'name'=>$usr->name, 'join_date'=>$usr->join_date,'created_at'=>$usr->created_at);
-            array_push($users,$info);
+    //         $info = array('id'=>$usr->id,'name'=>$usr->name, 'join_date'=>$usr->join_date,'created_at'=>$usr->created_at);
+    //         array_push($users,$info);
 
-        }
+    //     }
 
-        return $users;
-    }
+    //     return $users;
+    // }
 
     public function writeCalendar($user)
     {
