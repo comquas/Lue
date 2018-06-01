@@ -43,7 +43,11 @@
             <ul class='user-info-detail'>
             <li><label>Email</label><span>{{ $user->email }}</span></li>
             <li><label>Mobile</label><span>{{ $user->mobile_no }}</span></li>
+<<<<<<< HEAD
+            <li><label>Address</label><span>{{ optional($user->location)->name }}</span></li>
+=======
                 <li><label>Address</label><span>{{ optional( $user->location)->name }}</span></li>
+>>>>>>> 0a3ba6917c7e91f5815fc10ca359c900e8011987
             <li><label>Join Date</label><span>{{ $user->get_join_date() }}</span></li>
             <li><label>Birthday</label><span>{{ $user->get_birthday() }} ({{ $user->age() }})</span></li>
             </ul>
@@ -128,7 +132,7 @@
 
                     <li>
 
-                        <a href="{{ route('user_profile',["id" => $leave->user->id])}}">{{$leave->user->name}} </a>
+
                         @if($leave->type == 2)
                             😷
                         @endif

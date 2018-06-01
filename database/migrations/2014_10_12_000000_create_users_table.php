@@ -27,8 +27,8 @@ class CreateUsersTable extends Migration
             $table->string('office_email')->default("");
 
             //bank info
-            $table->string('bank_name')->default("");
-            $table->string('bank_account')->default("");
+            $table->string('bank_name')->nullable();
+            $table->string('bank_account')->nullable();
             
 
             //salary
@@ -41,13 +41,13 @@ class CreateUsersTable extends Migration
 
 
             //personal
-            $table->string('mobile_no')->default("");
-            $table->string('personal_email')->default("");
+            $table->string('mobile_no')->nullable();
+            $table->string('personal_email')->nullable();
             $table->date('birthday');
 
             //social network
-            $table->string('github')->default("");
-            $table->string('twitter')->default("");
+            $table->string('github')->nullable();
+            $table->string('twitter')->nullable();
             //slack
             $table->string('slack')->nullable();
 

@@ -28,6 +28,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public static function paginate($int)
+    {
+    }
+
     public function get_join_date() {
         return Carbon::createFromFormat('Y-m-d',$this->join_date,"Asia/Rangoon")->format('d-m-Y');
     }
@@ -86,13 +90,14 @@ class User extends Authenticatable
     }
 
     function is_admin() {
-      
-      return ($this->position->level <= env('ADMIN_LEVEL'));
+
+      return ($this->position->level <= config('comquas.position'));
     }
 
     function staff() {
       return User::where('supervisor_id',$this->id)->get();
     }
+
 
 
 }
