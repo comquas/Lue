@@ -43,14 +43,8 @@ class LeaveController extends Controller
         DB::enableQueryLog();
         $decision = true;
        
-        $leaves = Leave::join('users','leaves.user_id','users.id')
-        ->where('users.supervisor_id',$user->id)
-        ->where('leaves.status',0)
-        ->orderBy('leaves.created_at', 'desc')
-        ->select('leaves.*')
-        ->paginate(10);
-
-        
+        $leaves = Leave::applyRequestList($user);
+        //dd($leaves);
         return view('leave/list', compact('leaves','decision'));
     }
 
@@ -58,14 +52,8 @@ class LeaveController extends Controller
     {
         $user = Auth::user();
 
-        $leaves = Leave::join('users','leaves.user_id','users.id')
-        ->where('users.supervisor_id',$user->id)
-        ->orderBy('leaves.created_at', 'desc')
-        ->select('leaves.*')
-        ->paginate(10);
-
-    
-        
+        $leaves = Leave::applyTimeOffList($user);
+        //dd($leaves);   
         return view('leave/list', compact('leaves'));
     }
 
@@ -251,13 +239,9 @@ class LeaveController extends Controller
         }
 
 
-        $leave = Leave::join('users','leaves.user_id','users.id')
-        ->where('leaves.id', $id)
-        ->where('users.supervisor_id',$user->id)
-        ->where('leaves.status',0)
-        ->select('leaves.*')
-        ->first();
-        
+        $leave = Leave::approveUser($id,$user);
+
+        //dd($leave);
 
         if ($leave == null)
         {
@@ -318,9 +302,8 @@ class LeaveController extends Controller
     function edit($id, Request $request)
     {
         $user = Auth::user();
-        $leave = Leave::where('status', 0)->where('id', $id)->whereIn('user_id', $user->staff())
-            ->first();
-
+        $leave = Leave::editTimeOffUser($id,$user);
+           // dd($leave);
         $from = new Carbon($leave->from);
         $to = new Carbon($leave->to);
         $leave_days = $from->diff($to)->days;
@@ -336,8 +319,9 @@ class LeaveController extends Controller
         $leave_id = $request->get('leave_id');
         $remark = $request->get('remark');
 
-        $leave = Leave::where('status', 0)->where('id', $leave_id)->whereIn('user_id', $user->staff())
-            ->first();
+        $leave = Leave::rejectUser($leave_id,$user);
+        //dd($leave);
+
         $leave->status = 2;
         $leave->remark = $remark;
         $leave->approved_by = $user->id;

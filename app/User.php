@@ -79,5 +79,14 @@ class User extends Authenticatable
       return User::where('supervisor_id',$this->id)->get();
     }
 
+    public static function resetleave($id){
+        return $user=User::where('id',$id)->first();
+    }
 
+    public static function viewProfile($id){
+        return $user = User::where('id',$id)->first();
+    }
+    public static function editUser($id){
+        return $user = User::where("id",$id)->first();
+    }
 }
