@@ -28,6 +28,10 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public static function paginate($int)
+    {
+    }
+
     public function get_join_date() {
         return Carbon::createFromFormat('Y-m-d',$this->join_date,"Asia/Rangoon")->format('d-m-Y');
     }
@@ -38,6 +42,21 @@ class User extends Authenticatable
         return Carbon::parse($this->join_date)->diff(Carbon::now())->format('%y years, %m months and %d days');
         
         
+    }
+
+    public function has_anniversary() {
+      $raw_date = Carbon::parse($this->join_date)->diff(Carbon::now())->format('%y,%m,%d');
+      $date_array = explode(',', $raw_date);
+
+
+      if($date_array[0] > 0 && $date_array[1] == 0 && $date_array[2] == 0)
+      {
+        return Carbon::now()->toDateString();
+      }
+
+      return false;
+
+
     }
 
     public function get_long_time_year_month() {
@@ -71,13 +90,22 @@ class User extends Authenticatable
     }
 
     function is_admin() {
-      
-      return ($this->position->level <= env('ADMIN_LEVEL'));
+
+      return ($this->position->level <= config('comquas.position'));
     }
 
     function staff() {
       return User::where('supervisor_id',$this->id)->get();
     }
 
+    public static function resetleave($id){
+        return $user=User::where('id',$id)->first();
+    }
 
+    public static function viewProfile($id){
+        return $user = User::where('id',$id)->first();
+    }
+    public static function editUser($id){
+        return $user = User::where("id",$id)->first();
+    }
 }

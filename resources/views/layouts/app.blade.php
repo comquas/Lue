@@ -8,10 +8,11 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Laravel') }} @yield('title')</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+
 
     <!-- bootstarp -->
     <script type="text/javascript" src="{{ asset('bower_components/jquery/dist/jquery.min.js') }}"></script>
@@ -31,6 +32,7 @@
 
     @yield('header')
 
+
 </head>
 <body>
     <div id="app">
@@ -42,14 +44,16 @@
             </button>
             <a class="navbar-brand" href="{{ route('home') }}">{{ config('app.name', 'Laravel') }}</a>
 
+
+
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
                 <ul class="navbar-nav mr-auto">
-                     
+
                 @if(Auth::guest())
                 @else
                     @if(Auth::user()->is_admin())
-
+                            <li class="nav-item"> <a class="nav-link" href="{{route('calendar')}}">Calendar</a></li>
                         <!-- user -->
                         @component('control.nav-item')
                             @slot('title','Employee')
@@ -77,6 +81,8 @@
                             @slot('list_route',route('position_list'))
                                 
                         @endcomponent
+                        <!-- calendar -->
+
                          <!-- ./Posistions -->
 
                          <!-- time-off -->
@@ -98,6 +104,7 @@
                      <li class="nav-item">
                         <a href="{{route('apply_timeoff')}}" class="nav-link">Apply Time-Off</a>
                      </li>
+
                  </ul>
                  <ul class="navbar-nav ml-auto">
                  <li class="nav-item dropdown" >
@@ -120,6 +127,7 @@
                     </div>
                 </li>
                 @endif
+
 </ul>
 
 </div>
@@ -191,4 +199,3 @@
 
 
 </body>
-</html>

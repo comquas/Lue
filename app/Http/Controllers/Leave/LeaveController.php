@@ -43,14 +43,8 @@ class LeaveController extends Controller
         DB::enableQueryLog();
         $decision = true;
        
-        $leaves = Leave::join('users','leaves.user_id','users.id')
-        ->where('users.supervisor_id',$user->id)
-        ->where('leaves.status',0)
-        ->orderBy('leaves.created_at', 'desc')
-        ->select('leaves.*')
-        ->paginate(10);
-
-        
+        $leaves = Leave::applyRequestList($user);
+        //dd($leaves);
         return view('leave/list', compact('leaves','decision'));
     }
 
@@ -58,21 +52,15 @@ class LeaveController extends Controller
     {
         $user = Auth::user();
 
-        $leaves = Leave::join('users','leaves.user_id','users.id')
-        ->where('users.supervisor_id',$user->id)
-        ->orderBy('leaves.created_at', 'desc')
-        ->select('leaves.*')
-        ->paginate(10);
-
-    
-        
+        $leaves = Leave::applyTimeOffList($user);
+        //dd($leaves);   
         return view('leave/list', compact('leaves'));
     }
 
-    function store(Request $request, $id = '')
+    function store(Request $request, $id='')
     {
-
-        $this->validate($request, ['type' => 'required|integer', 'from_date' => 'required|date', 'to_date' => 'required|date', 'no_of_day' => 'required|numeric']);
+    
+      $this->validate($request, ['type' => 'required|integer', 'from_date' => 'required|date', 'to_date' => 'required|date', 'no_of_day' => 'required|numeric','reason' => 'required']);
 
         $user = Auth::user();
 
@@ -95,6 +83,7 @@ class LeaveController extends Controller
 
         $leave->type = $request->type;
         $leave->no_of_day = $request->no_of_day;
+        $leave->reason=$request->reason;
         $leave->from = Carbon::createFromFormat('d-m-Y', $request->from_date, "Asia/Rangoon");;
         $leave->to = Carbon::createFromFormat('d-m-Y', $request->to_date, "Asia/Rangoon");
         
@@ -142,6 +131,7 @@ class LeaveController extends Controller
         else {
             //write to calendar
             $helper = new LueCalendar();
+            //dd($helper);
             $helper->writeCalendar($leave);
         }
 
@@ -171,8 +161,12 @@ class LeaveController extends Controller
             ->send(new ApplyLeave($leave, $user, $supervisor));
     }
 
-    public function sendSlack($send_user, $receive_user, $text)
+    public function sendSlack($send_user, $receive_user, $attachments)
     {
+        if(!$receive_user)
+        {
+            return false;
+        }
 
         $url = env('SLACK_HOOK', '');
         if ($url == "")
@@ -180,9 +174,33 @@ class LeaveController extends Controller
             return false;
         }
 
-        $json = ["channel" => $receive_user->slack, "username" => $send_user->name, "text" => $text];
-        $json = ["channel" => "@".$receive_user->slack, "username" => $send_user->name, "text" => $text];
+        // $json = ["channel" => $receive_user->slack, "username" => $send_user->name, "text" => $text];
+        $json = ["channel" => "@".$receive_user->slack, "username" => $send_user->name, "attachments" => $attachments];
 
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, 'payload=' . json_encode($json));
+        $server_output = curl_exec($ch);
+        curl_close($ch);
+    }
+     public function approveSendSlack($send_user, $receive_user, $attachments)
+    {
+        if(!$receive_user->slack)
+        {
+            return false;
+        }
+        //dd($receive_user->slack);
+
+        $url = env('SLACK_HOOK', '');
+        if ($url == "")
+        {
+            return false;
+        }
+
+        // $json = ["channel" => "@{$receive_user->slack}", "username" => $send_user->name, "text" => 'hi'];
+        $json = ["channel" => "@".$receive_user->slack, "username" => $send_user->name, "attachments" => $attachments];
+        
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_POST, 1);
@@ -206,6 +224,11 @@ class LeaveController extends Controller
             $leave
                 ->user->sick_leave = $leave
                 ->user->sick_leave - $leave->no_of_day;
+        }else if($leave->type == 3)
+        {
+            $leave
+                ->user->urgent_leave = $leave
+                ->user->urgent_leave - $leave->no_of_day;
         }
         $leave->approved_by = $user->id;
 
@@ -225,13 +248,9 @@ class LeaveController extends Controller
         }
 
 
-        $leave = Leave::join('users','leaves.user_id','users.id')
-        ->where('leaves.id', $id)
-        ->where('users.supervisor_id',$user->id)
-        ->where('leaves.status',0)
-        ->select('leaves.*')
-        ->first();
-        
+        $leave = Leave::approveUser($id,$user);
+
+        //dd($leave);
 
         if ($leave == null)
         {
@@ -252,13 +271,27 @@ class LeaveController extends Controller
         {
             $leave_type = "Annual";
         }
-        else
+        else if ($leave->type == 2)
         {
             $leave_type = "Sick";
         }
-        $text = "You are allowed the " . $leave_type . "leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
-        $text = "You are allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
-        $this->sendSlack($user, $leave->user, $text);
+        else
+        {
+            $leave_type = "Urgent";
+        }
+        //$text = "You are allowed the " . $leave_type . "leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
+        //$text = "You are allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ")";
+        $attachments=[
+            ["title" => $leave->user->name . " apply leave for " . $leave->no_of_day
+        . "days", 
+             "fields" => [
+            ["title" => "From" , "value" => $leave->from, "short" => true],
+            ["title" => "To", "value" => $leave->to, "short" => true],
+            ["title" => "No of Days","value"=> $leave->no_of_day, "short" => true],
+            ["title" => "Comment" , "value" => $leave->reason, "short"=>true]]]];
+        //dd(json_encode($attachments));
+
+        $this->approveSendSlack($user, $leave->user, $attachments);
 
         return redirect()->route('list_timeoff');
     }
@@ -271,6 +304,7 @@ class LeaveController extends Controller
 
         $email = $leave
             ->user->email;
+        
 
         Mail::to($email)->send(new ApproveLeave($leave, $user));
     }
@@ -278,9 +312,8 @@ class LeaveController extends Controller
     function edit($id, Request $request)
     {
         $user = Auth::user();
-        $leave = Leave::where('status', 0)->where('id', $id)->whereIn('user_id', $user->staff())
-            ->first();
-
+        $leave = Leave::editTimeOffUser($id,$user);
+           // dd($leave);
         $from = new Carbon($leave->from);
         $to = new Carbon($leave->to);
         $leave_days = $from->diff($to)->days;
@@ -296,8 +329,9 @@ class LeaveController extends Controller
         $leave_id = $request->get('leave_id');
         $remark = $request->get('remark');
 
-        $leave = Leave::where('status', 0)->where('id', $leave_id)->whereIn('user_id', $user->staff())
-            ->first();
+        $leave = Leave::rejectUser($leave_id,$user);
+        //dd($leave);
+
         $leave->status = 2;
         $leave->remark = $remark;
         $leave->approved_by = $user->id;
@@ -308,11 +342,18 @@ class LeaveController extends Controller
         $leave_type = "";
         if ($leave->type == 1) $leave_type = "Annual";
         else $leave_type = "Sick";
-        $text = $text = "You are not allowed the " . $leave_type . "leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
-        $text = $text = "You are not allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
-        $text = "You are not allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
 
-        $this->sendSlack($user, $leave->user, $text);
+        $attachments=[
+            ["title" => "Reject Leave", 
+             "fields" => [
+            ["title" => "From" , "value" => $leave->from, "short" => true],
+            ["title" => "To", "value" => $leave->to, "short" => true],
+            ["title" => "No of Days","value"=> $leave->no_of_day, "short" => true],
+            ["title" => "Comment" , "value" => $leave->remark, "short"=>true]]]];
+
+        // $text = "You are not allowed the " . $leave_type . " leave from " . $leave->from . " to " . $leave->to . "(" . $leave->no_of_day . ") because " . $leave->remark;
+
+        $this->sendSlack($user, $leave->user, $attachments);
 
         return redirect()->route('list_timeoff');
     }
@@ -328,11 +369,6 @@ class LeaveController extends Controller
 
         $send = Mail::to($email)->send(new RejectLeave($leave, $user));
     }
-
-
-    
-
-    
 
 }
 

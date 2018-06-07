@@ -1,7 +1,28 @@
 @extends('layouts.app')
-
+<style type="text/css">
+  .btn:active{
+    background-color: red;
+    box-shadow: 0 5px maroon;
+    transform: translateY(4px);
+  }
+</style>
 @section('content')
 <div class="container">
+   @if(Session::has('flash'))
+            <div class="alert alert-success" role="alert">
+                  <div class="container">
+                    <div class="alert-icon">
+                      <i class="now-ui-icons ui-2_like"></i>
+                    </div>
+                    <strong>Done!</strong> Email sent successfully
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">
+                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+            @endif
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -32,7 +53,7 @@
       <th>Salary</th>
       <th>Time</th>
       <th>Actions</th>
-
+      <th>Generate</th>
     </tr>
   </thead>
   <tbody>
@@ -48,7 +69,9 @@
                         <td>
                         <a href="{{ route('user_profile',['id' => $user->id ]) }}" class="btn btn-info">Profile</a>
                         <a href="{{ route('edit_user',['id' => $user->id ]) }}" class="btn btn-primary">Edit</a>
+                        <a href="{{ route('del_user',['id'=> $user->id]) }}" class="btn btn-danger">Delete</a>
                         </td>
+                        <td><a href="{{ route('generate_payslip',['id'=> $user->id]) }}" class="btn" style="background-color: purple;">PaySlip</a></td>
                         {{-- <td><a class="btn btn-info" href="{{ route('user_edit' , ['id' => $user->id]) }}">Edit</a>
 
                         <form class="inline" action="{{ route('user_delete', ['id' => $location->id]) }}" method="post">
@@ -69,4 +92,12 @@
         </div>
     </div>
 </div>
+
+<script>
+  $(function(){
+
+     $('.alert-flash').fadeOut(2000);
+
+  })
+</script>
 @endsection

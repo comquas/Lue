@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\URL;
+use App\Console\Commands\JWTGenerateCommand;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->registerJWTCommand();
+    }
+
+    protected function registerJWTCommand()
+    {
+        $this->app->singleton('tymon.jwt.generate', function () {
+            return new JWTGenerateCommand();
+        });
     }
 }

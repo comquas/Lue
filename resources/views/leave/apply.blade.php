@@ -32,15 +32,22 @@
 							@if(!isset($leave))
 								<option value=1>Annual</option>
 								<option value=2>Sick</option>
+								<option value="3">Urgent</option>
 							@endif
 
 							@if(isset($leave))
 								@if($leave->type == 1)
 									<option value=1 selected>Annual</option>
 									<option value=2>Sick</option>
-								@else
+									<option value="3">Urgent</option>
+								@elseif($leave->type == 2)
 									<option value=2 selected>Sick</option>
 									<option value=1>Annual</option>
+									<option value="3">Urgent</option>
+									@else
+									<option value="3" selected>Urgent</option>
+									<option value="1">Annual</option>
+									<option value="2">Sick</option>
 								@endif
 							@endif
 							</select>
@@ -72,6 +79,8 @@
 							</div>
 						</div>
 
+
+
 						@component('control.textbox')
 						@slot('title','No. Of Day')
 						@slot('name','no_of_day')
@@ -82,7 +91,22 @@
 						@slot('value',"")
 						@endif
 						@endcomponent
+
+						<div class="form-group" id="zero_five">
+							<input type="checkbox" id="zero_point"> check for 0.5 day
+						</div>
+
+
+
+						<div class="form-group @if($errors->has('reason')) has-error @endif">
+							<label for="reason">Reason</label><br>
+							<textarea name="reason" class="form_control" 
+							style="width: 100%">@isset($leave){{$leave->reason}}@endisset</textarea>
+							@if($errors->has('reason')) <b><div class="help-block">{{$errors->first('reason')}}</div></b>  @endif
+						</div>
+
 						<button class="btn btn-primary">{{ $btn_title }}</button>
+
 					</form>
 
 				</div>
@@ -91,11 +115,13 @@
 	</div>
 </div>
 
+
 <script type="text/javascript">
 
 	$(document).ready(function() {
 
-		$("#type").select2();
+	    $('#zero_five').hide();
+	    $("#type").select2();
 
 
 		var nowTemp = new Date();
@@ -127,17 +153,31 @@
 			var b = moment(checkout.date);
 			var day = $("#no_of_day").val();
 			//console.log(day);
-			if(day>0)
-			{
-				$("#no_of_day").val('');
+			if(day>0) {
+                $("#no_of_day").val('');
+            }
+
+
+
+			if($("#no_of_day").val(workday_count(a,b)).val() < 2){
+
+			    $('#zero_five').show();
+
+                $('#zero_point').bind('change', function(e) {
+                    if ($(this).is(':checked')) {
+                       $('#no_of_day').val('0.5')
+                    }
+                    else {
+                        $("#no_of_day").val(workday_count(a,b)).val();
+                    }
+                })
+			}else{
+				$('#zero_five').hide();
 			}
-			$("#no_of_day").val(workday_count(a,b));
 
 			checkout.hide();
+
 		}).data('datepicker');
-
-
-
 	});
 
 
@@ -153,4 +193,5 @@
 	}
 
 </script>
+
 @endsection

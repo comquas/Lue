@@ -15,7 +15,7 @@ class UsersTableSeeder extends Seeder
     {
         //$today = Carbon\Carbon::now();
         //$today_date = Carbon::createFromFormat('Y-m-d',$today->toDateTimeString(),"Asia/Rangoon")->format('d-m-Y');
-        $today = date('Y-m-d');
+        $today = date('Ymd');
      	DB::table('users')->insert([
             'name' => 'Admin',
             'email' => 'admin@admin.com',
