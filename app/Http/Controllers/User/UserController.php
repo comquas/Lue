@@ -33,7 +33,7 @@ class UserController extends Controller
     }
 
     function edit($id) {
-        $user = User::where("id",$id)->first();
+        $user = User::editUser($id);
         if($user == null) {
             return redirect()->route('user_list');
         }
@@ -135,7 +135,8 @@ class UserController extends Controller
     function profile($id, Request $request) {
 
 
-        $user = User::where('id',$id)->first();
+        $user = User::viewProfile($id);
+        //dd($user);
 
         if ($user == null) {
             return redirect()->route('not_found');
@@ -315,9 +316,10 @@ class UserController extends Controller
 
         
         //$user = User::paginate(10);
-        $users = User::where('name','like',$request->name."%")->limit(10)->paginate(10);
+        
         $current_user = Auth::user();
         $q = $request->name;
+        $users = User::where('name','like',$request->name."%")->limit(10)->paginate(10);
 
         return view('/user/user_list',compact("users" ,"current_user","q"));
 
@@ -336,6 +338,7 @@ class UserController extends Controller
 
         
     }
+<<<<<<< HEAD
     public function resetLeave(){
             $users=User::all();
             $users->each(function($user) {  
@@ -343,6 +346,13 @@ class UserController extends Controller
                 $user->sick_leave=config('leave.sick_leave');
                 $user->save();
             });
+=======
+    public function resetLeave($id){
+        $user=User::resetleave($id);
+        $user->no_of_leave=$user->no_of_leave;
+        $user->sick_leave=$user->sick_leave;
+        $user->save();
+>>>>>>> 418dadcc9ca30779321a200e01c10aa9b59002b2
         return redirect()->back();
     }
     public function BAT(){
