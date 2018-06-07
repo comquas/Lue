@@ -29,23 +29,16 @@
 						<div class="form-group">
 							<label for="title">Type</label>
 							<select id="type" name="type" style="width:100%;display: block;">
-							@if(!isset($leave))
-								<option value=1>Annual</option>
-								<option value=2>Sick</option>
-								<option value="3">Urgent</option>
-							@endif
+							
 
 							@if(isset($leave))
 								@if($leave->type == 1)
 									<option value=1 selected>Annual</option>
 									<option value=2>Sick</option>
-									<option value="3">Urgent</option>
 								@elseif($leave->type == 2)
 									<option value=2 selected>Sick</option>
 									<option value=1>Annual</option>
-									<option value="3">Urgent</option>
-									@else
-									<option value="3" selected>Urgent</option>
+								@else
 									<option value="1">Annual</option>
 									<option value="2">Sick</option>
 								@endif
