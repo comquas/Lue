@@ -50,17 +50,15 @@ class PaySlipPdfController extends Controller
         			$message->attach(public_path('/payslip/'.$user->name.$user->id.'.pdf'));
         			$message->subject('Application for issue of Pay Slip');
         });
-        // Mail::raw('hello', function ($message) {
-        // $message->to('hmyo8058@gmail.com');
-        //  });
-        //return $pdf->download('alia.pdf');
-        
-
-        
+       
 
 
-        return redirect()->back();
+        return redirect()->back()->with('flash','Mail Sent!');
        
         
     }
 }
+ // Mail::raw('hello', function ($message) {
+        // $message->to('hmyo8058@gmail.com');
+        //  });
+        //return $pdf->download('alia.pdf');

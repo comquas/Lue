@@ -101,9 +101,9 @@ CREATED:".date_format($leaveUser['timestamp'],'Ymd').'T'.date_format($leaveUser[
 TRANSP:OPAQUE
 X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
 SUMMARY:".$leaveUser['name']." : ".$leaveUser['leaveType']."
-DTSTART;VALUE=DATE:".date_format($leaveUser['from'],'Ymd').'T'.date_format($leaveUser['from'],'His').'Z'."
-DTEND;VALUE=DATE:".date_format($leaveUser['to'],'Ymd').'T'.date_format($leaveUser['to'],'His').'Z'."
-DTSTART;TZID=Asia/Rangoon:".date_format(Carbon\Carbon::now(),'Ymd').'T'.date_format(Carbon\Carbon::now(),'His')."
+DTSTART;VALUE=DATE:".date_format(date_create($leaveUser['from']),'Ymd').'T'.date_format(date_create($leaveUser['from']),'His').'Z'."
+DTEND;VALUE=DATE:".date_format(date_create($leaveUser['to']),'Ymd').'T'.date_format(date_create($leaveUser['to']),'His').'Z'."
+DTSTART;TZID=Asia/Rangoon:".date_format(date_create(Carbon\Carbon::now()),'Ymd').'T'.date_format(date_create(Carbon\Carbon::now()),'His')."
 SEQUENCE:0
 END:VEVENT
 END:VCALENDAR";

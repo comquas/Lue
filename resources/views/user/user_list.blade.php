@@ -8,6 +8,21 @@
 </style>
 @section('content')
 <div class="container">
+   @if(Session::has('flash'))
+            <div class="alert alert-success" role="alert">
+                  <div class="container">
+                    <div class="alert-icon">
+                      <i class="now-ui-icons ui-2_like"></i>
+                    </div>
+                    <strong>Done!</strong> Email sent successfully
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">
+                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                      </span>
+                    </button>
+                  </div>
+                </div>
+            @endif
     <div class="row">
         <div class="col-md-12">
             <div class="card">
@@ -77,4 +92,12 @@
         </div>
     </div>
 </div>
+
+<script>
+  $(function(){
+
+     $('.alert-flash').fadeOut(2000);
+
+  })
+</script>
 @endsection
