@@ -47,12 +47,12 @@ class PaySlipPdfController extends Controller
 
 
         			$message->to($user->email);
-        			$message->attach(public_path('/payslip/'.$user->name.$user->id.'.pdf'));
+        			$message->attach(public_path('payslip/'.$pdfname));
         			$message->subject('Application for issue of Pay Slip');
         });
        
 
-
+        unlink(public_path('payslip/'.$pdfname));
         return redirect()->back()->with('flash','Mail Sent!');
        
         
