@@ -57,10 +57,10 @@ class LeaveController extends Controller
         return view('leave/list', compact('leaves'));
     }
 
-    function store(Request $request, $id = '')
+    function store(Request $request, $id='')
     {
-
-        $this->validate($request, ['type' => 'required|integer', 'from_date' => 'required|date', 'to_date' => 'required|date', 'no_of_day' => 'required|numeric','reason' => 'required']);
+    
+      $this->validate($request, ['type' => 'required|integer', 'from_date' => 'required|date', 'to_date' => 'required|date', 'no_of_day' => 'required|numeric','reason' => 'required']);
 
         $user = Auth::user();
 
