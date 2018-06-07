@@ -163,6 +163,10 @@ class LeaveController extends Controller
 
     public function sendSlack($send_user, $receive_user, $text)
     {
+        if(!$receive_user)
+        {
+            return false;
+        }
 
         $url = env('SLACK_HOOK', '');
         if ($url == "")
@@ -182,6 +186,10 @@ class LeaveController extends Controller
     }
      public function approveSendSlack($send_user, $receive_user, $attachments)
     {
+        if(!$receive_user)
+        {
+            return false;
+        }
 
         $url = env('SLACK_HOOK', '');
         if ($url == "")
@@ -189,8 +197,8 @@ class LeaveController extends Controller
             return false;
         }
 
-        $json = ["channel" => $receive_user->slack, "username" => $send_user->name, "attachments" => $attachments];
-        $json = ["channel" => "@".$recevie_user->slack, "username" => $send_user->name, "attachments" => $attachments];
+        // $json = ["channel" => $receive_user->slack, "username" => $send_user->name, "attachments" => $attachments];
+        $json = ["channel" => "@".$receive_user->slack, "username" => $send_user->name, "attachments" => $attachments];
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
