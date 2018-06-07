@@ -33,7 +33,7 @@ class UserController extends Controller
     }
 
     function edit($id) {
-        $user = User::where("id",$id)->first();
+        $user = User::editUser($id);
         if($user == null) {
             return redirect()->route('user_list');
         }
@@ -135,7 +135,8 @@ class UserController extends Controller
     function profile($id, Request $request) {
 
 
-        $user = User::where('id',$id)->first();
+        $user = User::viewProfile($id);
+        //dd($user);
 
         if ($user == null) {
             return redirect()->route('not_found');
@@ -154,7 +155,7 @@ class UserController extends Controller
             $this->validate($request, [
             'avatar' => 'nullable|image|mimes:jpeg,bmp,png|max:2000',
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|string|email|max:255',
             'mobile_no' => 'required|string',
             'position' => 'required|integer',
             'location' => 'required|integer',
@@ -176,7 +177,7 @@ class UserController extends Controller
             $this->validate($request, [
             'avatar' => 'nullable|image|mimes:jpeg,bmp,png|max:2000',
             'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
+            'email' => 'required|string|email|max:255',
             'mobile_no' => 'required|string',
             'position' => 'required|integer',
             'location' => 'required|integer',
@@ -191,7 +192,6 @@ class UserController extends Controller
             'slack' => 'nullable|string'
             ]);
         }
-
     	
 
         
@@ -315,9 +315,10 @@ class UserController extends Controller
 
         
         //$user = User::paginate(10);
-        $users = User::where('name','like',$request->name."%")->limit(10)->paginate(10);
+        
         $current_user = Auth::user();
         $q = $request->name;
+        $users = User::where('name','like',$request->name."%")->limit(10)->paginate(10);
 
         return view('/user/user_list',compact("users" ,"current_user","q"));
 
@@ -336,13 +337,11 @@ class UserController extends Controller
 
         
     }
-    public function resetLeave(){
-            $users=User::all();
-            $users->each(function($user) {  
-                $user->no_of_leave=config('leave.annual_leave');
-                $user->sick_leave=config('leave.sick_leave');
-                $user->save();
-            });
+    public function resetLeave($id){
+        $user=User::resetleave($id);
+        $user->no_of_leave=$user->no_of_leave;
+        $user->sick_leave=$user->sick_leave;
+        $user->save();
         return redirect()->back();
     }
     public function BAT(){
