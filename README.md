@@ -47,9 +47,9 @@ Change the admin user and email in `database/seeds/UsersTableSeeder.php`
 
 - [x] send email when time-off is apply, approve, reject
 - [x] send to slack of supervisor when time-off is apply, approve, reject
-- [ ] iCal support for time-off
-- [ ] REST API
+- [x] iCal support for time-off
+- [x] REST API
 - [ ] Android App
 - [ ] iOS App
-- [ ] Send Payslip (PDF File)
+- [x] Send Payslip (PDF File)
 - [ ] Filter Time-Off by date range
