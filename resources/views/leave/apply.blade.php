@@ -29,9 +29,10 @@
 						<div class="form-group">
 							<label for="title">Type</label>
 							<select id="type" name="type" style="width:100%;display: block;">
-							
-
-							@if(isset($leave))
+							@if(!isset($leave))
+								<option value=1>Annual</option>
+								<option value=2>Sick</option>
+							@else
 								@if($leave->type == 1)
 									<option value=1 selected>Annual</option>
 									<option value=2>Sick</option>
